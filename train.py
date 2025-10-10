@@ -1,7 +1,7 @@
 """
 Script Huấn Luyện Mô Hình ABSA
 ==============================
-Script chính để fine-tune mô hình Vietnamese-Sentiment-visobert 
+Script chính để fine-tune mô hình BERT cho tiếng Việt (ViSoBERT/PhoBERT)
 cho nhiệm vụ Aspect-Based Sentiment Analysis (ABSA)
 
 Usage:
@@ -150,7 +150,8 @@ def main():
         print(f"✓ Đang tải mô hình từ: {model_name}")
         model = AutoModelForSequenceClassification.from_pretrained(
             model_name,
-            num_labels=num_labels
+            num_labels=num_labels,
+            use_safetensors=True  # Force dùng safetensors format (an toàn hơn)
         )
         
         print(f"✓ Tokenizer vocab size: {tokenizer.vocab_size}")
@@ -413,15 +414,25 @@ def main():
     checkpoint_callback = SimpleMetricCheckpointCallback(metric_name='eval_accuracy')
     trainer.add_callback(checkpoint_callback)
     
-    # Add Early Stopping callback để tránh overfitting
-    early_stopping_callback = EarlyStoppingCallback(
-        early_stopping_patience=training_config.get('early_stopping_patience', 2),
-        early_stopping_threshold=training_config.get('early_stopping_threshold', 0.001)
-    )
-    trainer.add_callback(early_stopping_callback)
+    # Add Early Stopping callback để tránh overfitting  
+    # TEMPORARY DISABLE để debug lỗi float vs string comparison
+    use_early_stopping = False  # Set to True sau khi fix bug
+    
+    if use_early_stopping:
+        # Threshold phải phù hợp với metric: loss (~0.001) vs accuracy/F1 (~0.01)
+        metric_name = training_config.get('metric_for_best_model', 'eval_loss')
+        default_threshold = 0.01 if 'accuracy' in metric_name or 'f1' in metric_name else 0.001
+        
+        early_stopping_callback = EarlyStoppingCallback(
+            early_stopping_patience=training_config.get('early_stopping_patience', 2),
+            early_stopping_threshold=training_config.get('early_stopping_threshold', default_threshold)
+        )
+        trainer.add_callback(early_stopping_callback)
+        print(f"✓ Early Stopping: sẽ dừng nếu {metric_name} không cải thiện sau {training_config.get('early_stopping_patience', 2)} epoch")
+    else:
+        print(f"⚠️  Early Stopping DISABLED (temporary for debugging)")
     
     print(f"✓ Checkpoints sẽ được đặt tên theo accuracy (vd: checkpoint-90, checkpoint-92)")
-    print(f"✓ Early Stopping: sẽ dừng nếu eval_loss không cải thiện sau {training_config.get('early_stopping_patience', 2)} epoch")
     
     # =====================================================================
     # 11. BẮT ĐẦU HUẤN LUYỆN
@@ -442,6 +453,9 @@ def main():
         
     except Exception as e:
         print(f"\n❌ Lỗi trong quá trình huấn luyện: {str(e)}")
+        print("\n📋 Chi tiết lỗi:")
+        import traceback
+        traceback.print_exc()
         return
     
     # =====================================================================

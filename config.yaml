@@ -1,4 +1,4 @@
-# Cấu hình cho Fine-tuning ViSoBERT ABSA
+# Cấu hình cho Fine-tuning PhoBERT ABSA
 # ======================================
 
 # Đường dẫn đến dữ liệu và output
@@ -7,13 +7,13 @@ paths:
   train_file: "data/train.csv"
   validation_file: "data/validation.csv"
   test_file: "data/test.csv"
-  output_dir: "finetuned_visobert_absa_model"
+  output_dir: "finetuned_phobert_absa_model"
   evaluation_report: "evaluation_report.txt"
   predictions_file: "test_predictions.csv"
 
 # Cấu hình mô hình
 model:
-  name: "5CD-AI/Vietnamese-Sentiment-visobert"
+  name: "vinai/phobert-base-v2"  # PhoBERT-base-v2 từ VinAI
   num_labels: 3  # positive, negative, neutral
   max_length: 256  # Độ dài tối đa của input sequence
 
@@ -43,15 +43,15 @@ sentiment_labels:
 # Tham số huấn luyện
 training:
   # Optimizer và learning rate
-  learning_rate: 2e-5  # Giảm từ 2.0e-5 để giảm overfitting
+  learning_rate: 0.00001  # PhoBERT thường dùng LR thấp hơn (1e-5 = 0.00001 đến 2e-5 = 0.00002)
   weight_decay: 0.01  # Tăng từ 0.01 để regularization mạnh hơn
   adam_beta1: 0.9
   adam_beta2: 0.999
-  adam_epsilon: 1.0e-8
+  adam_epsilon: 0.00000001  # 1e-8
   max_grad_norm: 1.0
   
   # Epochs và batch sizes
-  num_train_epochs: 4  # Giảm từ 5 → 3 (dựa vào log: epoch 2 best, epoch 4 overfit nặng)
+  num_train_epochs: 3 # Giảm từ 5 → 3 (dựa vào log: epoch 2 best, epoch 4 overfit nặng)
   per_device_train_batch_size: 48  # Train batch size
   per_device_eval_batch_size: 48   # Giảm xuống 24 để tránh crash khi eval/predict
   gradient_accumulation_steps: 1
@@ -70,8 +70,8 @@ training:
   greater_is_better: true  # F1 cao hơn = tốt hơn
   
   # Early stopping để tránh overfitting
-  early_stopping_patience: 2  # Dừng nếu eval_loss không cải thiện sau 2 epoch
-  early_stopping_threshold: 0.001  # Ngưỡng cải thiện tối thiểu
+  early_stopping_patience: 2  # Dừng nếu metric không cải thiện sau 2 epoch
+  early_stopping_threshold: 0.01  # Ngưỡng cải thiện tối thiểu (0.01 cho accuracy/F1, 0.001 cho loss)
   
   # Logging
   logging_strategy: "steps"

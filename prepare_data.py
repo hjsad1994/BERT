@@ -86,13 +86,16 @@ class ABSADataPreparator:
         if 'data' not in self.df.columns:
             raise ValueError("Dataset phải có cột 'data' chứa câu văn")
         
-        # Xử lý VNCoreNLP segmentation: remove underscores cho BERT tokenizer
+        # Kiểm tra word segmentation cho PhoBERT
         underscore_count = self.df['data'].astype(str).str.count('_').sum()
         if underscore_count > 0:
-            print(f"\n🔧 Phát hiện {underscore_count:,} underscores (VNCoreNLP segmentation)")
-            print(f"🔧 Đang chuyển đổi để tương thích với BERT tokenizer: 'Chăm_sóc' → 'Chăm sóc'")
-            self.df['data'] = self.df['data'].astype(str).str.replace('_', ' ', regex=False)
-            print(f"✓ Đã xử lý VNCoreNLP segmentation (BERT-friendly format)")
+            print(f"\n✅ Phát hiện {underscore_count:,} underscores (VNCoreNLP/pyvi segmentation)")
+            print(f"✅ GIỮ NGUYÊN underscores cho PhoBERT tokenizer")
+            print(f"   PhoBERT yêu cầu: 'Chăm_sóc khách_hàng' (word-segmented)")
+        else:
+            print(f"\n⚠️  CẢNH BÁO: Dataset chưa có word segmentation!")
+            print(f"   PhoBERT hoạt động tốt nhất với word-segmented text")
+            print(f"   Khuyến nghị: Dùng VNCoreNLP hoặc pyvi để segment trước khi train")
         
         # Kiểm tra các cột aspect
         found_aspects = [col for col in self.VALID_ASPECTS if col in self.df.columns]

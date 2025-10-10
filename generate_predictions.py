@@ -42,7 +42,10 @@ def generate_predictions(input_file, output_file, model_path, batch_size=32):
     print(f"✓ Using device: {device}")
     
     tokenizer = AutoTokenizer.from_pretrained(model_path)
-    model = AutoModelForSequenceClassification.from_pretrained(model_path)
+    model = AutoModelForSequenceClassification.from_pretrained(
+        model_path,
+        use_safetensors=True  # Force dùng safetensors format (an toàn hơn)
+    )
     model.to(device)
     model.eval()
     

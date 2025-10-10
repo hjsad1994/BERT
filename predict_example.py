@@ -79,7 +79,10 @@ def main():
     print(f"\n✓ Đang load mô hình từ: {model_path}")
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_path)
-        model = AutoModelForSequenceClassification.from_pretrained(model_path)
+        model = AutoModelForSequenceClassification.from_pretrained(
+            model_path,
+            use_safetensors=True  # Force dùng safetensors format
+        )
         model.to(device)
         print(f"✓ Load mô hình thành công!")
     except Exception as e:

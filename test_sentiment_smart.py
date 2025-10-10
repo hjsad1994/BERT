@@ -144,7 +144,10 @@ class SmartSentimentPredictor:
         
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(model_path)
-            self.model = AutoModelForSequenceClassification.from_pretrained(model_path)
+            self.model = AutoModelForSequenceClassification.from_pretrained(
+                model_path,
+                use_safetensors=True  # Force dùng safetensors format
+            )
             self.model.to(self.device)
             self.model.eval()
             print(f"✓ Load mô hình thành công!\n")
