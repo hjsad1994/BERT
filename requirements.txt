@@ -1,0 +1,32 @@
+# Dependencies cho Fine-tuning ViSoBERT ABSA
+# ==========================================
+
+# Deep Learning Framework
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Hugging Face Transformers
+transformers>=4.30.0
+datasets>=2.12.0
+accelerate>=0.20.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Machine Learning & Metrics
+scikit-learn>=1.3.0
+
+# Configuration
+pyyaml>=6.0
+
+# Progress Bar
+tqdm>=4.65.0
+
+# Utilities
+sentencepiece>=0.1.99
+protobuf>=3.20.0
+
+# Optional: For faster training (nếu có GPU)
+# nvidia-ml-py3>=7.352.0
