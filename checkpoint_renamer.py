@@ -141,16 +141,13 @@ class SimpleMetricCheckpointCallback(TrainerCallback):
         if eval_metrics is None:
             return
         
-        # Get accuracy value
-        metric_value = eval_metrics.get(self.metric_name, 0) * 100
+        # Get metric value - lấy 4 chữ số đầu tiên không làm tròn
+        # Ví dụ: 0.9185180... → 9185
+        metric_value = int(eval_metrics.get(self.metric_name, 0) * 10000)
+        epoch = int(eval_metrics.get('epoch', 0))
         
-        # Create new name (integer only)
-        new_name = f"checkpoint-{int(metric_value)}"
-        
-        # Handle duplicates
-        if new_name in self.pending_renames.values():
-            epoch = eval_metrics.get('epoch', 0)
-            new_name = f"checkpoint-{int(metric_value)}-e{int(epoch)}"
+        # Create new name with epoch (format: checkpoint-9185-e3)
+        new_name = f"checkpoint-{metric_value}-e{epoch}"
         
         # Store for later renaming
         self.pending_renames[checkpoint_folder] = new_name
@@ -199,9 +196,9 @@ if __name__ == '__main__':
     print("Checkpoint Renamer - Examples")
     print("="*70)
     
-    print("\n1️⃣ Simple callback (accuracy only):")
-    print("   checkpoint-1000 → checkpoint-90")
-    print("   checkpoint-2000 → checkpoint-92")
+    print("\n1️⃣ Simple callback (4 chữ số, không làm tròn):")
+    print("   checkpoint-227 → checkpoint-9005-e1  (F1: 0.9005...)")
+    print("   checkpoint-681 → checkpoint-9185-e3  (F1: 0.9185...)")
     
     print("\n2️⃣ Full callback (accuracy + F1):")
     print("   checkpoint-1000 → checkpoint-acc90-f189")

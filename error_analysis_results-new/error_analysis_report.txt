@@ -1,0 +1,32 @@
+======================================================================
+ERROR ANALYSIS REPORT
+======================================================================
+
+📊 OVERALL STATISTICS
+----------------------------------------------------------------------
+Total samples:     2,196
+Correct:           2,010 (91.53%)
+Errors:            186 (8.47%)
+
+📊 ERRORS BY ASPECT
+----------------------------------------------------------------------
+Audio           Accuracy: 90.00%  Errors: 5/50
+Battery         Accuracy: 90.43%  Errors: 27/282
+Camera          Accuracy: 95.54%  Errors: 9/202
+Design          Accuracy: 89.76%  Errors: 17/166
+Display         Accuracy: 89.29%  Errors: 12/112
+General         Accuracy: 82.76%  Errors: 35/203
+Others          Accuracy: 100.00%  Errors: 0/22
+Packaging       Accuracy: 95.52%  Errors: 9/201
+Performance     Accuracy: 90.91%  Errors: 21/231
+Price           Accuracy: 93.33%  Errors: 10/150
+Shipping        Accuracy: 93.05%  Errors: 18/259
+Shop_Service    Accuracy: 96.76%  Errors: 7/216
+Software        Accuracy: 86.44%  Errors: 8/59
+Warranty        Accuracy: 81.40%  Errors: 8/43
+
+📊 ERRORS BY SENTIMENT
+----------------------------------------------------------------------
+positive     Accuracy: 95.95%  Errors: 30/740
+negative     Accuracy: 93.38%  Errors: 81/1223
+neutral      Accuracy: 67.81%  Errors: 75/233

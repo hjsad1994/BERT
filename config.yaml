@@ -43,11 +43,11 @@ sentiment_labels:
 # Tham số huấn luyện
 training:
   # Optimizer và learning rate
-  learning_rate: 2e-5  # Giảm từ 2.0e-5 để giảm overfitting
+  learning_rate: 0.00002  # 2e-5 = 0.00002
   weight_decay: 0.01  # Tăng từ 0.01 để regularization mạnh hơn
   adam_beta1: 0.9
   adam_beta2: 0.999
-  adam_epsilon: 1.0e-8
+  adam_epsilon: 0.00000001  # 1e-8
   max_grad_norm: 1.0
   
   # Epochs và batch sizes
@@ -58,7 +58,7 @@ training:
   
   # Warmup và scheduler
   # warmup_steps: 500
-  warmup_ratio: 0.1
+  warmup_ratio: 0.1  # Must be float, not scientific notation
   lr_scheduler_type: "linear"
   
   # Evaluation và saving

@@ -228,12 +228,12 @@ def create_metrics_comparison_plot(results):
     
     ax.set_xlabel('Aspect', fontweight='bold')
     ax.set_ylabel('Score', fontweight='bold')
-    ax.set_title('Performance Metrics Comparison Across Aspects', fontsize=16, fontweight='bold')
+    ax.set_title('Performance Metrics Comparison Across Aspects', fontsize=16, fontweight='bold', pad=20)
     ax.set_xticks(x)
     ax.set_xticklabels(aspects, rotation=45, ha='right')
     ax.legend()
     ax.grid(True, alpha=0.3)
-    ax.set_ylim([0, 1.0])
+    ax.set_ylim([0, 1.05])
     
     # Thêm giá trị lên từng bar
     for i, (acc, prec, rec, f1) in enumerate(zip(accuracies, precisions, recalls, f1_scores)):
@@ -268,10 +268,10 @@ def create_metrics_comparison_plot(results):
         
         ax.set_xlabel('Aspect', fontweight='bold')
         ax.set_ylabel(metric_name, fontweight='bold')
-        ax.set_title(f'{metric_name} by Aspect', fontsize=14, fontweight='bold')
+        ax.set_title(f'{metric_name} by Aspect', fontsize=14, fontweight='bold', pad=20)
         ax.set_xticklabels(aspects, rotation=45, ha='right')
         ax.grid(True, alpha=0.3, axis='y')
-        ax.set_ylim([0, 1.0])
+        ax.set_ylim([0, 1.05])
         
         # Thêm giá trị
         for i, (aspect, value) in enumerate(zip(aspects, metric_values)):
@@ -304,13 +304,17 @@ def create_sample_distribution_plot(results):
     
     ax.set_xlabel('Aspect', fontweight='bold')
     ax.set_ylabel('Number of Samples', fontweight='bold')
-    ax.set_title('Sample Distribution Across Aspects', fontsize=14, fontweight='bold')
+    ax.set_title('Sample Distribution Across Aspects', fontsize=14, fontweight='bold', pad=20)
     ax.set_xticklabels(aspects, rotation=45, ha='right')
     ax.grid(True, alpha=0.3, axis='y')
     
     # Thêm giá trị
+    max_sample = max(samples)
     for i, (aspect, sample) in enumerate(zip(aspects, samples)):
-        ax.text(i, sample + 2, str(sample), ha='center', va='bottom', fontweight='bold')
+        ax.text(i, sample + max_sample * 0.01, str(sample), ha='center', va='bottom', fontweight='bold')
+    
+    # Tăng ylim để text không bị cắt
+    ax.set_ylim([0, max_sample * 1.1])
     
     # Thêm tổng
     total = sum(samples)
@@ -354,7 +358,7 @@ def create_heatmap_metrics(results):
         vmax=1.0
     )
     
-    plt.title('Performance Metrics Heatmap by Aspect', fontsize=14, fontweight='bold')
+    plt.title('Performance Metrics Heatmap by Aspect', fontsize=14, fontweight='bold', pad=15)
     plt.xlabel('Aspect', fontweight='bold')
     plt.ylabel('Metric', fontweight='bold')
     plt.xticks(rotation=45, ha='right')
@@ -398,7 +402,7 @@ def create_overall_confusion_matrix(df):
             text = ax.text(j + 0.5, i + 0.7, f'({cm_percent[i, j]:.1f}%)',
                           ha="center", va="center", color="red", fontsize=10)
     
-    plt.title('Overall Confusion Matrix\n(All Aspects Combined)', fontsize=16, fontweight='bold')
+    plt.title('Overall Confusion Matrix\n(All Aspects Combined)', fontsize=16, fontweight='bold', pad=15)
     plt.ylabel('True Label', fontsize=12, fontweight='bold')
     plt.xlabel('Predicted Label', fontsize=12, fontweight='bold')
     plt.tight_layout()

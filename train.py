@@ -300,7 +300,7 @@ def main():
     majority_count = max(class_counts_original.values())
     
     # Target: Neutral at least 30% of majority class (tăng từ 20%)
-    target_neutral_count = int(majority_count * 0.3)
+    target_neutral_count = int(majority_count)
     
     sampling_strategy = {
         'positive': class_counts_original['positive'],  # Keep original
@@ -309,7 +309,7 @@ def main():
     }
     
     print(f"\n🎯 Oversampling strategy:")
-    print(f"   Target neutral: {target_neutral_count:,} samples (30% of majority)")
+    print(f"   Target neutral: {target_neutral_count:,} samples (10% of majority)")
     
     train_df_oversampled = random_oversample(
         train_df, 
@@ -559,8 +559,8 @@ def main():
         # Phải gọi save_model() để lưu ra disk
         final_model_dir = output_dir
         
-        # Save best model (đã được load vào trainer.model)
-        trainer.save_model(final_model_dir)
+        # Save best model (dùng eval_trainer thay vì trainer đã bị xóa)
+        eval_trainer.save_model(final_model_dir)
         tokenizer.save_pretrained(final_model_dir)
         
         print(f"\n✓ Mô hình và tokenizer đã được lưu tại: {final_model_dir}")
@@ -570,6 +570,8 @@ def main():
         
     except Exception as e:
         print(f"\n⚠️  Cảnh báo: Không thể lưu mô hình: {str(e)}")
+        import traceback
+        traceback.print_exc()
     
     # =====================================================================
     # 12.5. GIẢI PHÓNG GPU MEMORY TRƯỚC ANALYSIS

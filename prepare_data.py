@@ -398,8 +398,8 @@ def main():
     INPUT_FILE = 'dataset.csv'
     OUTPUT_DIR = 'data'
     TRAIN_RATIO = 0.7
-    VAL_RATIO = 0.15
-    TEST_RATIO = 0.15
+    VAL_RATIO = 0.1
+    TEST_RATIO = 0.2
     RANDOM_SEED = 42
     
     print("\n" + "="*70)

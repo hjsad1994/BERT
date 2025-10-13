@@ -5,10 +5,19 @@ Chỉ hiển thị các aspect THỰC SỰ được đề cập trong câu
 Sử dụng keyword matching + confidence filtering
 
 Usage:
+    # Interactive mode
     python test_sentiment_smart.py
+    
+    # Test single sentence
     python test_sentiment_smart.py --sentence "pin tệ quá"
     python test_sentiment_smart.py --sentence "pin tệ quá" --show-ignored
+    
+    # Batch mode
     python test_sentiment_smart.py --batch test_examples.txt
+    
+    # Evaluation mode - Tính accuracy trên tập test/validation
+    python test_sentiment_smart.py --evaluate data/test.csv
+    python test_sentiment_smart.py --evaluate data/validation.csv
 """
 
 import sys
@@ -24,6 +33,9 @@ import numpy as np
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import re
 from colorama import init, Fore, Style
+import pandas as pd
+from collections import defaultdict
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support, confusion_matrix
 
 init(autoreset=True)
 
@@ -286,13 +298,13 @@ def print_smart_results(sentence, results, show_ignored=False):
             
             print(f"{idx}. {Fore.CYAN}{aspect:<15}{Style.RESET_ALL} → "
                   f"{emoji} {color}{sentiment.upper():<10}{Style.RESET_ALL}")
-            print(f"   Confidence: {confidence:.1%} | Relevance: {relevance:.1%}")
+            print(f"   Confidence: {confidence*100:.1f}% | Relevance: {relevance*100:.1f}%")
             
             # Progress bars
             conf_bar = format_confidence_bar(confidence)
             rel_bar = format_confidence_bar(relevance)
-            print(f"   Conf: {conf_bar} {confidence:.2%}")
-            print(f"   Relv: {rel_bar} {relevance:.2%}\n")
+            print(f"   Conf: {conf_bar} {confidence*100:.1f}%")
+            print(f"   Rel:  {rel_bar} {relevance*100:.1f}%\n")
     else:
         print(f"{Fore.YELLOW}⚠️  Không phát hiện aspect cụ thể nào được đề cập{Style.RESET_ALL}\n")
     
@@ -316,7 +328,7 @@ def print_compact_results(sentence, results):
         for r in relevant:
             emoji = format_sentiment_emoji(r['sentiment'])
             print(f"   • {r['aspect']}: {emoji} {r['sentiment']} "
-                  f"(conf: {r['confidence']:.1%}, rel: {r['relevance_score']:.1%})")
+                  f"(conf: {r['confidence']*100:.1f}%, rel: {r['relevance_score']*100:.1f}%)")
     else:
         print(f"→ Không phát hiện aspect cụ thể nào")
     print()
@@ -336,6 +348,150 @@ def batch_mode(predictor, sentences):
         
         # Print compact
         print_compact_results(sentence, results)
+
+
+def evaluate_model(predictor, data_path):
+    """
+    Đánh giá model trên tập test/validation
+    Tính accuracy, precision, recall, F1 cho từng aspect
+    """
+    print(f"\n{Fore.CYAN}📊 ĐÁNH GIÁ MODEL{Style.RESET_ALL}")
+    print(f"{'='*80}\n")
+    print(f"Đang load dữ liệu từ: {data_path}")
+    
+    # Load data
+    df = pd.read_csv(data_path, encoding='utf-8')
+    print(f"✓ Đã load {len(df)} samples\n")
+    
+    # Group by aspect
+    aspect_metrics = defaultdict(lambda: {
+        'y_true': [],
+        'y_pred': [],
+        'confidences': [],
+        'relevances': [],
+        'total': 0
+    })
+    
+    print(f"{Fore.CYAN}⏳ Đang dự đoán...{Style.RESET_ALL}\n")
+    
+    # Predict for each sample
+    for idx, row in df.iterrows():
+        sentence = row['sentence']
+        aspect = row['aspect']
+        true_sentiment = row['sentiment']
+        
+        # Predict without printing
+        result = predictor.predict_single(sentence, aspect)
+        relevance_score = check_aspect_relevance(sentence, aspect)
+        
+        # Store results
+        aspect_metrics[aspect]['y_true'].append(true_sentiment)
+        aspect_metrics[aspect]['y_pred'].append(result['sentiment'])
+        aspect_metrics[aspect]['confidences'].append(result['confidence'])
+        aspect_metrics[aspect]['relevances'].append(relevance_score)
+        aspect_metrics[aspect]['total'] += 1
+        
+        # Progress
+        if (idx + 1) % 100 == 0:
+            print(f"  Đã xử lý: {idx + 1}/{len(df)} samples ({(idx+1)/len(df)*100:.1f}%)")
+    
+    print(f"\n✓ Hoàn thành dự đoán!\n")
+    
+    # Calculate metrics for each aspect
+    print(f"\n{Fore.GREEN}{'='*80}{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}📈 KẾT QUẢ CHI TIẾT THEO ASPECT{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}{'='*80}{Style.RESET_ALL}\n")
+    
+    overall_true = []
+    overall_pred = []
+    
+    results_list = []
+    
+    for aspect in sorted(aspect_metrics.keys()):
+        metrics = aspect_metrics[aspect]
+        y_true = metrics['y_true']
+        y_pred = metrics['y_pred']
+        
+        overall_true.extend(y_true)
+        overall_pred.extend(y_pred)
+        
+        # Calculate metrics
+        accuracy = accuracy_score(y_true, y_pred)
+        precision, recall, f1, _ = precision_recall_fscore_support(
+            y_true, y_pred, average='weighted', zero_division=0
+        )
+        
+        avg_conf = np.mean(metrics['confidences'])
+        avg_rel = np.mean(metrics['relevances'])
+        
+        results_list.append({
+            'aspect': aspect,
+            'total': metrics['total'],
+            'accuracy': accuracy,
+            'precision': precision,
+            'recall': recall,
+            'f1': f1,
+            'avg_conf': avg_conf,
+            'avg_rel': avg_rel
+        })
+        
+        # Print detailed results
+        print(f"{Fore.CYAN}{'─'*80}{Style.RESET_ALL}")
+        print(f"{Fore.CYAN}Aspect: {aspect}{Style.RESET_ALL}")
+        print(f"{'─'*80}")
+        print(f"  Total samples:        {metrics['total']}")
+        print(f"  Accuracy:            {accuracy:.2%} {format_confidence_bar(accuracy, 30)}")
+        print(f"  Precision:           {precision:.2%} {format_confidence_bar(precision, 30)}")
+        print(f"  Recall:              {recall:.2%} {format_confidence_bar(recall, 30)}")
+        print(f"  F1-Score:            {f1:.2%} {format_confidence_bar(f1, 30)}")
+        print(f"  Avg Confidence:      {avg_conf:.2%} {format_confidence_bar(avg_conf, 30)}")
+        print(f"  Avg Relevance:       {avg_rel:.2%} {format_confidence_bar(avg_rel, 30)}")
+        print()
+    
+    # Overall metrics
+    print(f"\n{Fore.GREEN}{'='*80}{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}📊 KẾT QUẢ TỔNG QUÁT (ALL ASPECTS){Style.RESET_ALL}")
+    print(f"{Fore.GREEN}{'='*80}{Style.RESET_ALL}\n")
+    
+    overall_accuracy = accuracy_score(overall_true, overall_pred)
+    overall_precision, overall_recall, overall_f1, _ = precision_recall_fscore_support(
+        overall_true, overall_pred, average='weighted', zero_division=0
+    )
+    
+    print(f"  Total samples:        {len(overall_true)}")
+    print(f"  Overall Accuracy:     {overall_accuracy:.2%} {format_confidence_bar(overall_accuracy, 30)}")
+    print(f"  Overall Precision:    {overall_precision:.2%} {format_confidence_bar(overall_precision, 30)}")
+    print(f"  Overall Recall:       {overall_recall:.2%} {format_confidence_bar(overall_recall, 30)}")
+    print(f"  Overall F1-Score:     {overall_f1:.2%} {format_confidence_bar(overall_f1, 30)}")
+    
+    # Summary table
+    print(f"\n{Fore.YELLOW}📋 BẢNG TỔNG HỢP METRICS{Style.RESET_ALL}")
+    print(f"{'='*110}")
+    print(f"{'Aspect':<15} {'Samples':>8} {'Accuracy':>10} {'Precision':>10} {'Recall':>10} {'F1':>10} {'AvgConf':>10} {'AvgRel':>10}")
+    print(f"{'='*110}")
+    
+    for r in results_list:
+        print(f"{r['aspect']:<15} {r['total']:>8} "
+              f"{r['accuracy']:>9.1%} {r['precision']:>9.1%} "
+              f"{r['recall']:>9.1%} {r['f1']:>9.1%} "
+              f"{r['avg_conf']:>9.1%} {r['avg_rel']:>9.1%}")
+    
+    print(f"{'='*110}")
+    print(f"{'OVERALL':<15} {len(overall_true):>8} "
+          f"{overall_accuracy:>9.1%} {overall_precision:>9.1%} "
+          f"{overall_recall:>9.1%} {overall_f1:>9.1%} "
+          f"{'─':>10} {'─':>10}")
+    print(f"{'='*110}\n")
+    
+    return {
+        'aspect_metrics': results_list,
+        'overall': {
+            'accuracy': overall_accuracy,
+            'precision': overall_precision,
+            'recall': overall_recall,
+            'f1': overall_f1
+        }
+    }
 
 
 def interactive_mode(predictor):
@@ -396,6 +552,8 @@ def main():
                        help='File chứa danh sách câu (mỗi dòng một câu)')
     parser.add_argument('--show-ignored', action='store_true', 
                        help='Hiển thị aspects bị ignore')
+    parser.add_argument('--evaluate', '-e', type=str,
+                       help='Đánh giá model trên tập test/validation (CSV file)')
     
     args = parser.parse_args()
     
@@ -405,6 +563,15 @@ def main():
     
     # Initialize predictor
     predictor = SmartSentimentPredictor(MODEL_PATH)
+    
+    # Evaluation mode
+    if args.evaluate:
+        if not os.path.exists(args.evaluate):
+            print(f"\n{Fore.RED}❌ Không tìm thấy file: {args.evaluate}{Style.RESET_ALL}\n")
+            return
+        
+        evaluate_model(predictor, args.evaluate)
+        return
     
     # Batch mode
     if args.batch:

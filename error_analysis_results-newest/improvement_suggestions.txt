@@ -1,0 +1,63 @@
+======================================================================
+ĐỀ XUẤT CẢI THIỆN MODEL
+======================================================================
+
+🎯 ASPECTS YẾU (Error Rate > 15%):
+
+   📍 Warranty (Error Rate: 22.58%)
+      • Thu thập thêm 14 samples cho aspect này
+      • Kiểm tra quality của labels
+      • Cân nhắc thêm keywords/features đặc trưng
+
+   📍 Audio (Error Rate: 15.79%)
+      • Thu thập thêm 12 samples cho aspect này
+      • Kiểm tra quality của labels
+      • Cân nhắc thêm keywords/features đặc trưng
+
+
+🎯 SENTIMENT CLASSES YẾU:
+
+   📍 NEUTRAL (Error Rate: 16.43%)
+      ✓ Đã apply: Focal Loss + Oversampling
+      • Có thể tăng oversampling ratio thêm (hiện tại: 40%)
+      • Cân nhắc tăng Focal Loss gamma từ 2.0 → 3.0
+      • Thêm data augmentation cho neutral class
+
+
+🎯 CONFUSION PATTERNS PHỔ BIẾN:
+
+   📍 Nhầm NEGATIVE thành POSITIVE (30 cases, 23.1%)
+      • Confusion nghiêm trọng (ngược hoàn toàn)
+      • Kiểm tra sarcasm, irony, context
+      • Cân nhắc thêm features hoặc context window
+
+   📍 Nhầm POSITIVE thành NEGATIVE (28 cases, 21.5%)
+      • Confusion nghiêm trọng (ngược hoàn toàn)
+      • Kiểm tra data quality và labeling
+      • Có thể có sarcasm hoặc context phức tạp
+
+   📍 Nhầm POSITIVE thành NEUTRAL (24 cases, 18.5%)
+
+
+🎯 GENERAL IMPROVEMENTS:
+
+   📍 Data Quality:
+      • Review lại labeling consistency
+      • Thêm inter-annotator agreement check
+      • Xem xét data augmentation
+
+   📍 Model Improvements:
+      • Fine-tune learning rate (hiện tại: 2e-5)
+      • Thử different warmup ratios
+      • Cân nhắc ensemble multiple models
+
+   📍 Training Strategy:
+      • Train thêm epochs nếu chưa converge
+      • Sử dụng early stopping với patience
+      • Thử different batch sizes
+
+   📍 Advanced Techniques:
+      • SMOTE thay vì random oversampling
+      • Mixup / Cutmix augmentation
+      • Multi-task learning (nếu có thêm tasks)
+      • Adversarial training
