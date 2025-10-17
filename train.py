@@ -248,6 +248,8 @@ def main():
         
         # Performance
         fp16=training_config['fp16'],
+        fp16_full_eval=training_config.get('fp16_full_eval', False),
+        optim=training_config.get('optim', 'adamw_torch'),
         dataloader_num_workers=training_config['dataloader_num_workers'],
         dataloader_pin_memory=training_config['dataloader_pin_memory'],
         dataloader_prefetch_factor=training_config.get('dataloader_prefetch_factor', 2),
@@ -261,78 +263,104 @@ def main():
     
     print(f"\n✓ Các tham số huấn luyện chính:")
     print(f"   Learning rate:        {training_config['learning_rate']}")
+    print(f"   LR Scheduler:         {training_config['lr_scheduler_type']}")
+    print(f"   Optimizer:            {training_config.get('optim', 'adamw_torch')}")
     print(f"   Epochs:               {training_config['num_train_epochs']}")
     print(f"   Train batch size:     {training_config['per_device_train_batch_size']}")
     print(f"   Eval batch size:      {training_config['per_device_eval_batch_size']}")
+    print(f"   Gradient accum:       {training_config['gradient_accumulation_steps']}")
+    print(f"   Effective batch size: {training_config['per_device_train_batch_size'] * training_config['gradient_accumulation_steps']}")
     print(f"   Warmup ratio:         {training_config['warmup_ratio']}")
     print(f"   FP16:                 {training_config['fp16']}")
+    print(f"   Prefetch factor:      {training_config.get('dataloader_prefetch_factor', 2)}")
     print(f"   Output directory:     {output_dir}")
     
     # =====================================================================
-    # 8. OVERSAMPLING - XỬ LÝ CLASS IMBALANCE (DISABLED)
+    # 8. OVERSAMPLING - TEMPORARILY DISABLED
     # =====================================================================
     print(f"\n{'='*70}")
-    print("📈 OVERSAMPLING - Xử lý class imbalance...")
+    print("⚠️  OVERSAMPLING TEMPORARILY DISABLED - Sử dụng dữ liệu gốc")
     print(f"{'='*70}")
     
     # Lưu class counts gốc để tính Focal Loss alpha weights
     from collections import Counter
-    class_counts_original = Counter(train_df['sentiment'])  # LƯU LẠI GỐC cho Focal Loss
+    class_counts_original = Counter(train_df['sentiment'])  # Dùng cho Focal Loss
     
-    from oversampling_utils import random_oversample, get_class_balance_report
+    # Lưu train_df gốc để visualization sau này
+    # train_df_original = train_df.copy()  # DISABLED - không cần vì không oversample
     
-    # Check imbalance trước khi oversample
-    print(f"\n📊 BEFORE Oversampling:")
-    report_before = get_class_balance_report(train_df, target_column='sentiment')
-    print(f"   Imbalance ratio: {report_before['imbalance_ratio']:.2f}x")
+    # from oversampling_utils import aspect_wise_oversample  # DISABLED
     
-    if report_before['imbalance_ratio'] > 2.0:
-        print(f"   ⚠️  Severe imbalance detected!")
+    # In phân bố class trong training data
+    print(f"\n📊 Training Data Distribution (ORIGINAL - NO OVERSAMPLING):")
+    total_samples = len(train_df)
+    for sentiment, count in sorted(class_counts_original.items()):
+        pct = (count / total_samples) * 100
+        print(f"   {sentiment:10}: {count:6,} samples ({pct:5.2f}%)")
     
-    # Apply oversampling
-    # Strategy options:
-    # - 'auto': Balance tất cả về majority class
-    # - 'minority': Chỉ oversample minority class (neutral)
-    # - 0.5: Target ratio 50% of majority
-    # - {'neutral': 2000}: Custom target count
+    # ======================================================================
+    # OVERSAMPLING CODE - COMMENTED OUT (TEMPORARILY DISABLED)
+    # ======================================================================
+    # Apply aspect-wise oversampling
+    # Với mỗi aspect (Battery, Camera, etc.):
+    #   - Tìm sentiment có nhiều mẫu nhất
+    #   - Oversample các sentiment khác để bằng với sentiment lớn nhất đó
+    # print(f"\n🎯 Chiến lược: Cân bằng sentiment cho từng aspect riêng biệt")
     
-    # Recommended: Smart ratio (minority at least 30% of majority)
-    majority_count = max(class_counts_original.values())
-    
-    # Target: Neutral at least 30% of majority class (tăng từ 20%)
-    target_neutral_count = int(majority_count)
-    
-    sampling_strategy = {
-        'positive': class_counts_original['positive'],  # Keep original
-        'negative': class_counts_original['negative'],  # Keep original
-        'neutral': max(target_neutral_count, class_counts_original['neutral'])  # Oversample to 30%
-    }
-    
-    print(f"\n🎯 Oversampling strategy:")
-    print(f"   Target neutral: {target_neutral_count:,} samples (10% of majority)")
-    
-    train_df_oversampled = random_oversample(
-        train_df, 
-        target_column='sentiment',
-        sampling_strategy=sampling_strategy,
-        random_state=config['general']['seed']
-    )
-    
-    # Check sau khi oversample
-    print(f"\n📊 AFTER Oversampling:")
-    report_after = get_class_balance_report(train_df_oversampled, target_column='sentiment')
-    print(f"   Imbalance ratio: {report_after['imbalance_ratio']:.2f}x")
-    
-    if report_after['imbalance_ratio'] < 2.0:
-        print(f"   ✅ Imbalance reduced to acceptable level!")
+    # train_df_oversampled = aspect_wise_oversample(
+    #     train_df, 
+    #     aspect_column='aspect',
+    #     sentiment_column='sentiment',
+    #     random_state=config['general']['seed']
+    # )
     
     # Use oversampled data
-    train_df = train_df_oversampled
+    # train_df = train_df_oversampled
     
     # Recreate train_dataset with oversampled data
-    print(f"\n🔄 Recreating train_dataset with oversampled data...")
-    train_dataset = ABSADataset(train_df, tokenizer, max_length)
-    print(f"✓ New train dataset: {len(train_dataset):,} samples")
+    # print(f"\n🔄 Recreating train_dataset with oversampled data...")
+    # train_dataset = ABSADataset(train_df, tokenizer, max_length)
+    print(f"\n✓ Sử dụng train dataset gốc (không oversampling): {len(train_dataset):,} samples")
+    
+    # Lưu thông tin oversampling để visualization
+    # DISABLED - Không lưu thông tin oversampling vì đang tắt oversampling
+    # print(f"\n💾 Lưu thông tin oversampling để visualization...")
+    # import json
+    # from datetime import datetime
+    # 
+    # oversampling_info = {
+    #     'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+    #     'strategy': 'aspect_wise_oversampling',
+    #     'description': 'Cân bằng sentiment cho từng aspect riêng biệt',
+    #     'before': {
+    #         'total_samples': len(train_df_original),
+    #         'sentiment_distribution': dict(class_counts_original),
+    #         'aspects': {}
+    #     },
+    #     'after': {
+    #         'total_samples': len(train_df),
+    #         'sentiment_distribution': dict(Counter(train_df['sentiment'])),
+    #         'aspects': {}
+    #     }
+    # }
+    # 
+    # # Lưu phân bố chi tiết theo aspect (before)
+    # for aspect in train_df_original['aspect'].unique():
+    #     aspect_data = train_df_original[train_df_original['aspect'] == aspect]
+    #     oversampling_info['before']['aspects'][aspect] = dict(Counter(aspect_data['sentiment']))
+    # 
+    # # Lưu phân bố chi tiết theo aspect (after)
+    # for aspect in train_df['aspect'].unique():
+    #     aspect_data = train_df[train_df['aspect'] == aspect]
+    #     oversampling_info['after']['aspects'][aspect] = dict(Counter(aspect_data['sentiment']))
+    # 
+    # # Lưu vào file JSON
+    # os.makedirs('analysis_results', exist_ok=True)
+    # oversampling_info_path = 'analysis_results/oversampling_info.json'
+    # with open(oversampling_info_path, 'w', encoding='utf-8') as f:
+    #     json.dump(oversampling_info, f, indent=2, ensure_ascii=False)
+    # 
+    # print(f"✓ Đã lưu thông tin oversampling: {oversampling_info_path}")
     
     # =====================================================================
     # 9. TÍNH CLASS WEIGHTS VÀ KHỞI TẠO FOCAL LOSS
@@ -341,19 +369,16 @@ def main():
     print("🔥 Đang tính class weights cho Focal Loss...")
     print(f"{'='*70}")
     
-    # Tính phân bố classes trong training data GỐC (BEFORE oversampling)
-    # ⚠️ QUAN TRỌNG: Alpha weights phải dựa trên imbalance GỐC, không phải sau oversampling!
-    label_counts = class_counts_original  # Dùng counts GỐC
+    # Tính phân bố classes trong training data
+    label_counts = class_counts_original
     total = sum(label_counts.values())
     
     # Class distribution
-    print(f"\n📊 Phân bố classes trong training data GỐC (before oversampling):")
+    print(f"\n📊 Phân bố classes trong training data:")
     for label in ['positive', 'negative', 'neutral']:
         count = label_counts.get(label, 0)
         pct = (count / total) * 100
         print(f"   {label:10}: {count:6,} samples ({pct:5.2f}%)")
-    
-    print(f"\n⚠️  Lưu ý: Alpha weights dựa trên imbalance GỐC để giữ nguyên trọng số!")
     
     # Tính alpha weights (inverse frequency)
     # alpha_i = 1 / (class_count_i / total)
@@ -373,10 +398,10 @@ def main():
         print(f"   {label:10} (class {idx}): {alpha[idx]:.4f}")
     
     # Create Focal Loss
-    gamma = 2.0  # Focusing parameter
+    gamma = 2.0 # Focusing parameter
     focal_loss = FocalLoss(alpha=alpha, gamma=gamma)
-    print(f"\n✓ Focal Loss created: gamma={gamma}, weighted by ORIGINAL class frequency")
-    print(f"✓ Alpha phản ánh imbalance GỐC, kết hợp với oversampling để cân bằng tối ưu")
+    print(f"\n✓ Focal Loss created: gamma={gamma}, weighted by class frequency")
+    print(f"✓ Focal Loss sẽ tăng trọng số cho minority classes để xử lý imbalance")
     
     # =====================================================================
     # 10. KHỞI TẠO TRAINER VỚI FOCAL LOSS
@@ -397,9 +422,8 @@ def main():
     
     print(f"✓ Custom Trainer với Focal Loss đã được khởi tạo thành công")
     print(f"✓ Chiến lược xử lý class imbalance:")
-    print(f"   • Oversampling: Tăng neutral lên 30% của majority class")
-    print(f"   • Focal Loss: Tăng trọng số loss cho minority class (dựa trên imbalance GỐC)")
-    print(f"   • Kết hợp 2 phương pháp để cải thiện Neutral class (hiện F1=0.48)")
+    print(f"   • Focal Loss: Tăng trọng số loss cho minority classes")
+    print(f"   • Alpha weights được tính dựa trên inverse frequency của mỗi class")
     
     # =====================================================================
     # 10.5. ADD CHECKPOINT RENAMER CALLBACK
@@ -544,6 +568,13 @@ def main():
     try:
         # Tái sử dụng predictions_output đã có từ bước trước (tránh predict 2 lần)
         save_predictions_from_output(predictions_output, test_df, config, id2label)
+        
+        # ALSO save to standard filename for analysis scripts
+        predictions_standard_path = "test_predictions.csv"
+        if config['paths']['predictions_file'] != predictions_standard_path:
+            import shutil
+            shutil.copy(config['paths']['predictions_file'], predictions_standard_path)
+            print(f"✓ Đã copy predictions sang: {predictions_standard_path}")
     except Exception as e:
         print(f"\n⚠️  Cảnh báo: Không thể lưu predictions: {str(e)}")
     

@@ -40,12 +40,19 @@ ENV/
 
 # Model files (large files)
 finetuned_visobert_absa_model/
+finetuned_visobert_absa_model-new/
+finetuned_visobert_absa_model-newest/
+analysis_results-new/
+analysis_results-newest/
+error_analysis_results-new/
+error_analysis_results-newest/
 *.bin
 *.h5
 *.pth
 *.pt
 *.safetensors
 *.ckpt
+*.zip
 
 # Data files (có thể uncommit nếu muốn track)
 # data/train.csv

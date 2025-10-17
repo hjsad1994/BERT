@@ -4,29 +4,28 @@ ERROR ANALYSIS REPORT
 
 📊 OVERALL STATISTICS
 ----------------------------------------------------------------------
-Total samples:     2,168
-Correct:           2,014 (92.90%)
-Errors:            154 (7.10%)
+Total samples:     1,563
+Correct:           1,428 (91.36%)
+Errors:            135 (8.64%)
 
 📊 ERRORS BY ASPECT
 ----------------------------------------------------------------------
-Audio           Accuracy: 90.00%  Errors: 5/50
-Battery         Accuracy: 89.72%  Errors: 29/282
-Camera          Accuracy: 94.97%  Errors: 10/199
-Design          Accuracy: 89.51%  Errors: 17/162
-Display         Accuracy: 94.55%  Errors: 6/110
-General         Accuracy: 92.51%  Errors: 14/187
-Others          Accuracy: 100.00%  Errors: 0/21
-Packaging       Accuracy: 95.52%  Errors: 9/201
-Performance     Accuracy: 89.61%  Errors: 24/231
-Price           Accuracy: 90.67%  Errors: 14/150
-Shipping        Accuracy: 95.38%  Errors: 12/260
-Shop_Service    Accuracy: 97.20%  Errors: 6/214
-Software        Accuracy: 92.98%  Errors: 4/57
-Warranty        Accuracy: 90.91%  Errors: 4/44
+Audio           Accuracy: 85.71%  Errors: 5/35
+Battery         Accuracy: 91.53%  Errors: 15/177
+Camera          Accuracy: 92.44%  Errors: 9/119
+Design          Accuracy: 89.73%  Errors: 15/146
+Display         Accuracy: 84.44%  Errors: 14/90
+General         Accuracy: 87.98%  Errors: 22/183
+Others          Accuracy: 100.00%  Errors: 0/20
+Packaging       Accuracy: 96.00%  Errors: 5/125
+Performance     Accuracy: 88.74%  Errors: 17/151
+Price           Accuracy: 91.55%  Errors: 12/142
+Shipping        Accuracy: 95.03%  Errors: 9/181
+Shop_Service    Accuracy: 93.51%  Errors: 10/154
+Software        Accuracy: 95.00%  Errors: 2/40
 
 📊 ERRORS BY SENTIMENT
 ----------------------------------------------------------------------
-positive     Accuracy: 93.25%  Errors: 49/726
-negative     Accuracy: 95.14%  Errors: 59/1213
-neutral      Accuracy: 79.91%  Errors: 46/229
+positive     Accuracy: 92.14%  Errors: 55/700
+negative     Accuracy: 93.54%  Errors: 41/635
+neutral      Accuracy: 82.89%  Errors: 39/228

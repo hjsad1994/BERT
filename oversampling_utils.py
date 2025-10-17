@@ -140,6 +140,121 @@ def smart_oversample(df, target_column='sentiment', min_ratio=0.3, random_state=
     return random_oversample(df, target_column, sampling_strategy=target_counts, random_state=random_state)
 
 
+def aspect_wise_oversample(df, aspect_column='aspect', sentiment_column='sentiment', random_state=42):
+    """
+    Oversampling theo từng aspect (khía cạnh)
+    
+    Với mỗi aspect:
+    - Tìm sentiment class có nhiều mẫu nhất
+    - Oversample các sentiment class khác để bằng với class lớn nhất đó
+    
+    Args:
+        df: DataFrame chứa cột 'aspect' và 'sentiment'
+        aspect_column: Tên cột aspect (default: 'aspect')
+        sentiment_column: Tên cột sentiment (default: 'sentiment')
+        random_state: Random seed
+        
+    Returns:
+        DataFrame: Oversampled dataframe
+    """
+    np.random.seed(random_state)
+    
+    print(f"\n{'='*70}")
+    print("🎯 ASPECT-WISE OVERSAMPLING")
+    print(f"{'='*70}")
+    print(f"Chiến lược: Với mỗi aspect, cân bằng tất cả sentiment về class lớn nhất")
+    
+    # Get unique aspects
+    aspects = df[aspect_column].unique()
+    print(f"\n✓ Tìm thấy {len(aspects)} aspects: {', '.join(aspects)}")
+    
+    # Oversample cho từng aspect
+    oversampled_dfs = []
+    
+    for aspect in aspects:
+        print(f"\n{'─'*70}")
+        print(f"📦 Aspect: {aspect}")
+        print(f"{'─'*70}")
+        
+        # Filter data for this aspect
+        aspect_df = df[df[aspect_column] == aspect].copy()
+        
+        # Count sentiments for this aspect
+        sentiment_counts = Counter(aspect_df[sentiment_column])
+        
+        print(f"\n   Original distribution:")
+        for sentiment, count in sorted(sentiment_counts.items()):
+            print(f"      {sentiment:10}: {count:6,} samples")
+        
+        # Find majority sentiment for this aspect
+        majority_count = max(sentiment_counts.values())
+        majority_sentiment = max(sentiment_counts, key=sentiment_counts.get)
+        
+        print(f"\n   Majority sentiment: {majority_sentiment} ({majority_count} samples)")
+        print(f"   Target: Cân bằng tất cả sentiment về {majority_count} samples")
+        
+        # Oversample each sentiment to match majority
+        aspect_oversampled = []
+        
+        for sentiment in sentiment_counts.keys():
+            sentiment_df = aspect_df[aspect_df[sentiment_column] == sentiment]
+            current_count = len(sentiment_df)
+            
+            if current_count < majority_count:
+                # Need to oversample
+                n_samples = majority_count - current_count
+                
+                # Random sample with replacement
+                oversampled = sentiment_df.sample(n=n_samples, replace=True, random_state=random_state)
+                
+                # Combine original + oversampled
+                combined = pd.concat([sentiment_df, oversampled], ignore_index=True)
+                aspect_oversampled.append(combined)
+                
+                print(f"      ⬆️  {sentiment:10}: {current_count:6,} → {majority_count:6,} (+{n_samples:,})")
+            else:
+                # No oversampling needed (already majority)
+                aspect_oversampled.append(sentiment_df)
+                print(f"      ✓  {sentiment:10}: {current_count:6,} (no change)")
+        
+        # Combine all sentiments for this aspect
+        aspect_result = pd.concat(aspect_oversampled, ignore_index=True)
+        oversampled_dfs.append(aspect_result)
+        
+        print(f"\n   ✓ Aspect '{aspect}': {len(aspect_df):,} → {len(aspect_result):,} samples")
+    
+    # Combine all aspects
+    result_df = pd.concat(oversampled_dfs, ignore_index=True)
+    
+    # Shuffle
+    result_df = result_df.sample(frac=1, random_state=random_state).reset_index(drop=True)
+    
+    # Print summary
+    print(f"\n{'='*70}")
+    print("📊 TỔNG KẾT")
+    print(f"{'='*70}")
+    
+    print(f"\n✓ Phân bố tổng thể:")
+    final_sentiment_counts = Counter(result_df[sentiment_column])
+    total = len(result_df)
+    for sentiment, count in sorted(final_sentiment_counts.items()):
+        pct = (count / total) * 100
+        print(f"   {sentiment:10}: {count:6,} samples ({pct:5.2f}%)")
+    
+    print(f"\n✓ Tổng số samples: {len(df):,} → {len(result_df):,} (+{len(result_df) - len(df):,})")
+    
+    # Detailed report per aspect
+    print(f"\n✓ Phân bố chi tiết theo từng aspect:")
+    for aspect in sorted(aspects):
+        aspect_data = result_df[result_df[aspect_column] == aspect]
+        aspect_sentiments = Counter(aspect_data[sentiment_column])
+        print(f"\n   {aspect}:")
+        for sentiment, count in sorted(aspect_sentiments.items()):
+            print(f"      {sentiment:10}: {count:6,} samples")
+    
+    return result_df
+
+
 def get_class_balance_report(df, target_column='sentiment'):
     """
     Báo cáo chi tiết về class balance

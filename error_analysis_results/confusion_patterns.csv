@@ -1,7 +1,7 @@
 ﻿sentiment,predicted_sentiment,count
-positive,negative,35
-neutral,positive,31
-negative,positive,30
-negative,neutral,29
-neutral,negative,15
-positive,neutral,14
+positive,negative,40
+negative,positive,33
+neutral,positive,23
+neutral,negative,16
+positive,neutral,15
+negative,neutral,8

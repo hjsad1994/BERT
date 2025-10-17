@@ -559,6 +559,31 @@ def main():
     print("🔬 PHÂN TÍCH CHI TIẾT KẾT QUẢ ABSA")
     print("="*70)
     
+    # =====================================================================
+    # 1. VISUALIZE OVERSAMPLING (nếu có)
+    # =====================================================================
+    oversampling_info_path = os.path.join(RESULTS_DIR, 'oversampling_info.json')
+    if os.path.exists(oversampling_info_path):
+        print(f"\n{'='*70}")
+        print("📊 VISUALIZE OVERSAMPLING")
+        print(f"{'='*70}")
+        
+        try:
+            import visualize_oversampling
+            print("\n✓ Đang tạo visualization cho oversampling...")
+            visualize_oversampling.main()
+        except Exception as e:
+            print(f"\n⚠️  Cảnh báo: Không thể tạo oversampling visualization: {str(e)}")
+    else:
+        print(f"\n⚠️  Không tìm thấy oversampling info, bỏ qua visualization oversampling")
+    
+    # =====================================================================
+    # 2. PHÂN TÍCH KẾT QUẢ TEST
+    # =====================================================================
+    print(f"\n{'='*70}")
+    print("📊 PHÂN TÍCH KẾT QUẢ TEST")
+    print(f"{'='*70}")
+    
     # Load predictions
     df = load_predictions("test_predictions.csv")
     

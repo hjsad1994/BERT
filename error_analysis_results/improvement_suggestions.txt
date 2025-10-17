@@ -2,10 +2,17 @@
 ĐỀ XUẤT CẢI THIỆN MODEL
 ======================================================================
 
+🎯 ASPECTS YẾU (Error Rate > 15%):
+
+   📍 Display (Error Rate: 15.56%)
+      • Thu thập thêm 28 samples cho aspect này
+      • Kiểm tra quality của labels
+      • Cân nhắc thêm keywords/features đặc trưng
+
 
 🎯 SENTIMENT CLASSES YẾU:
 
-   📍 NEUTRAL (Error Rate: 20.09%)
+   📍 NEUTRAL (Error Rate: 17.11%)
       ✓ Đã apply: Focal Loss + Oversampling
       • Có thể tăng oversampling ratio thêm (hiện tại: 40%)
       • Cân nhắc tăng Focal Loss gamma từ 2.0 → 3.0
@@ -14,20 +21,20 @@
 
 🎯 CONFUSION PATTERNS PHỔ BIẾN:
 
-   📍 Nhầm POSITIVE thành NEGATIVE (35 cases, 22.7%)
+   📍 Nhầm POSITIVE thành NEGATIVE (40 cases, 29.6%)
       • Confusion nghiêm trọng (ngược hoàn toàn)
       • Kiểm tra data quality và labeling
       • Có thể có sarcasm hoặc context phức tạp
 
-   📍 Nhầm NEUTRAL thành POSITIVE (31 cases, 20.1%)
-      • Model có xu hướng positive bias
-      • Cân nhắc tăng alpha weight cho neutral trong Focal Loss
-      • Review các neutral samples có từ tích cực
-
-   📍 Nhầm NEGATIVE thành POSITIVE (30 cases, 19.5%)
+   📍 Nhầm NEGATIVE thành POSITIVE (33 cases, 24.4%)
       • Confusion nghiêm trọng (ngược hoàn toàn)
       • Kiểm tra sarcasm, irony, context
       • Cân nhắc thêm features hoặc context window
+
+   📍 Nhầm NEUTRAL thành POSITIVE (23 cases, 17.0%)
+      • Model có xu hướng positive bias
+      • Cân nhắc tăng alpha weight cho neutral trong Focal Loss
+      • Review các neutral samples có từ tích cực
 
 
 🎯 GENERAL IMPROVEMENTS:

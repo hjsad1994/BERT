@@ -24,9 +24,10 @@ class ABSADataPreparator:
     """Class để chuẩn bị dữ liệu ABSA"""
     
     # Danh sách các khía cạnh hợp lệ từ dataset gốc
+    # Note: Warranty đã được gộp vào Shop_Service
     VALID_ASPECTS = [
         'Battery', 'Camera', 'Performance', 'Display', 'Design',
-        'Software', 'Packaging', 'Price', 'Audio', 'Warranty', 'Shop_Service',
+        'Software', 'Packaging', 'Price', 'Audio', 'Shop_Service',
         'Shipping', 'General', 'Others'
     ]
     
@@ -397,9 +398,9 @@ def main():
     # Cấu hình
     INPUT_FILE = 'dataset.csv'
     OUTPUT_DIR = 'data'
-    TRAIN_RATIO = 0.7
+    TRAIN_RATIO = 0.8
     VAL_RATIO = 0.1
-    TEST_RATIO = 0.2
+    TEST_RATIO = 0.1
     RANDOM_SEED = 42
     
     print("\n" + "="*70)
