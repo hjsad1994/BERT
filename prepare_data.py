@@ -25,9 +25,10 @@ class ABSADataPreparator:
     
     # Danh sách các khía cạnh hợp lệ từ dataset gốc
     # Note: Warranty đã được gộp vào Shop_Service
+    # Note: Audio và Software đã bị xóa khỏi dataset (11 aspects còn lại)
     VALID_ASPECTS = [
         'Battery', 'Camera', 'Performance', 'Display', 'Design',
-        'Software', 'Packaging', 'Price', 'Audio', 'Shop_Service',
+        'Packaging', 'Price', 'Shop_Service',
         'Shipping', 'General', 'Others'
     ]
     

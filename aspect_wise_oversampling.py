@@ -134,10 +134,12 @@ def aspect_wise_balance_oversample(
                 n_to_add = max_count - current_count
                 
                 # Random oversample with replacement
+                # Use modulo to keep seed within valid range (0 to 2^32 - 1)
+                seed = (random_state + abs(hash(aspect)) + abs(hash(sentiment))) % (2**32 - 1)
                 oversampled = sentiment_data.sample(
                     n=n_to_add,
                     replace=True,
-                    random_state=random_state + hash(aspect) + hash(sentiment)
+                    random_state=seed
                 )
                 aspect_oversampled.append(oversampled)
                 
@@ -211,7 +213,7 @@ def analyze_aspect_sentiment_distribution(
         Dict: Distribution info per aspect
     """
     print("\n" + "="*70)
-    print("📊 ASPECT-SENTIMENT DISTRIBUTION ANALYSIS")
+    print("ASPECT-SENTIMENT DISTRIBUTION ANALYSIS")
     print("="*70)
     
     distribution = {}

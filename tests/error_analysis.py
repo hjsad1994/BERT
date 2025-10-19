@@ -301,6 +301,88 @@ class ErrorAnalyzer:
         
         return hard_cases_df
     
+    def save_all_errors(self):
+        """Lưu TẤT CẢ các errors (không chỉ hard cases) để phân tích chi tiết"""
+        print(f"\n{'='*70}")
+        print("💾 LƯU TẤT CẢ ERRORS CHO PHÂN TÍCH CHI TIẾT")
+        print(f"{'='*70}")
+        
+        # Get ALL errors
+        errors_df = self.df[~self.df['correct']].copy()
+        
+        print(f"\n📊 Tổng số errors: {len(errors_df)}")
+        
+        # Add additional columns for analysis
+        errors_df['confusion_type'] = errors_df.apply(
+            lambda row: f"{row['sentiment']} → {row['predicted_sentiment']}",
+            axis=1
+        )
+        
+        # Add confidence if available
+        if 'confidence' in self.pred_df.columns:
+            errors_df['confidence'] = self.pred_df.loc[errors_df.index, 'confidence']
+        
+        # Count errors per sentence
+        sentence_error_counts = errors_df.groupby('sentence').size().reset_index(name='error_count_for_sentence')
+        errors_df = errors_df.merge(sentence_error_counts, on='sentence', how='left')
+        
+        # Sort by aspect and confusion type for better analysis
+        errors_df_sorted = errors_df.sort_values(['aspect', 'confusion_type', 'sentence'])
+        
+        # Select columns to save
+        columns_to_save = ['sentence', 'aspect', 'sentiment', 'predicted_sentiment', 'confusion_type']
+        if 'confidence' in errors_df.columns:
+            columns_to_save.append('confidence')
+        columns_to_save.append('error_count_for_sentence')
+        
+        # Save to CSV
+        all_errors_path = f"{self.output_dir}/all_errors_detailed.csv"
+        errors_df_sorted[columns_to_save].to_csv(all_errors_path, index=False, encoding='utf-8-sig')
+        
+        print(f"✓ Saved ALL {len(errors_df)} errors to: {all_errors_path}")
+        
+        # Print summary statistics
+        print(f"\n📊 THỐNG KÊ ERRORS:")
+        print(f"   • Tổng số errors: {len(errors_df)}")
+        print(f"   • Số câu unique có errors: {errors_df['sentence'].nunique()}")
+        print(f"   • Số aspects bị ảnh hưởng: {errors_df['aspect'].nunique()}")
+        
+        print(f"\n📊 TOP 5 CONFUSION TYPES:")
+        confusion_stats = errors_df.groupby('confusion_type').size().reset_index(name='count')
+        confusion_stats = confusion_stats.sort_values('count', ascending=False)
+        for i, row in confusion_stats.head(5).iterrows():
+            pct = row['count'] / len(errors_df) * 100
+            print(f"   {i+1}. {row['confusion_type']:<25} {row['count']:>4} errors ({pct:.1f}%)")
+        
+        print(f"\n📊 ERRORS BY ASPECT:")
+        aspect_error_counts = errors_df.groupby('aspect').size().reset_index(name='count')
+        aspect_error_counts = aspect_error_counts.sort_values('count', ascending=False)
+        for _, row in aspect_error_counts.iterrows():
+            pct = row['count'] / len(errors_df) * 100
+            print(f"   • {row['aspect']:<15} {row['count']:>4} errors ({pct:.1f}%)")
+        
+        # Also save a summary version grouped by aspect and confusion type
+        summary_path = f"{self.output_dir}/errors_summary_by_aspect.csv"
+        
+        # Build aggregation dict dynamically
+        agg_dict = {'sentence': 'count'}
+        if 'confidence' in errors_df.columns:
+            agg_dict['confidence'] = 'mean'
+        
+        summary_df = errors_df.groupby(['aspect', 'confusion_type']).agg(agg_dict).reset_index()
+        
+        # Rename columns based on what was aggregated
+        if 'confidence' in errors_df.columns:
+            summary_df.columns = ['aspect', 'confusion_type', 'error_count', 'avg_confidence']
+        else:
+            summary_df.columns = ['aspect', 'confusion_type', 'error_count']
+        summary_df = summary_df.sort_values(['aspect', 'error_count'], ascending=[True, False])
+        summary_df.to_csv(summary_path, index=False, encoding='utf-8-sig')
+        
+        print(f"\n✓ Saved error summary to: {summary_path}")
+        
+        return errors_df_sorted
+    
     def generate_improvement_suggestions(self, aspect_stats_df, sentiment_stats_df):
         """Tạo đề xuất cải thiện dựa trên phân tích"""
         print(f"\n{'='*70}")
@@ -554,6 +636,9 @@ class ErrorAnalyzer:
         confusion_counts = self.analyze_confusion_patterns()
         hard_cases_df = self.find_hard_cases(top_n=50)
         
+        # Save ALL errors for detailed analysis
+        all_errors_df = self.save_all_errors()
+        
         # Generate suggestions
         suggestions = self.generate_improvement_suggestions(aspect_stats_df, sentiment_stats_df)
         
@@ -571,7 +656,9 @@ class ErrorAnalyzer:
         print(f"   • aspect_error_analysis.csv")
         print(f"   • sentiment_error_analysis.csv")
         print(f"   • confusion_patterns.csv")
-        print(f"   • hard_cases.csv")
+        print(f"   • hard_cases.csv (top 5 errors per aspect)")
+        print(f"   • all_errors_detailed.csv (TẤT CẢ {len(all_errors_df) if 'all_errors_df' in locals() else ''} errors)")
+        print(f"   • errors_summary_by_aspect.csv")
         print(f"   • improvement_suggestions.txt")
         print(f"   • error_analysis_report.txt")
         print(f"   • aspect_error_rates.png")

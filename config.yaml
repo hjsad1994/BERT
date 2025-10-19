@@ -13,7 +13,8 @@
 
 paths:
   data_dir: "data"
-  train_file: "data/train.csv"
+  # train_file: "data/train.csv"
+  train_file: "data/train_augmented_nhung.csv"
   validation_file: "data/validation.csv"
   test_file: "data/test.csv"
   output_dir: "finetuned_visobert_absa_model"
@@ -83,7 +84,7 @@ training:
   # ========================================================
   # TRAINING DURATION
   # ========================================================
-  num_train_epochs: 3
+  num_train_epochs: 5
   
   # ========================================================
   # MIXED PRECISION - FP16 + TF32
@@ -122,7 +123,7 @@ training:
   # ========================================================
   evaluation_strategy: "epoch"  # Eval after each epoch
   save_strategy: "epoch"        # Save after each epoch
-  save_total_limit: 3           # Keep best 3 checkpoints
+  save_total_limit: 5           # Keep best 3 checkpoints
   load_best_model_at_end: true  # Load best at end
   metric_for_best_model: "eval_f1"
   greater_is_better: true
