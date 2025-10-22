@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-10-21 00:24:51",
+  "input_file": "dataset.csv",
+  "output_directory": "single_label/data",
+  "random_seed": 42,
+  "split_ratios": {
+    "train": 0.8,
+    "validation": 0.1,
+    "test": 0.1
+  },
+  "split_sizes": {
+    "train": 12455,
+    "validation": 1557,
+    "test": 1557,
+    "total": 15569
+  },
+  "aspects": [
+    "Battery",
+    "Camera",
+    "Performance",
+    "Display",
+    "Design",
+    "Packaging",
+    "Price",
+    "Shop_Service",
+    "Shipping",
+    "General",
+    "Others"
+  ],
+  "sentiments": [
+    "positive",
+    "negative",
+    "neutral"
+  ],
+  "format": {
+    "columns": [
+      "sentence",
+      "aspect",
+      "sentiment"
+    ],
+    "description": "Single-label ABSA format: mỗi dòng chứa một cặp (sentence, aspect) và sentiment tương ứng"
+  }
+}

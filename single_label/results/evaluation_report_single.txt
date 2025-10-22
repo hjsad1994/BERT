@@ -1,0 +1,28 @@
+======================================================================
+BÁO CÁO ĐÁNH GIÁ MÔ HÌNH ABSA
+======================================================================
+
+Tổng quan:
+  Accuracy:  0.9422
+  Precision: 0.9424
+  Recall:    0.9422
+  F1 Score:  0.9422
+
+Báo cáo chi tiết theo từng class:
+              precision    recall  f1-score   support
+
+    positive     0.9372    0.9568    0.9469       717
+    negative     0.9565    0.9354    0.9459       635
+     neutral     0.9167    0.9122    0.9144       205
+
+    accuracy                         0.9422      1557
+   macro avg     0.9368    0.9348    0.9357      1557
+weighted avg     0.9424    0.9422    0.9422      1557
+
+======================================================================
+Cấu hình mô hình:
+  Model: 5CD-AI/Vietnamese-Sentiment-visobert
+  Epochs: 3
+  Learning rate: 2e-05
+  Batch size: 32
+  Max length: 256

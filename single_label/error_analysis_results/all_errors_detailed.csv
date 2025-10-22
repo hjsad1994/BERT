@@ -1,0 +1,131 @@
+﻿sentence,aspect,sentiment,predicted_sentiment,confusion_type,error_count_for_sentence
+"Pin không trâu lắm, thiết kế đẹp. 4 sao cho cửa hàng",Battery,negative,positive,negative → positive,1
+"Thiết kế đẹp. Pin sử dụng 1 ngày rưỡi, chưa hoàn hiện ở chỗ sạc nhánh không sử dụng được, không sạc đến 80% tự ngắt,",Battery,negative,positive,negative → positive,1
+"đây là điện thoại mình đặt cho ba chủ yếu là vì cấu hình khoẻ, máy nhẹ ,bền, và dung lượng pin 6000mah",Battery,neutral,positive,neutral → positive,1
+"Nhóm màu: natural 
+Dung lượng lưu trữ: 256gb mặc dù có chút vấn đề liên quan giao hàng, trải nghiệm giao hàng thực sự tệhiệu suất máy ảnh ấn tượng, ⚡ 
+Hiệu suất:mạnh 📸 
+Chất lượng camera: tốt 🔋 
+Thời lượng pin: tốt",Battery,positive,negative,positive → negative,1
+Snapdragon 685 yếu sinh lí. Máy pin rất trâu,Battery,positive,negative,positive → negative,2
+"Đúng với mô tả: không đúng như mô tả
+Chất lượng sản phẩm: tệ 
+Tính năng nổi bật: pin trâu, sạc nhanh. Chỉ có khuyết duy nhất và cũng là khó chịu nhất là cài đặt quá nhiều ứng dụng bên ngoài không cần thiết hay phải nói là ứng dụng quá tào lao và còn tự động chạy không cho phép tắt, trong đó có ứng dụng demi, nó có thể tự tiện thay đổi cài đặt của ứng dụng khác và tự động chạy cho dù có tắt nó đi hoặc không cấp bất cứ quyền gì. Đánh giá chung là trải nghiệm quá tệ. Nếu chỉ sử dụng để chơi game thì không sao, nếu để sử dụng như một chiếc điện thoại bình thường cho công việc hàng ngày thì không nên mua. Sẽ không bao giờ quay lại sử dụng điện thoại của hãng này nữa. Trải nghiệm quá tệ.",Battery,positive,negative,positive → negative,1
+"Đúng với mô tả: đúng 
+Chất lượng sản phẩm: trung bình
+Tính năng nổi bật: giá hợp lý máy sử dụng có độ trễ khi mở app, có sạc siêu nhanh. Giao hàng chậm, hơn 4 ngày mới nhận được hàng.",Battery,positive,negative,positive → negative,1
+"Đúng với mô tả: đúng 
+Chất lượng sản phẩm: tốt 
+Tính năng nổi bật: pin trâu săn với giá tốt nên khá hài lòng về sản phẩm. Nhưng thời gian giao hàng hơi tệ phải tự ra cửa hàng nhận sản phẩm.",Battery,positive,negative,positive → negative,1
+Anh chị cân nhắc khi mua tuỳ nhu cầu của cá nhân sử dụng ngoại quan máy ổn camera có bụi trước & sau. Pin chấp nhận được,Camera,negative,positive,negative → positive,1
+"Nguyên seal, mình cần ht ship nhanh cửa hàng cũng ht nhiệt tình, để sử dụng 1tg mới đánh giá được . Nhìn chung khá tốt, cam hơi xấu chút , chủ yếu để lướt mxh nghe gọi",Camera,negative,positive,negative → positive,1
+Nhóm màu: xanh sản phẩm đẹp như mới 90% . Chức năng ổn định . Màn hình mượt . Mic ổn . Wifi tốt . Mạng tốt . Camera lỗi chụp ảnh rất mờ chế độ x1 x2 x... Rất chi là mờ ảo không rõ nét . Đánh giá sản phẩm 2 vì giá cả cũng rẻ là 1tr8 nên cho vậy .,Camera,negative,positive,negative → positive,1
+"Thời lượng pin ngon. Chất lượng camera hơi tối, không nét lắm. Hiệu suất cũng tốt",Camera,negative,positive,negative → positive,1
+"Mua xong hối hận không như mong đợi quá nhiều điểm trừ. Máy hoàn thiện kém, hiệu năng yếu, pin không trâu, camera bình thường. Không có gì đáng mua.",Camera,neutral,negative,neutral → negative,1
+"Đúng với mô tả: viền hơi dày so với quảng cáo 
+Tính năng nổi bật: loa thoại loa ngoài to rõ nói chung là máy ổn trong tầm giá bạn nào săn sale được giá tầm 2 triệu 250k đổ xuống thì được chứ hơn tí nữa thì cân nhắc mua máy khác camera sau chụp 108 chấm mà như camera 12 chấm bình thường nói chung là không đúng với số chấm thực tế nên trừ một sao phần cập nhật hơn một năm rồi mà vẫn cứ android 14, tecno không chịu cập nhật như xiaomi và samsung rõ chán",Camera,neutral,negative,neutral → negative,1
+"với tầm giá 2tr thì đây là sản phẩm đáng tiền mua về sử dụng tác vụ bình thường đáng mua nha mọi người , điện thoại màn hình đẹp nhiều tính năng hay anh em mua về giải trí được, máy không thiên về quay chụp. giá 2tr như vậy quá tốt rồi không đòi hỏi gì thêm 5 sao",Camera,neutral,positive,neutral → positive,1
+"Chất lượng sản phẩm: máy nguyên seal sài tốt 
+Đúng với mô tả: đúng với mô tả thực tế 
+Tính năng nổi bật: nfc, camera, vân tay đáng tiền để mua, giao hàng hơi chậm một tí.",Camera,positive,negative,positive → negative,1
+"Camera chụp ảnh tạm ổn, chất lượng ở mức chấp nhận được.",Camera,positive,neutral,positive → neutral,1
+"Không nhận sim đôi như mô tả, chỉ 1 khe hoạt động. Khác với mô tả hỗ trợ 2 sim. Tính năng e-sim không kích hoạt. Hiệu năng bình thường nhưng pin và ship đều kém",Design,negative,neutral,negative → neutral,1
+"Hàng khá tốt, hình thức tầm 98% có 1 vài vết chấm chấm trên viền máy, săn sale được 2t6 cũng khá tốt.",Design,negative,positive,negative → positive,1
+"Phiên bản: hàn quốc 1 sim 
+Dung lượng lưu trữ: 256gb máy sử dụng tốt, pin ổn nhưng trầy xước mặt sau hơi nhiều.",Design,negative,positive,negative → positive,1
+"Sử dụng chữa cháy xem youtube, zalo, Facebook, tốt. Nút home không ăn rất cứng",Design,negative,positive,negative → positive,1
+"giao hàng nhanh,đóng hàng cẩn thận.máy cũ thay vỏ,cam trước thì mờ.hàng sử dụng tạm.",Design,negative,positive,negative → positive,1
+mua về làm máy phụ vui vẻ tốt máy mình nhận có xước lưng với kính cam nhưng chấp nhận được nch ưng mọi người trải mua về xoá hết app nhà mạng cho mượt tý,Design,negative,positive,negative → positive,1
+"sài được thời gian thì, máy sài tốt ổn kể cả game, nhưng mà ngoại hình hơi xâú xước khá nhiều với cấn, nhưng máy hoạt động ổn, nói chung mất này bú kia nên kh quan tâm lắm , với kh ngờ chiếc gaming phone này cam nó nét với đẹp vãi=)) thế thôi",Design,negative,positive,negative → positive,1
+"Đúng với mô tả: đúng 
+Chất lượng sản phẩm: hơi trầy xước 
+Tính năng nổi bật: chơi game rất mượt ngọc ơi anh yêu em rất nhiều tôi yêu nguyễn đỗ thảo ngọc rất nhiều ngọc ơi anh yêu em",Design,negative,positive,negative → positive,1
+"Đúng với mô tả: tốt 
+Tính năng nổi bật: tốt 
+Chất lượng sản phẩm: ngoại hình máy được khoảng 87% cửa hàng đóng gói kĩ càng cẩn thận",Design,neutral,positive,neutral → positive,1
+Mới sử dụng điện thoại hãng này . Không âm hiểu .mua gặp sự cố hỏi cửa hàng không biết . Trả lời chậm chán . Mẫu đẹp .cho 3 sao vì phục vụ chưa tốt .,Design,positive,negative,positive → negative,1
+"Võ đẹp, màn hình nứt nhẹ coi như tốt pin cũ 20% bật nguồn lên nó nhảy còn 3% tắt nguồn luôn sạc nữa tiếng không lên còn tụt % giờ bất lên đèn xog tắt không lên được do hết pin :(((",Design,positive,negative,positive → negative,1
+Điện thoại samsung galaxy j2 prime ngoại hình đẹp nhưng máy không có nổi một ít dung lượng nào cả dọn rác cho điện thoại mà chả lên được tí kb nào không lắp được thẻ nhớ cho điện thoại sạc cực kì lâu sạc qua đêm không nổi 100% khi sử dụng liên tụp trong vòng 1 tiếng máy sẽ nóng lên thỉnh thoảng còn đơ đơ 1 lúc phải tắt đi bật lại mới sử dụng được không xem được youtube vì gì có đúng lượng để cập nhật loa khi mở tiếng thỉnh thoảng bị dè,Design,positive,negative,positive → negative,1
+"Hình thức máy khá đẹp, sử dụng thử khá tốt. Mỗi cái cửa hàng bảo mất tem thì cửa hàng không bảo hành mình mua thấy máy có dán cái tem nào đâu? coi như mất trắng chế độ bảo hành à?",Design,positive,neutral,positive → neutral,1
+"máy đẹp, bị lỗi bên cuộc gọi chớp chớp màn hình, cho cửa hàng 5 sao",Display,negative,positive,negative → positive,1
+Đẹp.mang hình có hai chấm đen chụp hơi xấu.gia này cũng tạm được,Display,neutral,negative,neutral → negative,1
+"Đúng với mô tả: màn hình đẹp 
+Chất lượng sản phẩm: có bị cấn ở góc nhưng pin quá yếu, sử dụng liên tục tính năng cơ bản chỉ được hơn 2h gần 3h. test pin chỉ có 2k6 nên hơi tiếc. sử dụng cơ bản thì trong ngày ổn.",Display,positive,negative,positive → negative,1
+"đóng gói kĩ, máy đẹp mới, nhưng cảm ứng hơi lag lúc mới khởi động, test tiếp xem sao.",Display,positive,negative,positive → negative,1
+"Màu sắc: đen 
+Phân loại sản phẩm: có sạc 📸 
+Chất lượng camera: màn hình độ phân giải hd+,",Display,positive,neutral,positive → neutral,1
+"Ưu điểm lớn nhất của điện thoại này là giá rẻ và màn hình amoled đẹp hơn hẳn loại ips. Các chức năng, cấu hình còn lại đều ổn.",Display,positive,neutral,positive → neutral,1
+Ac mua cũng cân nhắc nhé.trong 15 ngày thì đổi trả hoàn tiền.nhưng còn bảo hành 12 tháng thì phải tự gửi tự chịu phí đó nha.loa thì rè gửi tin nhắn không được,General,negative,neutral,negative → neutral,1
+Dung lượng ít,General,negative,neutral,negative → neutral,1
+Tôi không khuyến khích anh em mua,General,negative,neutral,negative → neutral,1
+"Ngoại hình: đẹp trên 95% 
+sạc từ sáng tới tối 15% sạc rất chậm. Mở nguồn lên sử dụng được 5p liện thùng rác đừng có dại mà mua nha mọi người",General,negative,positive,negative → positive,1
+"Nên cân nhắc kỹ , (hỏng loa trong loa bị rè, được cái cửa hàng nói chuyện đàng hoàng )",General,negative,positive,negative → positive,1
+"cũng được, máy hơi cũ dành cho những người chống cháy",General,neutral,negative,neutral → negative,1
+"Chất lượng sản phẩm: lưu ảnh nhẹ camera ngon đó. Tự tin khẳng định pro thì 5tr quay đầu khó có con nào có camera cân bằng như vầy. Form cầm thì giống iphone 13 thường nhưng mà dài hơn so với 13. Mình cầm thì khá chắc tay còn xperia 5 thì bé quá. Lưu ảnh nhẹ nhưng mà màn còn rất ngon ai có nhu cầu máy phụ thôi hoặc thay vì mua máy nghe nhạc để tiền mua điện thoại thì nên mua bản này liên quân không suport tốt,hiệu năng chơi tốc chiến thì hơi khựng khựng. Thời lượng khoảng 4 tiếng tạm ổn",General,neutral,positive,neutral → positive,1
+"Chất lượng sản phẩm: mới sử dụng nên chưa có nhiều trải nghiệm nhưng chưa có đánh giá nhiều 
+Tính năng nổi bật: bàn phím và màn hình to 
+Đúng với mô tả: đúng với mô tả",General,neutral,positive,neutral → positive,1
+"Đóng gói, sản phẩm tới tay còn nguyên vẹn máy mới nguyên seal nhe sử dụng khá ổn định để chờ sử dụng 1 thời gian xem sao",General,neutral,positive,neutral → positive,1
+máy xài cũng tốt mà pin sạc 3 tiếng không đầy được . thân máy bị hở,General,positive,negative,positive → negative,1
+"nói chung mới sử dụng nên không biết về sau ổn không trước mắt thì là ổn, nhưng bị cái giao hàng hơi lâu, lần đầu mua điện thoại với số tiền lớn nên cũng hơi lo nên hơi rén mà thêm cái chờ nữa, nói chung là ổn, trừ 2 sao vì giao lâu",General,positive,negative,positive → negative,1
+tiền nào của ấy thôi mua về sử dụng để check app lm việc thôi nên sử dụng tạm vậy máy hơi load chậm với ấn phím hay bị sai,General,positive,negative,positive → negative,1
+"Nhóm màu: đen dung lượng lưu trữ rộng rãi 128gb,",General,positive,neutral,positive → neutral,1
+mới sử dụng 1 buổi sáng cảm ứng tốt còn độ bền thì chưa biết,General,positive,neutral,positive → neutral,1
+"Nhóm màu: xanh ngọc 
+Dung lượng lưu trữ: 128gb máy đẹp như mới chắc chắn mượt. Cửa hàng giao sai màu nhưng có phản hồi . Chăm sóc khách hàng nhanh chóng . Sản phẩm pin hơi thấp nếu chơi game thì nhanh tụt pin chế độ chờ tầm 3 ngày .",Packaging,negative,positive,negative → positive,1
+"Nhóm màu: desert 
+Dung lượng lưu trữ: 256gb máy chắc tốt, đóng gói kiểu bìa cát tông",Packaging,neutral,positive,neutral → positive,1
+Cửa hàng đóng gói cẩn thận đúng máy đúng màu cho cửa hàng 5 sao. Bên ship giao hàng quá lâu 4 ngày không hài lòng,Packaging,positive,negative,positive → negative,1
+"giao hàng nhanh, đóng gói cẩn thận, tuy nhiên vẫn không chịu sử dụng đúng số điện thoại khách hàng khi xuất hoá đơn, mặc dù đã nhắn số điện thoại riêng rồi, nhân viên nói là xuất hoá đơn dựa vào thông tin lucd yêu cầu hoá đơn khi mua trên shopee, nhưng mục đó làm gì có ô nào để điền số điện thoại đâu, nhắn riêng để được xuất đúng số cũng không xuất đúng, hỏi thì nhân viên trả lời không thuyết phục.",Packaging,positive,negative,positive → negative,1
+"Đúng với mô tả: đúng 
+Chất lượng sản phẩm: bình thường 
+Tính năng nổi bật: không biết đóng gói chống sốc chắc chắn , hàng nguyên seal , ốp củ cáp đầy đủ sạc 45w mà thấy chậm hơn 33w , máy mới hơi chậm hiểu xíu , cập nhật phần mềm , cài các kiểu xong thì sử dụng tốt mua về làm máy phụ , đừng chơi liên quân free fire gì nhé , máy yếu không chơi được đâu , chơi game offline với lướt tiktok đồ thôi",Packaging,positive,negative,positive → negative,1
+"Chất lượng sản phẩm: 8 
+Đúng với mô tả: 7 
+Tính năng nổi bật: máy ngoại hình ổn máy ngoại hình ổn, đẹp. cấu hình máy không đúng chỉ ram6/128 với tiêu đề đăng bán 8/256.",Performance,negative,positive,negative → positive,1
+"Chất lượng sản phẩm: tốt
+Lưới mạng xã hội tốt. còn game độ phân giải thấp thì tốt độ phân giải cao như liên quân thì không được nhé.",Performance,negative,positive,negative → positive,1
+Máy cũ nên là thỉnh thoảng hơi bị đơ đơ với cả là lúc một mình nhắn tin ý nó hay bị nhảy chữ linh tinh không biết là do mình dán cảm ứng hay là do máy nữa nói chung là giá tiền này thì tạm ổn cho ba sao tạm chấp nhận thôi sử dụng tạm,Performance,negative,positive,negative → positive,1
+Máy ngoại hình thì đẹp mà máy hơi lag giật cảm ứng không được nhạy lắm mua cho người lớn nhu cầu ít thì oke,Performance,negative,positive,negative → positive,1
+"Phù hợp sử dụng làm máy phụ. Os sạch, ít app rác, đáp ứng tốt nhu cầu cơ bản (zalo, Facebook, youtube, web), màn hình ổn và pin tốt. Máy to hơn kì vọng nhưng ưu tiên pin nên chấp nhận, cầm cũng nhẹ nhàng. Ngoài ra thì cũng không nên kì vọng nhiều, chip hơi yếu, bật cam thôi cũng lag mà chụp hình thì chỉ là cho đủ tính năng.",Performance,negative,positive,negative → positive,1
+Snapdragon 685 yếu sinh lí. Máy pin rất trâu,Performance,negative,positive,negative → positive,2
+"Sử dụng làm điện thoại phụ cũng tốt, hơi đơ hơi load chậm xíu nhưng với giá này cũng được rồi.",Performance,negative,positive,negative → positive,1
+"Tính năng nổi bật: pin trâu 
+Chất lượng sản phẩm: khá mua để chơi mỗi tft thôi mà không hiểu sao vẫn lag. Máy nhanh nóng. Còn lại thì oke, pin trâu.",Performance,negative,positive,negative → positive,1
+"chụp đẹp, thiết kế đẹp máy chính hãng, còn nguyên seal đã được kích hoạt bảo hành 1 tháng chụp ảnh đẹp, nét. Thiết kế đẹp máy khá nóng trong nhiều tác vụ. Thời lượng pin khoảng 6-7h hỗn hợp wifi+4g nhưng nếu chụp ảnh nhiều ngoài trời nắng thì pin hẹo nhanh",Performance,negative,positive,negative → positive,1
+Đúng với mô tả: đúng sử dụng tạm ổn. thỉnh thoảng vẫn bị đơ. máy khá nhẹ. nói chung so với giá tiền thì cũng không còn ý kiến gì,Performance,negative,positive,negative → positive,1
+điện thoại sử dụng mượt. tuy nhiên pin không được bền. sử dụng cùng lúc với máy oppo cùng đời nhưng sụt pin nhanh hơn 10%. máy sử dụng nóng ran phần dưới,Performance,positive,negative,positive → negative,1
+"Chất lượng sản phẩm: tiền nào của nấy. 
+Đúng với mô tả: cần xem kỹ trước khi mua. 
+Tính năng nổi bật: chậm, lắc. Tiền nào của nấy.",Price,negative,neutral,negative → neutral,1
+"khui ra đã có vết chấm trên màn hình. mua online không rẻ được mấy mà khui ra bị sao thì khó được hỗ trợ đổi lắm. sau ra đmx hoặc fpt mua cho chính thống, khui hàng 3 mặt 1 lời nó dễ hơn.",Price,negative,neutral,negative → neutral,1
+"Màu sắc: đen 
+Phân loại: nguyên seal sản phẩm chất giống sh mô tả, đóng gói tốt, giao hàng đúng thời gian,đang trải nghiệm sản phẩm cảm thấy tốt, mua 3tr3 xong sale phát còn 3tr",Price,negative,positive,negative → positive,1
+Nói thật có tiền mọi người mua máy mới mới 1 tý. Máy đời cổ sử dụng cùi lắm. Đừng ham rẻ,Price,negative,positive,negative → positive,1
+"Vỏ oppo ruột realme, 8/128 nhưng là 4/120, màn hình hơi giật, ngoài ra các chức năng tạm ổn và đầy đủ, tiền nào của nấy nên sử dụng tạm, 3* là nhiều lắm rồi nhé",Price,negative,positive,negative → positive,1
+may yếu wá.chi sử dụng wifi.tien nào của nấy mà.,Price,negative,positive,negative → positive,1
+Máy như hình cấu hình ổn pin và camera đủ sử dụng có điều bắt sóng hơi kém chổ cảm vân tay hơi lỏng màn hình thỉnh thoảng bị đơ do máy nóng khá là nhanh nó chung là tầm tiền này không yêu câu hơn được,Price,neutral,positive,neutral → positive,1
+Sài cũng được sử dụng facebook với tiktok cũng ngon nhưng không có tải mess được pin thì chai có 8gb mà khi nhận máy thì mấy cái app cố định mất 7mấy gb rồi còn không có sạc nhưng với số tiền này thì cũng không có gì để nói,Price,neutral,positive,neutral → positive,1
+"Tình trạng: 96% 
+Nhóm màu: vàng đã nhận được hàng điện thoại sử dụng tốt nhưng mau hết pin quá tiền nào của nấy chịu thôi",Price,neutral,positive,neutral → positive,1
+Giá cả phù hợp với cấu hình. Phần mềm không có nhiều tính năng đặc sắc,Price,positive,neutral,positive → neutral,1
+Số tiền bỏ ra tương xứng với sản phẩm. Đơn vị vận chuyển giao hàng trong giờ hành chính.,Price,positive,neutral,positive → neutral,1
+mình tưởng đen tuyền. mua về ra màu này thôi sử dụng luôn. giá cả mã là 23tr cũng tốt. đánh giá máy mới sau 1 tháng sử dụng chưa thấy lỗi. sử dụng có nóng máy nhẹ,Price,positive,neutral,positive → neutral,1
+"Điện thoại, còn ứng dụng máy có sẵn, có dán miếng dán chống xước, mua live giá tốt hơn chút.",Price,positive,neutral,positive → neutral,1
+"Nhóm màu: blue 
+Dung lượng lưu trữ: 128gb viettel thì yên tâm rồi mọi người ạh. Có điều vận chuyển hơi lâu làm nôn nóng 😅. Săn sale được giá tốt 👌",Shipping,negative,positive,negative → positive,1
+"Nhóm màu: midnight 
+Dung lượng lưu trữ: 128gb hàng tốt, vận chuyển lâu tốn 4-5 ngày mới tới nơi",Shipping,negative,positive,negative → positive,1
+Sản phẩm tốt săn được sale giá rẻ nhưng giao hàng lâu cửa hàng uy tín sẽ ủng hộ thêm,Shipping,negative,positive,negative → positive,1
+"Đúng với mô tả: đúng 
+Tính năng nổi bật: sử dụng rất mượt mà thoải mái 
+Chất lượng sản phẩm: rất tốt đây là con máy rất ngon trong phân khúc 5 triệu hàng chính hãng sử dụng rất mượt do có tần số quét 120hz và chơi game cũng mượt do có không gian quản lí trò chơi.nói chung thì máy rất ngon nha,cửa hàng uy tín và hỗi trợ nhiệt tình không có gì chê cả,thời gian giao hàng khá lâu nhưng là do mình ở tận tít trên miền bắc nên thế là điều hiển nhiên rồi.5 sao và luôn ủng hộ cửa hàng trong tương lai",Shipping,neutral,positive,neutral → positive,1
+Hàng giao đúng hẹn đóng gói an toàn. Tuy nhiên hơi khó lắp. Cửa hàng nên có ý kiến với nhà sản xuất cải thiện,Shipping,positive,negative,positive → negative,1
+từ hôm mua về đã bị rồi. nghĩ là do nó không nhạy nên không để ý nhiều. xong càng ngày càng bị nặng hơn. phải ấn 5 lần mới được 1 lần. như này có được bảo hành không cửa hàng?,Shipping,positive,negative,positive → negative,1
+"đã nhận được hàng giao hàng khá nhanh máy đen , nhẹ , nhưng wifi kiểu bị lag ý , điện thoại khác xem được nhưng máy này xem lại lag",Shipping,positive,negative,positive → negative,1
+đã nhận được hàng. đúng mô tả. sản phẩm mới chưa được kích bảo hành điện tử luôn,Shop_Service,negative,neutral,negative → neutral,1
+Mua về nhưng không lên nguồn được ạ. Mong cửa hàng phản hồi,Shop_Service,neutral,negative,neutral → negative,1
+Máy giao màn hình bị xước nhắn tin cửa hàng nói chắc do bên hải quan. Cửa hàng hỗ trợ trả đơn hoàn tiền nhưng mình cần việc sử dụng nên chấp nhận sử dụng mòng là không phải là máy đã qua sử dụng..mong lần sao có mua hàng cửa hàng nên check sản phẩm kỷ hơn để không xẩy ra vấn đề phát sinh,Shop_Service,neutral,negative,neutral → negative,1
+"Sau 15 ngày sử dụng, máy xử lý mượt, chạy đa tác vụ ổn, không bị đơ ứng dụng, camera nét. Cửa hàng mà có bảo hành thêm màn hình nữa thì tốt hơn.",Shop_Service,neutral,positive,neutral → positive,1

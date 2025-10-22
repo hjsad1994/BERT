@@ -1,0 +1,124 @@
+# Single-Label ABSA Configuration
+# ========================================================================
+# For traditional single-label approach (one aspect per sample)
+# Model: ViSoBERT fine-tuned for 3-class classification
+# Dataset: Converted to sentence-aspect pairs format
+# ========================================================================
+
+paths:
+  data_dir: "single_label/data"
+  train_file: "single_label/data/train.csv"
+  validation_file: "single_label/data/validation.csv"
+  test_file: "single_label/data/test.csv"
+  output_dir: "single_label/models/finetuned_visobert_single"
+  evaluation_report: "single_label/results/evaluation_report_single.txt"
+  predictions_file: "single_label/results/test_predictions_single.csv"
+
+model:
+  name: "5CD-AI/Vietnamese-Sentiment-visobert"
+  num_labels: 3  # positive, negative, neutral
+  max_length: 256  # Covers 97.7% of sequences
+
+valid_aspects:
+  - Battery
+  - Camera
+  - Performance
+  - Display
+  - Design
+  - Software
+  - Packaging
+  - Price
+  - Audio
+  - Warranty
+  - Shop_Service
+  - Shipping
+  - General
+  - Others
+
+sentiment_labels:
+  positive: 0
+  negative: 1
+  neutral: 2
+
+training:
+  # Batch size for single-label (smaller samples)
+  per_device_train_batch_size: 32
+  per_device_eval_batch_size: 64  # 2x (no gradients in eval)
+  gradient_accumulation_steps: 2   # Effective batch = 96 * 1 = 96
+
+  # per_device_train_batch_size: 16
+  # per_device_eval_batch_size: 32         # FIX!
+  # gradient_accumulation_steps: 4         # FIX!
+  
+  # Optimizer settings
+  optim: "adamw_bnb_8bit"
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1.0e-8
+  max_grad_norm: 1.0
+  
+  # Learning rate scheduler
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.06
+  
+  # Training duration
+  num_train_epochs: 3
+  
+  # Mixed precision (RTX 3070 Ampere)
+  fp16: true
+  fp16_opt_level: "O2"
+  fp16_full_eval: false
+  tf32: true
+  
+  # DataLoader settings
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
+  dataloader_prefetch_factor: 2
+  dataloader_persistent_workers: true
+  
+  # Memory optimization
+  gradient_checkpointing: false
+  auto_find_batch_size: false
+  group_by_length: false
+  
+  # Evaluation & checkpointing
+  evaluation_strategy: "epoch"
+  save_strategy: "epoch"
+  save_total_limit: 3
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_f1"
+  greater_is_better: true
+  
+  # Early stopping
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.001
+  
+  # Logging
+  logging_strategy: "steps"
+  logging_steps: 50
+  logging_first_step: true
+  report_to: []
+  
+  # Reproducibility
+  seed: 42
+  data_seed: 42
+  
+  # Misc
+  disable_tqdm: false
+  prediction_loss_only: false
+  remove_unused_columns: true
+  label_names: ["labels"]
+  include_inputs_for_metrics: false
+
+general:
+  seed: 42
+  device: "auto"
+  log_level: "info"
+
+# Single-label specific settings
+single_label:
+  use_oversampling: false  # Aspect-wise oversampling
+  use_focal_loss: false    # Focal loss for class imbalance
+  focal_gamma: 2.0        # Focusing parameter

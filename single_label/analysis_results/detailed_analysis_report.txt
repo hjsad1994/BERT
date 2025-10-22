@@ -1,0 +1,300 @@
+======================================================================
+BÁO CÁO PHÂN TÍCH CHI TIẾT THEO TỪNG ASPECT
+======================================================================
+
+TỔNG QUAN:
+  Tổng số mẫu test: 1557
+  Số aspects: 11
+  Overall Accuracy: 0.9422
+
+======================================================================
+CHI TIẾT THEO TỪNG ASPECT:
+======================================================================
+
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Battery
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     177
+Accuracy:   0.9548
+Precision:  0.9549
+Recall:     0.9548
+F1 Score:   0.9545
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.9375
+    Recall:    0.9000
+    F1-score:  0.9184
+    Support:   50
+    negative:
+    Precision: 0.9550
+    Recall:    0.9815
+    F1-score:  0.9680
+    Support:   108
+     neutral:
+    Precision: 1.0000
+    Recall:    0.9474
+    F1-score:  0.9730
+    Support:   19
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Camera
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     118
+Accuracy:   0.9237
+Precision:  0.9258
+Recall:     0.9237
+F1 Score:   0.9238
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.8611
+    Recall:    0.9394
+    F1-score:  0.8986
+    Support:   33
+    negative:
+    Precision: 0.9545
+    Recall:    0.9403
+    F1-score:  0.9474
+    Support:   67
+     neutral:
+    Precision: 0.9375
+    Recall:    0.8333
+    F1-score:  0.8824
+    Support:   18
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Design
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     145
+Accuracy:   0.9103
+Precision:  0.9092
+Recall:     0.9103
+F1 Score:   0.9080
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.9223
+    Recall:    0.9596
+    F1-score:  0.9406
+    Support:   99
+    negative:
+    Precision: 0.8800
+    Recall:    0.7333
+    F1-score:  0.8000
+    Support:   30
+     neutral:
+    Precision: 0.8824
+    Recall:    0.9375
+    F1-score:  0.9091
+    Support:   16
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Display
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     89
+Accuracy:   0.9326
+Precision:  0.9344
+Recall:     0.9326
+F1 Score:   0.9323
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.9667
+    Recall:    0.8788
+    F1-score:  0.9206
+    Support:   33
+    negative:
+    Precision: 0.9302
+    Recall:    0.9756
+    F1-score:  0.9524
+    Support:   41
+     neutral:
+    Precision: 0.8750
+    Recall:    0.9333
+    F1-score:  0.9032
+    Support:   15
+
+──────────────────────────────────────────────────────────────────────
+Aspect: General
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     256
+Accuracy:   0.9453
+Precision:  0.9456
+Recall:     0.9453
+F1 Score:   0.9454
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.9569
+    Recall:    0.9569
+    F1-score:  0.9569
+    Support:   116
+    negative:
+    Precision: 0.9600
+    Recall:    0.9505
+    F1-score:  0.9552
+    Support:   101
+     neutral:
+    Precision: 0.8750
+    Recall:    0.8974
+    F1-score:  0.8861
+    Support:   39
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Others
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     20
+Accuracy:   1.0000
+Precision:  1.0000
+Recall:     1.0000
+F1 Score:   1.0000
+
+Chi tiết theo sentiment:
+     neutral:
+    Precision: 1.0000
+    Recall:    1.0000
+    F1-score:  1.0000
+    Support:   20
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Packaging
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     129
+Accuracy:   0.9612
+Precision:  0.9619
+Recall:     0.9612
+F1 Score:   0.9612
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.9688
+    Recall:    0.9538
+    F1-score:  0.9612
+    Support:   65
+    negative:
+    Precision: 0.9444
+    Recall:    0.9808
+    F1-score:  0.9623
+    Support:   52
+     neutral:
+    Precision: 1.0000
+    Recall:    0.9167
+    F1-score:  0.9565
+    Support:   12
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Performance
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     149
+Accuracy:   0.9262
+Precision:  0.9344
+Recall:     0.9262
+F1 Score:   0.9265
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.8485
+    Recall:    0.9825
+    F1-score:  0.9106
+    Support:   57
+    negative:
+    Precision: 0.9848
+    Recall:    0.8667
+    F1-score:  0.9220
+    Support:   75
+     neutral:
+    Precision: 1.0000
+    Recall:    1.0000
+    F1-score:  1.0000
+    Support:   17
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Price
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     139
+Accuracy:   0.9065
+Precision:  0.9150
+Recall:     0.9065
+F1 Score:   0.9027
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.9391
+    Recall:    0.9643
+    F1-score:  0.9515
+    Support:   112
+    negative:
+    Precision: 1.0000
+    Recall:    0.5000
+    F1-score:  0.6667
+    Support:   12
+     neutral:
+    Precision: 0.6667
+    Recall:    0.8000
+    F1-score:  0.7273
+    Support:   15
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Shipping
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     181
+Accuracy:   0.9613
+Precision:  0.9615
+Recall:     0.9613
+F1 Score:   0.9613
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.9608
+    Recall:    0.9703
+    F1-score:  0.9655
+    Support:   101
+    negative:
+    Precision: 0.9552
+    Recall:    0.9552
+    F1-score:  0.9552
+    Support:   67
+     neutral:
+    Precision: 1.0000
+    Recall:    0.9231
+    F1-score:  0.9600
+    Support:   13
+
+──────────────────────────────────────────────────────────────────────
+Aspect: Shop_Service
+──────────────────────────────────────────────────────────────────────
+Số mẫu:     154
+Accuracy:   0.9740
+Precision:  0.9736
+Recall:     0.9740
+F1 Score:   0.9735
+
+Chi tiết theo sentiment:
+    positive:
+    Precision: 0.9808
+    Recall:    1.0000
+    F1-score:  0.9903
+    Support:   51
+    negative:
+    Precision: 0.9759
+    Recall:    0.9878
+    F1-score:  0.9818
+    Support:   82
+     neutral:
+    Precision: 0.9474
+    Recall:    0.8571
+    F1-score:  0.9000
+    Support:   21
+
+======================================================================
+THỐNG KÊ TỔNG HỢP:
+======================================================================
+
+Accuracy trung bình:  0.9451 (±0.0272)
+F1 Score trung bình:  0.9445 (±0.0279)
+Accuracy cao nhất:    1.0000 (Others)
+Accuracy thấp nhất:   0.9065 (Price)
+F1 Score cao nhất:    1.0000 (Others)
+F1 Score thấp nhất:   0.9027 (Price)
