@@ -50,41 +50,88 @@ class ErrorAnalyzer:
         os.makedirs(self.output_dir, exist_ok=True)
     
     def load_data(self):
-        """Load test data và predictions"""
+        """Load test data và predictions (multi-label wide format) và convert to long format"""
         print(f"\n{'='*70}")
         print("📁 Đang tải dữ liệu...")
         print(f"{'='*70}")
         
-        # Load ground truth
+        # Load ground truth (wide format)
         if not os.path.exists(self.test_file):
             raise FileNotFoundError(f"Không tìm thấy file: {self.test_file}")
         
-        self.test_df = pd.read_csv(self.test_file, encoding='utf-8-sig')
-        print(f"✓ Loaded test data: {len(self.test_df)} samples")
+        test_wide = pd.read_csv(self.test_file, encoding='utf-8-sig')
+        print(f"✓ Loaded test data: {len(test_wide)} sentences (wide format)")
         
-        # Load predictions
+        # Load predictions (wide format)
         if not os.path.exists(self.predictions_file):
             raise FileNotFoundError(f"Không tìm thấy file: {self.predictions_file}")
         
-        self.pred_df = pd.read_csv(self.predictions_file, encoding='utf-8-sig')
-        print(f"✓ Loaded predictions: {len(self.pred_df)} samples")
+        pred_wide = pd.read_csv(self.predictions_file, encoding='utf-8-sig')
+        print(f"✓ Loaded predictions: {len(pred_wide)} sentences (wide format)")
         
-        # Merge
-        self.df = self.test_df.copy()
-        self.df['predicted_sentiment'] = self.pred_df['predicted_sentiment']
-        
-        # Create predicted_label_id if not exists
-        if 'predicted_label_id' in self.pred_df.columns:
-            self.df['predicted_label_id'] = self.pred_df['predicted_label_id']
+        # Load true labels (wide format)
+        true_file = self.predictions_file.replace('.csv', '_true.csv')
+        if os.path.exists(true_file):
+            true_wide = pd.read_csv(true_file, encoding='utf-8-sig')
+            print(f"✓ Loaded true labels: {len(true_wide)} sentences (wide format)")
         else:
-            # Map from sentiment to ID
-            self.df['predicted_label_id'] = self.df['predicted_sentiment'].map(self.label2id)
+            # If true labels file doesn't exist, use test data
+            true_wide = test_wide.copy()
+            print(f"⚠️  True labels file not found, using test data")
         
-        # Calculate correctness
-        self.df['correct'] = self.df['sentiment'] == self.df['predicted_sentiment']
+        # Get aspect columns (all columns except 'data')
+        aspect_cols = [col for col in pred_wide.columns if col != 'data']
+        print(f"✓ Found {len(aspect_cols)} aspects: {', '.join(aspect_cols)}")
+        
+        # Convert wide format to long format
+        # Wide: data, Battery, Camera, ... (one row per sentence)
+        # Long: data, aspect, sentiment, predicted_sentiment (one row per aspect)
+        long_data = []
+        
+        for idx in range(len(pred_wide)):
+            text = pred_wide.iloc[idx]['data']
+
+            for aspect in aspect_cols:
+                pred_raw = pred_wide.iloc[idx][aspect]
+                true_raw = true_wide.iloc[idx][aspect]
+
+                def normalize(value):
+                    if isinstance(value, str):
+                        value = value.strip().lower()
+                        return value if value else None
+                    if pd.isna(value):
+                        return None
+                    value = str(value).strip().lower()
+                    return value if value else None
+
+                true_sentiment = normalize(true_raw)
+                pred_sentiment = normalize(pred_raw)
+
+                # Skip aspects without ground-truth label (missing in dataset)
+                if true_sentiment is None:
+                    continue
+
+                if pred_sentiment is None:
+                    pred_sentiment = 'neutral'
+
+                long_data.append({
+                    'data': text,
+                    'aspect': aspect,
+                    'sentiment': true_sentiment,
+                    'predicted_sentiment': pred_sentiment,
+                    'predicted_label_id': self.label2id.get(pred_sentiment, 2),
+                    'correct': true_sentiment == pred_sentiment
+                })
+        
+        self.df = pd.DataFrame(long_data)
+        
+        # Store for reference
+        self.test_df = test_wide
+        self.pred_df = pred_wide
         
         # Calculate accuracy
         accuracy = self.df['correct'].mean()
+        print(f"✓ Converted to long format: {len(self.df)} predictions (sentences × aspects)")
         print(f"✓ Overall accuracy: {accuracy:.2%}")
         print(f"✓ Total errors: {(~self.df['correct']).sum()} / {len(self.df)}")
         
@@ -259,16 +306,16 @@ class ErrorAnalyzer:
             print(f"   {i+1}. {row['aspect']:<15} {row['error_count']} errors")
         
         # Find sentences with multiple errors (appeared in errors with different aspects)
-        sentence_error_counts = errors_df.groupby('sentence').size().reset_index(name='error_count')
+        sentence_error_counts = errors_df.groupby('data').size().reset_index(name='error_count')
         sentence_error_counts = sentence_error_counts.sort_values('error_count', ascending=False)
         
         print(f"\n📝 Câu có NHIỀU LỖI NHẤT (confused across multiple aspects):")
         for i, row in sentence_error_counts.head(10).iterrows():
-            sentence = row['sentence']
+            sentence = row['data']
             count = row['error_count']
             
             # Get details
-            sent_errors = errors_df[errors_df['sentence'] == sentence]
+            sent_errors = errors_df[errors_df['data'] == sentence]
             aspects = ', '.join(sent_errors['aspect'].unique())
             
             print(f"\n   {i+1}. [{count} errors] {sentence[:80]}{'...' if len(sentence) > 80 else ''}")
@@ -288,7 +335,7 @@ class ErrorAnalyzer:
             
             for _, row in aspect_errors_df.head(5).iterrows():  # Top 5 per aspect
                 hard_cases.append({
-                    'sentence': row['sentence'],
+                    'sentence': row['data'],
                     'aspect': row['aspect'],
                     'true_sentiment': row['sentiment'],
                     'predicted_sentiment': row['predicted_sentiment'],
@@ -323,14 +370,14 @@ class ErrorAnalyzer:
             errors_df['confidence'] = self.pred_df.loc[errors_df.index, 'confidence']
         
         # Count errors per sentence
-        sentence_error_counts = errors_df.groupby('sentence').size().reset_index(name='error_count_for_sentence')
-        errors_df = errors_df.merge(sentence_error_counts, on='sentence', how='left')
+        sentence_error_counts = errors_df.groupby('data').size().reset_index(name='error_count_for_sentence')
+        errors_df = errors_df.merge(sentence_error_counts, on='data', how='left')
         
         # Sort by aspect and confusion type for better analysis
-        errors_df_sorted = errors_df.sort_values(['aspect', 'confusion_type', 'sentence'])
+        errors_df_sorted = errors_df.sort_values(['aspect', 'confusion_type', 'data'])
         
         # Select columns to save
-        columns_to_save = ['sentence', 'aspect', 'sentiment', 'predicted_sentiment', 'confusion_type']
+        columns_to_save = ['data', 'aspect', 'sentiment', 'predicted_sentiment', 'confusion_type']
         if 'confidence' in errors_df.columns:
             columns_to_save.append('confidence')
         columns_to_save.append('error_count_for_sentence')
@@ -344,7 +391,7 @@ class ErrorAnalyzer:
         # Print summary statistics
         print(f"\n📊 THỐNG KÊ ERRORS:")
         print(f"   • Tổng số errors: {len(errors_df)}")
-        print(f"   • Số câu unique có errors: {errors_df['sentence'].nunique()}")
+        print(f"   • Số câu unique có errors: {errors_df['data'].nunique()}")
         print(f"   • Số aspects bị ảnh hưởng: {errors_df['aspect'].nunique()}")
         
         print(f"\n📊 TOP 5 CONFUSION TYPES:")
@@ -365,7 +412,7 @@ class ErrorAnalyzer:
         summary_path = f"{self.output_dir}/errors_summary_by_aspect.csv"
         
         # Build aggregation dict dynamically
-        agg_dict = {'sentence': 'count'}
+        agg_dict = {'data': 'count'}
         if 'confidence' in errors_df.columns:
             agg_dict['confidence'] = 'mean'
         

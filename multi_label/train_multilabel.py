@@ -20,6 +20,7 @@ from datetime import datetime
 
 from model_multilabel import MultiLabelViSoBERT
 from dataset_multilabel import MultiLabelABSADataset
+from focal_loss_multilabel import MultilabelFocalLoss, calculate_global_alpha
 
 def load_config(config_path='config.yaml'):
     """Load configuration"""
@@ -27,36 +28,7 @@ def load_config(config_path='config.yaml'):
         config = yaml.safe_load(f)
     return config
 
-def multilabel_loss(logits, labels, weights=None):
-    """
-    Multi-label loss: Cross-entropy per aspect
-    
-    Args:
-        logits: [batch_size, num_aspects, num_sentiments]
-        labels: [batch_size, num_aspects]
-        weights: [num_aspects, num_sentiments] (optional)
-    
-    Returns:
-        loss: scalar
-    """
-    batch_size, num_aspects, num_sentiments = logits.shape
-    
-    total_loss = 0
-    for i in range(num_aspects):
-        aspect_logits = logits[:, i, :]  # [batch_size, num_sentiments]
-        aspect_labels = labels[:, i]      # [batch_size]
-        
-        if weights is not None:
-            aspect_weights = weights[i]  # [num_sentiments]
-            loss = F.cross_entropy(aspect_logits, aspect_labels, weight=aspect_weights)
-        else:
-            loss = F.cross_entropy(aspect_logits, aspect_labels)
-        
-        total_loss += loss
-    
-    return total_loss / num_aspects
-
-def train_epoch(model, dataloader, optimizer, scheduler, device, weights=None):
+def train_epoch(model, dataloader, optimizer, scheduler, device, focal_loss_fn):
     """Train for one epoch"""
     model.train()
     total_loss = 0
@@ -73,8 +45,8 @@ def train_epoch(model, dataloader, optimizer, scheduler, device, weights=None):
         # Forward
         logits = model(input_ids, attention_mask)
         
-        # Loss
-        loss = multilabel_loss(logits, labels, weights)
+        # Loss (Focal Loss)
+        loss = focal_loss_fn(logits, labels)
         
         # Backward
         loss.backward()
@@ -205,10 +177,14 @@ def main(args):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"✓ Using device: {device}")
     
-    # Set seed
-    torch.manual_seed(config['general']['seed'])
+    # Set seed from reproducibility config
+    seed = config['reproducibility']['training_seed']
+    torch.manual_seed(seed)
+    np.random.seed(seed)
     if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(config['general']['seed'])
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
     
     # Load tokenizer
     print(f"\n✓ Loading tokenizer...")
@@ -263,10 +239,67 @@ def main(args):
         num_workers=2
     )
     
-    # Calculate class weights for imbalanced data
-    print(f"\n✓ Calculating class weights...")
-    weights = train_dataset.get_label_weights().to(device)
-    print(f"   Weight range: [{weights.min():.3f}, {weights.max():.3f}]")
+    # =====================================================================
+    # SETUP FOCAL LOSS
+    # =====================================================================
+    print(f"\n{'='*80}")
+    print("🔥 Setting up Focal Loss...")
+    print(f"{'='*80}")
+    
+    # Read focal loss config
+    focal_config = config.get('multi_label', {})
+    use_focal_loss = focal_config.get('use_focal_loss', True)
+    focal_gamma = focal_config.get('focal_gamma', 2.0)
+    focal_alpha_config = focal_config.get('focal_alpha', 'auto')
+    
+    if not use_focal_loss:
+        print(f"\n⚠️  Focal Loss is DISABLED in config!")
+        print(f"   Using standard CrossEntropyLoss")
+        # Fallback to cross entropy (not recommended for imbalanced data)
+        focal_loss_fn = None  # Will handle this in train_epoch
+    else:
+        sentiment_to_idx = config['sentiment_labels']
+        
+        # Determine alpha weights
+        if focal_alpha_config == 'auto':
+            print(f"\n🎯 Alpha mode: AUTO (global inverse frequency)")
+            alpha = calculate_global_alpha(
+                config['paths']['train_file'],
+                train_dataset.aspects,
+                sentiment_to_idx
+            )
+        
+        elif isinstance(focal_alpha_config, list) and len(focal_alpha_config) == 3:
+            print(f"\n🎯 Alpha mode: USER-DEFINED (global)")
+            alpha = focal_alpha_config
+            print(f"   Using custom alpha: {alpha}")
+        
+        elif focal_alpha_config is None:
+            print(f"\n🎯 Alpha mode: EQUAL (no class weighting)")
+            alpha = [1.0, 1.0, 1.0]
+            print(f"   Using equal weights: {alpha}")
+        
+        else:
+            print(f"\n⚠️  Invalid focal_alpha config: {focal_alpha_config}")
+            print(f"   Falling back to AUTO mode")
+            alpha = calculate_global_alpha(
+                config['paths']['train_file'],
+                train_dataset.aspects,
+                sentiment_to_idx
+            )
+        
+        # Create Focal Loss
+        focal_loss_fn = MultilabelFocalLoss(
+            alpha=alpha,
+            gamma=focal_gamma,
+            num_aspects=11
+        )
+        focal_loss_fn = focal_loss_fn.to(device)
+        
+        print(f"\n✓ Focal Loss ready:")
+        print(f"   Gamma: {focal_gamma}")
+        print(f"   Alpha: {alpha}")
+        print(f"   Mode: Global (same alpha for all 11 aspects)")
     
     # Create model
     print(f"\nCreating model...")
@@ -289,7 +322,14 @@ def main(args):
     optimizer = AdamW(model.parameters(), lr=learning_rate, weight_decay=0.01)
     
     # Scheduler
-    num_epochs = args.epochs
+    # Use epochs from config unless explicitly overridden
+    if args.epochs is not None:
+        num_epochs = args.epochs
+        print(f"\n⚠️  Using epochs from command line: {num_epochs} (overrides config: {config['training'].get('num_train_epochs')})")
+    else:
+        num_epochs = config['training'].get('num_train_epochs', 5)
+        print(f"\n✓ Using epochs from config: {num_epochs}")
+    
     total_steps = len(train_loader) * num_epochs
     warmup_ratio = config['training'].get('warmup_ratio', 0.06)
     warmup_steps = int(warmup_ratio * total_steps)
@@ -321,7 +361,7 @@ def main(args):
         print(f"{'='*80}")
         
         # Train
-        train_loss = train_epoch(model, train_loader, optimizer, scheduler, device, weights)
+        train_loss = train_epoch(model, train_loader, optimizer, scheduler, device, focal_loss_fn)
         print(f"\nTrain Loss: {train_loss:.4f}")
         
         # Validate
@@ -335,9 +375,12 @@ def main(args):
             best_f1 = val_metrics['overall_f1']
             print(f"\n🎉 New best F1: {best_f1*100:.2f}%")
         
+        # Use output_dir from config if not specified
+        output_dir = args.output_dir if args.output_dir else config['paths']['output_dir']
+        
         save_checkpoint(
             model, optimizer, epoch, val_metrics,
-            args.output_dir, is_best=is_best
+            output_dir, is_best=is_best
         )
     
     # Test with best model
@@ -345,8 +388,11 @@ def main(args):
     print("Testing Best Model")
     print(f"{'='*80}")
     
+    # Use output_dir from config if not specified
+    output_dir = args.output_dir if args.output_dir else config['paths']['output_dir']
+    
     # Load best checkpoint
-    best_checkpoint = torch.load(os.path.join(args.output_dir, 'best_model.pt'))
+    best_checkpoint = torch.load(os.path.join(output_dir, 'best_model.pt'))
     model.load_state_dict(best_checkpoint['model_state_dict'])
     
     test_metrics = evaluate(model, test_loader, device, aspect_names)
@@ -362,7 +408,7 @@ def main(args):
     }
     
     import json
-    results_file = os.path.join(args.output_dir, 'test_results.json')
+    results_file = os.path.join(output_dir, 'test_results.json')
     with open(results_file, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False, default=str)
     
@@ -374,13 +420,13 @@ def main(args):
     print(f"\n✅ Best Model Performance:")
     print(f"   Test Accuracy: {test_metrics['overall_accuracy']*100:.2f}%")
     print(f"   Test F1:       {test_metrics['overall_f1']*100:.2f}%")
-    print(f"\n📁 Model saved to: {args.output_dir}")
+    print(f"\n📁 Model saved to: {output_dir}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train Multi-Label ABSA Model')
     parser.add_argument('--config', type=str, default='config.yaml', help='Path to config file')
-    parser.add_argument('--epochs', type=int, default=5, help='Number of epochs')
-    parser.add_argument('--output-dir', type=str, default='multilabel_model', help='Output directory')
+    parser.add_argument('--epochs', type=int, default=None, help='Number of epochs (overrides config if specified)')
+    parser.add_argument('--output-dir', type=str, default=None, help='Output directory (overrides config if specified)')
     
     args = parser.parse_args()
     main(args)

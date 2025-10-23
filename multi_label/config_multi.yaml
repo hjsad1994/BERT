@@ -104,10 +104,6 @@ training:
   logging_first_step: true
   report_to: []
   
-  # Reproducibility
-  seed: 42
-  data_seed: 42
-  
   # Misc
   disable_tqdm: false
   prediction_loss_only: false
@@ -116,26 +112,38 @@ training:
   include_inputs_for_metrics: false
 
 general:
-  seed: 42
   device: "auto"
   log_level: "info"
 
+# ========================================================================
+# REPRODUCIBILITY: Master Seed Configuration
+# ========================================================================
+# All random operations use seeds derived from master_seed for consistency
+# Change master_seed to run different experiments (e.g., 42, 123, 456, 789, 2024)
+# ========================================================================
+reproducibility:
+  master_seed: 42                  # Master seed for all operations
+  
+  # Data preprocessing seeds
+  data_split_seed: 42              # Seed for train/val/test split
+  oversampling_seed: 42            # Seed for aspect-wise oversampling
+  shuffle_seed: 42                 # Seed for data shuffling
+  
+  # Model training seeds
+  training_seed: 42                # Seed for PyTorch/Transformers training
+  dataloader_seed: 42              # Seed for DataLoader worker initialization
+  
+  # Notes:
+  # - All seeds set to 42 by default for reproducibility
+  # - For multiple runs, change master_seed: [42, 123, 456, 789, 2024]
+  # - Recommended: Keep all seeds = master_seed unless specific reason
+
 # Multi-label specific settings
 multi_label:
-  # Loss function combination
-  focal_weight: 1        # 95% focus on classification
-  contrastive_weight: 0   # 5% focus on representations
-  
-  # Focal Loss settings
+  # Focal Loss settings (ONLY)
   use_focal_loss: true      # Enable Focal Loss
   focal_gamma: 2.0          # Focusing parameter (higher = more focus on hard examples)
   focal_alpha: "auto"       # Auto class weights from data
-  
-  # Contrastive Learning settings
-  use_contrastive: true     # Enable Contrastive Learning
-  contrastive_temperature: 0.1  # Temperature for softmax (0.07-0.15)
-  contrastive_base_weight: 0.1  # Base weight for soft similarity
-  contrastive_type: "improved"  # "improved" = soft weighting, no threshold
   
   # Data augmentation
   use_balanced_data: true   # Use balanced oversampled data

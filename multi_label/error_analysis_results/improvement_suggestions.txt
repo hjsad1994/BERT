@@ -1,0 +1,56 @@
+======================================================================
+ĐỀ XUẤT CẢI THIỆN MODEL
+======================================================================
+
+🎯 ASPECTS YẾU (Error Rate > 15%):
+
+   📍 General (Error Rate: 31.60%)
+      • Thu thập thêm 146 samples cho aspect này
+      • Kiểm tra quality của labels
+      • Cân nhắc thêm keywords/features đặc trưng
+
+   📍 Design (Error Rate: 25.52%)
+      • Thu thập thêm 74 samples cho aspect này
+      • Kiểm tra quality của labels
+      • Cân nhắc thêm keywords/features đặc trưng
+
+   📍 Performance (Error Rate: 16.56%)
+      • Thu thập thêm 52 samples cho aspect này
+      • Kiểm tra quality của labels
+      • Cân nhắc thêm keywords/features đặc trưng
+
+
+🎯 CONFUSION PATTERNS PHỔ BIẾN:
+
+   📍 Nhầm POSITIVE thành NEUTRAL (108 cases, 48.2%)
+
+   📍 Nhầm NEGATIVE thành NEUTRAL (87 cases, 38.8%)
+
+   📍 Nhầm NEGATIVE thành POSITIVE (9 cases, 4.0%)
+      • Confusion nghiêm trọng (ngược hoàn toàn)
+      • Kiểm tra sarcasm, irony, context
+      • Cân nhắc thêm features hoặc context window
+
+
+🎯 GENERAL IMPROVEMENTS:
+
+   📍 Data Quality:
+      • Review lại labeling consistency
+      • Thêm inter-annotator agreement check
+      • Xem xét data augmentation
+
+   📍 Model Improvements:
+      • Fine-tune learning rate (hiện tại: 2e-5)
+      • Thử different warmup ratios
+      • Cân nhắc ensemble multiple models
+
+   📍 Training Strategy:
+      • Train thêm epochs nếu chưa converge
+      • Sử dụng early stopping với patience
+      • Thử different batch sizes
+
+   📍 Advanced Techniques:
+      • SMOTE thay vì random oversampling
+      • Mixup / Cutmix augmentation
+      • Multi-task learning (nếu có thêm tasks)
+      • Adversarial training

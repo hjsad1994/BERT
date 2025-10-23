@@ -9,6 +9,9 @@ from sklearn.model_selection import train_test_split
 import os
 import json
 from datetime import datetime
+import yaml
+import argparse
+from typing import Optional
 
 def load_and_validate_data(input_file):
     """Load and validate dataset.csv"""
@@ -190,14 +193,35 @@ def save_splits(train_df, val_df, test_df, output_dir='data'):
     
     return train_file, val_file, test_file
 
-def main():
+def load_config(config_path: str) -> dict:
+    """Load configuration from YAML file"""
+    with open(config_path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+
+def main(config_path: Optional[str] = None):
     # Configuration
-    input_file = 'dataset.csv'  # From D:\BERT\
-    output_dir = 'multi_label/data'  # Output to multi_label/data/
-    train_size = 0.8
-    val_size = 0.1
-    test_size = 0.1
-    seed = 42
+    if config_path:
+        config = load_config(config_path)
+        input_file = 'dataset.csv'  # From D:\BERT\
+        output_dir = os.path.dirname(config['paths']['train_file'])
+        train_size = 0.8
+        val_size = 0.1
+        test_size = 0.1
+        seed = config['reproducibility']['data_split_seed']
+        
+        print(f"\n[Using config: {config_path}]")
+        print(f"[Data split seed: {seed}]")
+    else:
+        input_file = 'dataset.csv'  # From D:\BERT\
+        output_dir = 'multi_label/data'  # Output to multi_label/data/
+        train_size = 0.8
+        val_size = 0.1
+        test_size = 0.1
+        seed = 42
+        
+        print(f"\n[No config provided, using defaults]")
+        print(f"[Default seed: {seed}]")
     
     # Load data
     df, aspect_cols = load_and_validate_data(input_file)
@@ -241,4 +265,15 @@ def main():
     print("\n" + "=" * 80)
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(
+        description='Prepare multi-label ABSA data: split into train/val/test'
+    )
+    parser.add_argument(
+        '--config',
+        type=str,
+        default=None,
+        help='Path to config YAML file (optional)'
+    )
+    args = parser.parse_args()
+    
+    main(config_path=args.config)

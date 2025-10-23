@@ -7,7 +7,8 @@
 
 paths:
   data_dir: "single_label/data"
-  train_file: "single_label/data/train.csv"
+  # train_file: "single_label/data/train.csv"
+  train_file: "single_label/data/train_oversampled_aspect_wise.csv"
   validation_file: "single_label/data/validation.csv"
   test_file: "single_label/data/test.csv"
   output_dir: "single_label/models/finetuned_visobert_single"
@@ -42,13 +43,13 @@ sentiment_labels:
 
 training:
   # Batch size for single-label (smaller samples)
-  per_device_train_batch_size: 32
-  per_device_eval_batch_size: 64  # 2x (no gradients in eval)
-  gradient_accumulation_steps: 2   # Effective batch = 96 * 1 = 96
+  # per_device_train_batch_size: 32
+  # per_device_eval_batch_size: 64  # 2x (no gradients in eval)
+  # gradient_accumulation_steps: 2   # Effective batch = 96 * 1 = 96
 
-  # per_device_train_batch_size: 16
-  # per_device_eval_batch_size: 32         # FIX!
-  # gradient_accumulation_steps: 4         # FIX!
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 32         # FIX!
+  gradient_accumulation_steps: 4         # FIX!
   
   # Optimizer settings
   optim: "adamw_bnb_8bit"
@@ -64,7 +65,7 @@ training:
   warmup_ratio: 0.06
   
   # Training duration
-  num_train_epochs: 3
+  num_train_epochs: 5
   
   # Mixed precision (RTX 3070 Ampere)
   fp16: true
@@ -101,10 +102,6 @@ training:
   logging_first_step: true
   report_to: []
   
-  # Reproducibility
-  seed: 42
-  data_seed: 42
-  
   # Misc
   disable_tqdm: false
   prediction_loss_only: false
@@ -113,12 +110,35 @@ training:
   include_inputs_for_metrics: false
 
 general:
-  seed: 42
   device: "auto"
   log_level: "info"
+
+# ========================================================================
+# REPRODUCIBILITY: Master Seed Configuration
+# ========================================================================
+# All random operations use seeds derived from master_seed for consistency
+# Change master_seed to run different experiments (e.g., 42, 123, 456, 789, 2024)
+# ========================================================================
+reproducibility:
+  master_seed: 42                  # Master seed for all operations
+  
+  # Data preprocessing seeds
+  data_split_seed: 42              # Seed for train/val/test split
+  oversampling_seed: 42            # Seed for aspect-wise oversampling
+  shuffle_seed: 42                 # Seed for data shuffling
+  
+  # Model training seeds
+  training_seed: 42                # Seed for PyTorch/Transformers training
+  dataloader_seed: 42              # Seed for DataLoader worker initialization
+  
+  # Notes:
+  # - All seeds set to 42 by default for reproducibility
+  # - For multiple runs, change master_seed: [42, 123, 456, 789, 2024]
+  # - Recommended: Keep all seeds = master_seed unless specific reason
 
 # Single-label specific settings
 single_label:
   use_oversampling: false  # Aspect-wise oversampling
-  use_focal_loss: false    # Focal loss for class imbalance
-  focal_gamma: 2.0        # Focusing parameter
+  use_focal_loss: true     # Focal loss for class imbalance
+  focal_gamma: 2.0         # Focusing parameter (higher = focus more on hard examples)
+  focal_alpha: "auto"      # Class weights: "auto" (inverse frequency), [w1, w2, w3], or null (equal weights)

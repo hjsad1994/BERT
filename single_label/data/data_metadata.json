@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-10-21 00:24:51",
+  "timestamp": "2025-10-24 00:33:37",
   "input_file": "dataset.csv",
   "output_directory": "single_label/data",
   "random_seed": 42,
@@ -9,10 +9,10 @@
     "test": 0.1
   },
   "split_sizes": {
-    "train": 12455,
-    "validation": 1557,
-    "test": 1557,
-    "total": 15569
+    "train": 12456,
+    "validation": 1558,
+    "test": 1558,
+    "total": 15572
   },
   "aspects": [
     "Battery",

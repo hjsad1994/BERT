@@ -10,6 +10,9 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 import os
+import yaml
+import argparse
+from typing import Optional
 
 def analyze_imbalance(df, aspect_cols):
     """Analyze per-aspect sentiment distribution"""
@@ -177,10 +180,29 @@ def oversample_simple_per_aspect(df, aspect_cols, seed=42):
     
     return augmented_df
 
-def main():
+def load_config(config_path: str) -> dict:
+    """Load configuration from YAML file"""
+    with open(config_path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+
+def main(config_path: Optional[str] = None):
     # Configuration
-    input_file = 'multi_label/data/train_multilabel.csv'
-    output_file = 'multi_label/data/train_multilabel_balanced.csv'
+    if config_path:
+        config = load_config(config_path)
+        input_file = config['paths']['train_file'].replace('_balanced', '')  # Get original train file
+        output_file = config['paths']['train_file']  # Balanced output
+        seed = config['reproducibility']['oversampling_seed']
+        
+        print(f"\n[Using config: {config_path}]")
+        print(f"[Oversampling seed: {seed}]")
+    else:
+        input_file = 'multi_label/data/train_multilabel.csv'
+        output_file = 'multi_label/data/train_multilabel_balanced.csv'
+        seed = 42
+        
+        print(f"\n[No config provided, using defaults]")
+        print(f"[Default seed: {seed}]")
     
     aspect_cols = [
         'Battery', 'Camera', 'Performance', 'Display', 'Design',
@@ -209,7 +231,7 @@ def main():
     print("=" * 80)
     
     # Method 1: Simple per-aspect oversampling (RECOMMENDED)
-    augmented_df = oversample_simple_per_aspect(df, aspect_cols, seed=42)
+    augmented_df = oversample_simple_per_aspect(df, aspect_cols, seed=seed)
     
     # Analyze augmented distribution
     print("\n" + "=" * 80)
@@ -272,4 +294,15 @@ def main():
     print("\n" + "=" * 80)
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(
+        description='Aspect-wise balanced oversampling for multi-label ABSA'
+    )
+    parser.add_argument(
+        '--config',
+        type=str,
+        default=None,
+        help='Path to config YAML file (optional)'
+    )
+    args = parser.parse_args()
+    
+    main(config_path=args.config)

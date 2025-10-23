@@ -46,7 +46,7 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
 def load_predictions(file_path="multi_label/results/test_predictions_multi.csv"):
-    """Load predictions từ CSV"""
+    """Load predictions từ CSV (multi-label wide format) và convert sang long format for analysis"""
     print(f"\n{'='*70}")
     print(f"📂 Đang tải predictions từ: {file_path}")
     print(f"{'='*70}")
@@ -54,11 +54,44 @@ def load_predictions(file_path="multi_label/results/test_predictions_multi.csv")
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Không tìm thấy file: {file_path}")
     
-    df = pd.read_csv(file_path, encoding='utf-8-sig')
+    # Load wide format predictions
+    pred_df = pd.read_csv(file_path, encoding='utf-8-sig')
     
-    print(f"✓ Đã tải {len(df)} predictions")
-    print(f"✓ Các aspect: {df['aspect'].nunique()} khía cạnh")
-    print(f"✓ Các cột: {', '.join(df.columns)}")
+    # Load true labels (wide format)
+    true_file = file_path.replace('.csv', '_true.csv')
+    if not os.path.exists(true_file):
+        raise FileNotFoundError(f"Không tìm thấy file true labels: {true_file}")
+    true_df = pd.read_csv(true_file, encoding='utf-8-sig')
+    
+    print(f"✓ Đã tải {len(pred_df)} sentences")
+    print(f"✓ Format: Multi-label wide format (aspect as columns)")
+    
+    # Get aspect columns (all columns except 'data')
+    aspect_cols = [col for col in pred_df.columns if col != 'data']
+    
+    print(f"✓ Các aspect: {len(aspect_cols)} khía cạnh: {', '.join(aspect_cols)}")
+    
+    # Convert wide format to long format for analysis
+    # Wide: data, Battery, Camera, ... (one row per sentence)
+    # Long: text, aspect, true_sentiment, predicted_sentiment (one row per aspect)
+    
+    long_data = []
+    for idx in range(len(pred_df)):
+        text = pred_df.iloc[idx]['data']
+        for aspect in aspect_cols:
+            pred_sentiment = pred_df.iloc[idx][aspect]
+            true_sentiment = true_df.iloc[idx][aspect]
+            
+            long_data.append({
+                'text': text,
+                'aspect': aspect,
+                'true_sentiment': true_sentiment.lower() if isinstance(true_sentiment, str) else 'neutral',
+                'predicted_sentiment': pred_sentiment.lower() if isinstance(pred_sentiment, str) else 'neutral'
+            })
+    
+    df = pd.DataFrame(long_data)
+    
+    print(f"✓ Converted to long format: {len(df)} predictions (sentences × aspects)")
     
     return df
 

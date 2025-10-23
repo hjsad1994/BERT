@@ -44,7 +44,15 @@ class TeeLogger:
         self.log = open(log_file, 'w', encoding='utf-8')
     
     def write(self, message):
-        self.terminal.write(message)
+        # Handle console encoding errors (replace problematic chars)
+        try:
+            self.terminal.write(message)
+        except UnicodeEncodeError:
+            # Fallback: replace emoji/special chars with ASCII
+            safe_message = message.encode('ascii', errors='replace').decode('ascii')
+            self.terminal.write(safe_message)
+        
+        # Always write full UTF-8 to file
         self.log.write(message)
         self.log.flush()
     
@@ -115,7 +123,8 @@ def main():
     # =====================================================================
     # 2. THIẾT LẬP SEED VÀ IN THÔNG TIN HỆ THỐNG
     # =====================================================================
-    seed = config['general']['seed']
+    # Get training seed from reproducibility config
+    seed = config['reproducibility']['training_seed']
     set_seed(seed)
     hf_set_seed(seed)  # Set seed cho transformers
     
@@ -256,7 +265,8 @@ def main():
         dataloader_persistent_workers=training_config.get('dataloader_persistent_workers', False),
         
         # Other
-        seed=training_config['seed'],
+        seed=config['reproducibility']['training_seed'],
+        data_seed=config['reproducibility']['dataloader_seed'],
         disable_tqdm=training_config['disable_tqdm'],
         remove_unused_columns=training_config['remove_unused_columns'],
     )
@@ -311,7 +321,7 @@ def main():
     #     train_df, 
     #     aspect_column='aspect',
     #     sentiment_column='sentiment',
-    #     random_state=config['general']['seed']
+    #     random_state=config['reproducibility']['oversampling_seed']
     # )
     
     # Use oversampled data
@@ -380,28 +390,59 @@ def main():
         pct = (count / total) * 100
         print(f"   {label:10}: {count:6,} samples ({pct:5.2f}%)")
     
-    # Tính alpha weights (inverse frequency)
-    # alpha_i = 1 / (class_count_i / total)
+    # Import Focal Loss
     from utils import FocalLoss
     from focal_loss_trainer import CustomTrainer
     
     label_map = config['sentiment_labels']  # {'positive': 0, 'negative': 1, 'neutral': 2}
-    alpha = [0.0, 0.0, 0.0]
     
-    for label, idx in label_map.items():
-        count = label_counts.get(label, 1)
-        # Inverse frequency weight
-        alpha[idx] = total / (len(label_map) * count)
+    # Read focal_alpha from config
+    focal_config = config.get('single_label', {})
+    focal_alpha_config = focal_config.get('focal_alpha', 'auto')
+    gamma = focal_config.get('focal_gamma', 2.0)
     
-    print(f"\n🎯 Alpha weights (inverse frequency):")
-    for label, idx in label_map.items():
-        print(f"   {label:10} (class {idx}): {alpha[idx]:.4f}")
+    # Determine alpha weights based on config
+    if focal_alpha_config == 'auto':
+        # Auto: Tính từ inverse frequency
+        print(f"\n🎯 Alpha weights mode: AUTO (inverse frequency)")
+        alpha = [0.0, 0.0, 0.0]
+        for label, idx in label_map.items():
+            count = label_counts.get(label, 1)
+            alpha[idx] = total / (len(label_map) * count)
+        
+        print(f"\n   Calculated alpha weights:")
+        for label, idx in label_map.items():
+            print(f"   {label:10} (class {idx}): {alpha[idx]:.4f}")
+    
+    elif isinstance(focal_alpha_config, list) and len(focal_alpha_config) == 3:
+        # User-defined weights
+        print(f"\n🎯 Alpha weights mode: USER-DEFINED")
+        alpha = focal_alpha_config
+        print(f"\n   Using custom alpha weights:")
+        for label, idx in label_map.items():
+            print(f"   {label:10} (class {idx}): {alpha[idx]:.4f}")
+    
+    elif focal_alpha_config is None:
+        # Equal weights (no class weighting)
+        print(f"\n🎯 Alpha weights mode: EQUAL (no class weighting)")
+        alpha = [1.0, 1.0, 1.0]
+        print(f"\n   Using equal weights: {alpha}")
+    
+    else:
+        # Invalid config, fallback to auto
+        print(f"\n⚠️  Invalid focal_alpha config: {focal_alpha_config}")
+        print(f"   Falling back to AUTO (inverse frequency)")
+        alpha = [0.0, 0.0, 0.0]
+        for label, idx in label_map.items():
+            count = label_counts.get(label, 1)
+            alpha[idx] = total / (len(label_map) * count)
     
     # Create Focal Loss
-    gamma = 2.0 # Focusing parameter
     focal_loss = FocalLoss(alpha=alpha, gamma=gamma)
-    print(f"\n✓ Focal Loss created: gamma={gamma}, weighted by class frequency")
-    print(f"✓ Focal Loss sẽ tăng trọng số cho minority classes để xử lý imbalance")
+    print(f"\n✓ Focal Loss created:")
+    print(f"   Gamma: {gamma} (focusing parameter)")
+    print(f"   Alpha: {alpha}")
+    print(f"✓ Focal Loss sẽ focus vào hard examples và handle class imbalance")
     
     # =====================================================================
     # 10. KHỞI TẠO TRAINER VỚI FOCAL LOSS

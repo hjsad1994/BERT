@@ -7,7 +7,7 @@ Strategy:
 - Với mỗi aspect riêng biệt
 - Tìm sentiment class có nhiều samples nhất
 - Oversample các sentiment khác để bằng với max
-- Ví dụ: Audio có neg=500, pos=400, neu=200 → 500, 500, 500
+- Example: Audio has neg=500, pos=400, neu=200 -> 500, 500, 500
 
 References:
 1. "The Impact of Oversampling and Undersampling on ABSA" (2024)
@@ -18,8 +18,11 @@ References:
 import pandas as pd
 import numpy as np
 from collections import Counter
-from typing import Dict, List
+from typing import Dict, List, Optional
 import json
+import os
+import yaml
+import argparse
 
 
 def aspect_wise_balance_oversample(
@@ -41,7 +44,7 @@ def aspect_wise_balance_oversample(
       - negative: 500 (max)
       - positive: 400
       - neutral: 200
-    → Oversample to:
+    -> Oversample to:
       - negative: 500 (unchanged)
       - positive: 500 (add 100 samples)
       - neutral: 500 (add 300 samples)
@@ -58,11 +61,11 @@ def aspect_wise_balance_oversample(
     np.random.seed(random_state)
     
     print("\n" + "="*70)
-    print("🎯 ASPECT-WISE OVERSAMPLING STRATEGY")
+    print("ASPECT-WISE OVERSAMPLING STRATEGY")
     print("="*70)
-    print("\nStrategy: Balance sentiment cho từng aspect riêng biệt")
-    print("- Với mỗi aspect: Tìm max sentiment count")
-    print("- Oversample các sentiment khác lên max count")
+    print("\nStrategy: Balance sentiment for each aspect separately")
+    print("- For each aspect: Find max sentiment count")
+    print("- Oversample other sentiments up to max count")
     print("="*70)
     
     # Store original distribution
@@ -70,7 +73,7 @@ def aspect_wise_balance_oversample(
     original_dist = {}
     
     # Analyze original distribution per aspect
-    print("\n📊 ORIGINAL DISTRIBUTION:")
+    print("\n[ORIGINAL DISTRIBUTION]:")
     print("-" * 70)
     
     aspects = df[aspect_column].unique()
@@ -89,7 +92,7 @@ def aspect_wise_balance_oversample(
     
     # Oversample for each aspect
     print("\n" + "="*70)
-    print("🔄 OVERSAMPLING PROCESS:")
+    print("[OVERSAMPLING PROCESS]:")
     print("="*70)
     
     oversampled_dfs = []
@@ -100,7 +103,7 @@ def aspect_wise_balance_oversample(
     }
     
     for aspect in sorted(aspects):
-        print(f"\n📌 Processing: {aspect}")
+        print(f"\n[Processing: {aspect}]")
         print("-" * 50)
         
         # Get data for this aspect
@@ -112,7 +115,7 @@ def aspect_wise_balance_oversample(
         max_sentiment = max(sentiment_counts, key=sentiment_counts.get)
         
         print(f"  Max sentiment: {max_sentiment} ({max_count} samples)")
-        print(f"  Target: All sentiments → {max_count} samples")
+        print(f"  Target: All sentiments -> {max_count} samples")
         
         # Oversample each sentiment to max_count
         aspect_oversampled = []
@@ -123,7 +126,7 @@ def aspect_wise_balance_oversample(
             current_count = len(sentiment_data)
             
             if current_count == 0:
-                print(f"  ⚠️  {sentiment}: 0 samples → skipping")
+                print(f"  WARNING: {sentiment}: 0 samples -> skipping")
                 continue
             
             # Keep original samples
@@ -144,10 +147,10 @@ def aspect_wise_balance_oversample(
                 aspect_oversampled.append(oversampled)
                 
                 added_counts[sentiment] = n_to_add
-                print(f"  ✓ {sentiment:10}: {current_count:4} → {max_count:4} (+{n_to_add:4})")
+                print(f"  + {sentiment:10}: {current_count:4} -> {max_count:4} (+{n_to_add:4})")
             else:
                 added_counts[sentiment] = 0
-                print(f"  → {sentiment:10}: {current_count:4} (unchanged)")
+                print(f"  - {sentiment:10}: {current_count:4} (unchanged)")
         
         # Combine oversampled data for this aspect
         aspect_balanced = pd.concat(aspect_oversampled, ignore_index=True)
@@ -169,17 +172,17 @@ def aspect_wise_balance_oversample(
     
     # Summary
     print("\n" + "="*70)
-    print("✅ OVERSAMPLING COMPLETED")
+    print("[OVERSAMPLING COMPLETED]")
     print("="*70)
     
-    print(f"\n📊 SUMMARY:")
+    print(f"\n[SUMMARY]:")
     print(f"  Original total: {original_total:,} samples")
     print(f"  Final total:    {len(df_oversampled):,} samples")
     print(f"  Added:          {len(df_oversampled) - original_total:,} samples")
     print(f"  Increase:       {((len(df_oversampled) / original_total) - 1) * 100:.1f}%")
     
     # Final distribution
-    print("\n📊 FINAL DISTRIBUTION:")
+    print("\n[FINAL DISTRIBUTION]:")
     print("-" * 70)
     
     for aspect in sorted(aspects):
@@ -260,15 +263,49 @@ def save_oversampling_info(info: Dict, output_path: str = 'analysis_results/over
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(info, f, indent=2, ensure_ascii=False)
     
-    print(f"\n✓ Saved oversampling info to: {output_path}")
+    print(f"\n[Saved oversampling info to: {output_path}]")
 
 
-def main():
+def load_config(config_path: str) -> Dict:
+    """Load configuration from YAML file"""
+    with open(config_path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+
+def main(config_path: Optional[str] = None):
     """
-    Demo usage
+    Main function to run aspect-wise oversampling
+    
+    Args:
+        config_path: Path to config YAML file (optional)
     """
+    # Get script directory to handle paths correctly
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Load config if provided
+    if config_path:
+        config = load_config(config_path)
+        train_path = config['paths']['train_file']
+        output_filename = 'train_oversampled_aspect_wise.csv'
+        output_dir = os.path.dirname(train_path)
+        output_path = os.path.join(output_dir, output_filename)
+        random_seed = config['reproducibility']['oversampling_seed']
+        
+        print(f"\n[Using config: {config_path}]")
+        print(f"[Oversampling seed: {random_seed}]")
+    else:
+        # Default paths (backward compatibility)
+        data_dir = os.path.join(script_dir, 'data')
+        train_path = os.path.join(data_dir, 'train.csv')
+        output_path = os.path.join(data_dir, 'train_oversampled_aspect_wise.csv')
+        random_seed = 42
+        
+        print(f"\n[No config provided, using defaults]")
+        print(f"[Default seed: {random_seed}]")
+    
     # Load data
-    train_df = pd.read_csv('data/train.csv')
+    print(f"\n[Loading data from: {train_path}]")
+    train_df = pd.read_csv(train_path)
     
     print("Original data:")
     print(f"  Total samples: {len(train_df)}")
@@ -277,17 +314,21 @@ def main():
     distribution = analyze_aspect_sentiment_distribution(train_df)
     
     # Apply aspect-wise oversampling
-    train_oversampled, info = aspect_wise_balance_oversample(train_df)
+    train_oversampled, info = aspect_wise_balance_oversample(
+        train_df,
+        random_state=random_seed
+    )
     
     # Save
-    train_oversampled.to_csv('data/train_oversampled_aspect_wise.csv', index=False)
-    print(f"\n✓ Saved oversampled data to: data/train_oversampled_aspect_wise.csv")
+    train_oversampled.to_csv(output_path, index=False)
+    print(f"\n[Saved oversampled data to: {output_path}]")
     
     # Save info
-    save_oversampling_info(info)
+    info_path = os.path.join(script_dir, 'analysis_results', 'oversampling_info_aspect_wise.json')
+    save_oversampling_info(info, info_path)
     
     print("\n" + "="*70)
-    print("✅ DONE!")
+    print("[DONE!]")
     print("="*70)
     print("\nNext steps:")
     print("1. Update config.yaml: train_file: 'data/train_oversampled_aspect_wise.csv'")
@@ -296,4 +337,15 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(
+        description='Aspect-wise oversampling for ABSA training data'
+    )
+    parser.add_argument(
+        '--config',
+        type=str,
+        default=None,
+        help='Path to config YAML file (optional, defaults to using script directory paths)'
+    )
+    args = parser.parse_args()
+    
+    main(config_path=args.config)

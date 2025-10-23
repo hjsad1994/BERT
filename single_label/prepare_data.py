@@ -18,6 +18,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import os
 from collections import Counter
+import yaml
+import argparse
+from typing import Optional
 
 
 class ABSADataPreparator:
@@ -386,7 +389,13 @@ class ABSADataPreparator:
             raise
 
 
-def main():
+def load_config(config_path: str) -> dict:
+    """Load configuration from YAML file"""
+    with open(config_path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
+
+
+def main(config_path: Optional[str] = None):
     """Hàm main"""
     import sys
     import io
@@ -397,17 +406,35 @@ def main():
         sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
     
     # Cấu hình
-    INPUT_FILE = 'dataset.csv'  # From D:\BERT\
-    OUTPUT_DIR = 'single_label/data'  # Output to single_label/data/
-    TRAIN_RATIO = 0.8
-    VAL_RATIO = 0.1
-    TEST_RATIO = 0.1
-    RANDOM_SEED = 42
+    if config_path:
+        config = load_config(config_path)
+        INPUT_FILE = 'dataset.csv'  # From D:\BERT\
+        OUTPUT_DIR = os.path.dirname(config['paths']['train_file'])
+        TRAIN_RATIO = 0.8
+        VAL_RATIO = 0.1
+        TEST_RATIO = 0.1
+        RANDOM_SEED = config['reproducibility']['data_split_seed']
+        
+        print("\n" + "="*70)
+        print("ABSA DATA PREPARATION PIPELINE (with config)")
+        print("="*70)
+        print(f"\n[Using config: {config_path}]")
+        print(f"[Data split seed: {RANDOM_SEED}]")
+    else:
+        INPUT_FILE = 'dataset.csv'  # From D:\BERT\
+        OUTPUT_DIR = 'single_label/data'  # Output to single_label/data/
+        TRAIN_RATIO = 0.8
+        VAL_RATIO = 0.1
+        TEST_RATIO = 0.1
+        RANDOM_SEED = 42
+        
+        print("\n" + "="*70)
+        print("ABSA DATA PREPARATION PIPELINE (defaults)")
+        print("="*70)
+        print(f"\n[No config provided, using defaults]")
+        print(f"[Default seed: {RANDOM_SEED}]")
     
-    print("\n" + "="*70)
-    print("🚀 ABSA DATA PREPARATION PIPELINE")
-    print("="*70)
-    print(f"\nCấu hình:")
+    print(f"\nCau hinh:")
     print(f"  Input file:     {INPUT_FILE}")
     print(f"  Output dir:     {OUTPUT_DIR}")
     print(f"  Train ratio:    {TRAIN_RATIO:.0%}")
@@ -429,4 +456,15 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(
+        description='Prepare ABSA data: split into train/val/test'
+    )
+    parser.add_argument(
+        '--config',
+        type=str,
+        default=None,
+        help='Path to config YAML file (optional)'
+    )
+    args = parser.parse_args()
+    
+    main(config_path=args.config)
