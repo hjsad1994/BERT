@@ -29,9 +29,10 @@ def load_config(config_path='config.yaml'):
     return config
 
 def train_epoch(model, dataloader, optimizer, scheduler, device, focal_loss_fn):
-    """Train for one epoch"""
+    """Train for one epoch - ONLY on labeled aspects (masked)"""
     model.train()
     total_loss = 0
+    total_masked_aspects = 0
     
     progress_bar = tqdm(dataloader, desc="Training")
     
@@ -39,14 +40,26 @@ def train_epoch(model, dataloader, optimizer, scheduler, device, focal_loss_fn):
         input_ids = batch['input_ids'].to(device)
         attention_mask = batch['attention_mask'].to(device)
         labels = batch['labels'].to(device)
+        loss_mask = batch['loss_mask'].to(device)  # NEW: Get mask
         
         optimizer.zero_grad()
         
         # Forward
         logits = model(input_ids, attention_mask)
         
-        # Loss (Focal Loss)
-        loss = focal_loss_fn(logits, labels)
+        # Compute Focal Loss (returns loss per aspect: [batch_size, num_aspects])
+        loss_per_aspect = focal_loss_fn(logits, labels)
+        
+        # Apply mask: ONLY train on labeled aspects (mask=1.0)
+        # NaN aspects have mask=0.0, so their loss is zeroed out
+        masked_loss = loss_per_aspect * loss_mask
+        
+        # Average over labeled aspects only
+        num_labeled = loss_mask.sum()
+        if num_labeled > 0:
+            loss = masked_loss.sum() / num_labeled
+        else:
+            loss = masked_loss.sum()  # Fallback (shouldn't happen)
         
         # Backward
         loss.backward()
@@ -55,13 +68,27 @@ def train_epoch(model, dataloader, optimizer, scheduler, device, focal_loss_fn):
         scheduler.step()
         
         total_loss += loss.item()
+        total_masked_aspects += num_labeled.item()
         progress_bar.set_postfix({'loss': f'{loss.item():.4f}'})
     
     avg_loss = total_loss / len(dataloader)
+    avg_labeled_per_batch = total_masked_aspects / len(dataloader)
+    
+    print(f"\n   Avg labeled aspects per batch: {avg_labeled_per_batch:.1f} / 11")
+    
     return avg_loss
 
-def evaluate(model, dataloader, device, aspect_names):
-    """Evaluate model"""
+def evaluate(model, dataloader, device, aspect_names, raw_data_file=None):
+    """
+    Evaluate model - ONLY on labeled aspects (skip NaN)
+    
+    Args:
+        model: Model to evaluate
+        dataloader: DataLoader with test data
+        device: Device (CPU/GPU)
+        aspect_names: List of aspect names
+        raw_data_file: Path to raw CSV to check for NaN labels (optional)
+    """
     model.eval()
     
     all_preds = []
@@ -84,12 +111,49 @@ def evaluate(model, dataloader, device, aspect_names):
     all_preds = torch.cat(all_preds, dim=0)  # [num_samples, num_aspects]
     all_labels = torch.cat(all_labels, dim=0)
     
+    # Load raw data to identify NaN labels (unlabeled aspects)
+    labeled_mask = None
+    if raw_data_file and os.path.exists(raw_data_file):
+        try:
+            raw_df = pd.read_csv(raw_data_file, encoding='utf-8-sig')
+            # Create mask: True where label exists, False where NaN
+            labeled_mask = torch.zeros_like(all_labels, dtype=torch.bool)
+            for i, aspect in enumerate(aspect_names):
+                if aspect in raw_df.columns:
+                    # True for non-NaN (labeled) aspects
+                    labeled_mask[:, i] = torch.tensor(raw_df[aspect].notna().values)
+            
+            n_labeled = labeled_mask.sum().item()
+            n_total = labeled_mask.numel()
+            print(f"\nEvaluation Coverage:")
+            print(f"   Labeled aspects: {n_labeled:,} ({n_labeled/n_total*100:.1f}%)")
+            print(f"   Unlabeled (NaN): {n_total-n_labeled:,} ({(n_total-n_labeled)/n_total*100:.1f}%)")
+            print(f"   WARNING: Metrics calculated ONLY on labeled aspects")
+        except Exception as e:
+            print(f"WARNING: Could not load raw data for NaN masking: {e}")
+            print(f"   Calculating metrics on ALL aspects (may be inflated)")
+            labeled_mask = None
+    
     # Calculate metrics per aspect
     aspect_metrics = {}
     
     for i, aspect in enumerate(aspect_names):
-        aspect_preds = all_preds[:, i].numpy()
-        aspect_labels = all_labels[:, i].numpy()
+        if labeled_mask is not None:
+            # Only evaluate on labeled samples for this aspect
+            mask = labeled_mask[:, i]
+            if mask.sum() == 0:
+                # No labeled data for this aspect, skip
+                print(f"   WARNING: {aspect}: No labeled data, skipping")
+                continue
+            
+            aspect_preds = all_preds[:, i][mask].numpy()
+            aspect_labels = all_labels[:, i][mask].numpy()
+            n_samples = mask.sum().item()
+        else:
+            # Evaluate on all samples (old behavior)
+            aspect_preds = all_preds[:, i].numpy()
+            aspect_labels = all_labels[:, i].numpy()
+            n_samples = len(aspect_preds)
         
         # Accuracy
         acc = accuracy_score(aspect_labels, aspect_preds)
@@ -103,11 +167,17 @@ def evaluate(model, dataloader, device, aspect_names):
             'accuracy': acc,
             'precision': precision,
             'recall': recall,
-            'f1': f1
+            'f1': f1,
+            'n_samples': n_samples
         }
     
     # Overall metrics (average across aspects)
-    overall_acc = (all_preds == all_labels).float().mean().item()
+    if labeled_mask is not None:
+        # Calculate overall accuracy ONLY on labeled aspects
+        overall_acc = (all_preds[labeled_mask] == all_labels[labeled_mask]).float().mean().item()
+    else:
+        # Old behavior: all aspects
+        overall_acc = (all_preds == all_labels).float().mean().item()
     
     overall_f1 = np.mean([m['f1'] for m in aspect_metrics.values()])
     overall_precision = np.mean([m['precision'] for m in aspect_metrics.values()])
@@ -118,7 +188,9 @@ def evaluate(model, dataloader, device, aspect_names):
         'overall_f1': overall_f1,
         'overall_precision': overall_precision,
         'overall_recall': overall_recall,
-        'per_aspect': aspect_metrics
+        'per_aspect': aspect_metrics,
+        'n_labeled': labeled_mask.sum().item() if labeled_mask is not None else None,
+        'n_total': labeled_mask.numel() if labeled_mask is not None else None
     }
 
 def print_metrics(metrics, epoch=None):
@@ -134,12 +206,20 @@ def print_metrics(metrics, epoch=None):
     print(f"   Precision: {metrics['overall_precision']*100:.2f}%")
     print(f"   Recall:    {metrics['overall_recall']*100:.2f}%")
     
-    print(f"\n📊 Per-Aspect Metrics:")
-    print(f"{'Aspect':<15} {'Accuracy':<10} {'F1':<10} {'Precision':<10} {'Recall':<10}")
-    print("-" * 60)
+    # Show labeled vs total if available
+    if metrics.get('n_labeled') is not None and metrics.get('n_total') is not None:
+        n_labeled = metrics['n_labeled']
+        n_total = metrics['n_total']
+        print(f"\n   Coverage: {n_labeled:,}/{n_total:,} labeled aspects ({n_labeled/n_total*100:.1f}%)")
+        print(f"   WARNING: Metrics above are calculated ONLY on labeled aspects")
+    
+    print(f"\nPer-Aspect Metrics:")
+    print(f"{'Aspect':<15} {'Accuracy':<10} {'F1':<10} {'Precision':<10} {'Recall':<10} {'Samples':<10}")
+    print("-" * 75)
     
     for aspect, m in metrics['per_aspect'].items():
-        print(f"{aspect:<15} {m['accuracy']*100:>8.2f}%  {m['f1']*100:>8.2f}%  {m['precision']*100:>8.2f}%  {m['recall']*100:>8.2f}%")
+        n_samples_str = f"({m.get('n_samples', 'N/A')})" if 'n_samples' in m else ""
+        print(f"{aspect:<15} {m['accuracy']*100:>8.2f}%  {m['f1']*100:>8.2f}%  {m['precision']*100:>8.2f}%  {m['recall']*100:>8.2f}%  {n_samples_str:<10}")
 
 def save_checkpoint(model, optimizer, epoch, metrics, output_dir, is_best=False):
     """Save model checkpoint"""
@@ -288,18 +368,21 @@ def main(args):
                 sentiment_to_idx
             )
         
-        # Create Focal Loss
+        # Create Focal Loss with reduction='none' for per-aspect masking
         focal_loss_fn = MultilabelFocalLoss(
             alpha=alpha,
             gamma=focal_gamma,
-            num_aspects=11
+            num_aspects=11,
+            reduction='none'  # Return loss per aspect for masking
         )
         focal_loss_fn = focal_loss_fn.to(device)
         
         print(f"\n✓ Focal Loss ready:")
         print(f"   Gamma: {focal_gamma}")
         print(f"   Alpha: {alpha}")
+        print(f"   Reduction: 'none' (for per-aspect masking)")
         print(f"   Mode: Global (same alpha for all 11 aspects)")
+        print(f"\n⭐ TRAINING WILL SKIP NaN ASPECTS (masking enabled)")
     
     # Create model
     print(f"\nCreating model...")
@@ -366,7 +449,8 @@ def main(args):
         
         # Validate
         print(f"\nValidating...")
-        val_metrics = evaluate(model, val_loader, device, aspect_names)
+        val_metrics = evaluate(model, val_loader, device, aspect_names, 
+                               raw_data_file=config['paths']['validation_file'])
         print_metrics(val_metrics)
         
         # Save checkpoint
@@ -393,9 +477,16 @@ def main(args):
     
     # Load best checkpoint
     best_checkpoint = torch.load(os.path.join(output_dir, 'best_model.pt'))
-    model.load_state_dict(best_checkpoint['model_state_dict'])
     
-    test_metrics = evaluate(model, test_loader, device, aspect_names)
+    # Load with strict=False to handle old checkpoints with pooler
+    missing_keys, unexpected_keys = model.load_state_dict(best_checkpoint['model_state_dict'], strict=False)
+    if unexpected_keys:
+        print(f"⚠️  Ignored unexpected keys from old checkpoint: {len(unexpected_keys)} keys")
+    if missing_keys:
+        print(f"⚠️  Missing keys: {missing_keys}")
+    
+    test_metrics = evaluate(model, test_loader, device, aspect_names,
+                           raw_data_file=config['paths']['test_file'])
     print_metrics(test_metrics)
     
     # Save final results

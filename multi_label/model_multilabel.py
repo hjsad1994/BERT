@@ -28,8 +28,8 @@ class MultiLabelViSoBERT(nn.Module):
         self.num_aspects = num_aspects
         self.num_sentiments = num_sentiments
         
-        # BERT encoder
-        self.bert = AutoModel.from_pretrained(model_name)
+        # BERT encoder (without pooler to avoid warning)
+        self.bert = AutoModel.from_pretrained(model_name, add_pooling_layer=False)
         bert_hidden_size = self.bert.config.hidden_size  # 768 for ViSoBERT
         
         # Multi-label classifier head
@@ -63,10 +63,11 @@ class MultiLabelViSoBERT(nn.Module):
         """
         # Encode
         outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask)
-        pooled_output = outputs.pooler_output  # [batch_size, 768]
+        # Use [CLS] token (first token) as sentence representation
+        cls_output = outputs.last_hidden_state[:, 0, :]  # [batch_size, 768]
         
         # Classify
-        x = self.dropout(pooled_output)
+        x = self.dropout(cls_output)
         x = self.dense(x)
         x = self.activation(x)
         x = self.dropout(x)

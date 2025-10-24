@@ -1,13 +1,13 @@
 {
-  "created_at": "2025-10-23T17:58:55.755711",
-  "total_samples": 9128,
-  "train_samples": 7302,
-  "val_samples": 913,
-  "test_samples": 913,
+  "created_at": "2025-10-24T21:26:19.689763",
+  "total_samples": 9120,
+  "train_samples": 7296,
+  "val_samples": 912,
+  "test_samples": 912,
   "split_ratio": {
-    "train": 0.7999561787905346,
-    "val": 0.10002191060473269,
-    "test": 0.10002191060473269
+    "train": 0.8,
+    "val": 0.1,
+    "test": 0.1
   },
   "aspects": [
     "Battery",

@@ -67,7 +67,7 @@ training:
   warmup_ratio: 0.06
   
   # Training duration
-  num_train_epochs: 15  # More epochs for contrastive learning
+  num_train_epochs: 8  # More epochs for contrastive learning
   
   # Mixed precision (RTX 3070 Ampere)
   fp16: true
@@ -89,7 +89,7 @@ training:
   # Evaluation & checkpointing
   evaluation_strategy: "epoch"
   save_strategy: "epoch"
-  save_total_limit: 5
+  save_total_limit: 4
   load_best_model_at_end: true
   metric_for_best_model: "eval_f1"
   greater_is_better: true
@@ -122,16 +122,16 @@ general:
 # Change master_seed to run different experiments (e.g., 42, 123, 456, 789, 2024)
 # ========================================================================
 reproducibility:
-  master_seed: 42                  # Master seed for all operations
+  master_seed: 45                  # Master seed for all operations
   
   # Data preprocessing seeds
-  data_split_seed: 42              # Seed for train/val/test split
-  oversampling_seed: 42            # Seed for aspect-wise oversampling
-  shuffle_seed: 42                 # Seed for data shuffling
+  data_split_seed: 45              # Seed for train/val/test split
+  oversampling_seed: 45            # Seed for aspect-wise oversampling
+  shuffle_seed: 45               # Seed for data shuffling
   
   # Model training seeds
   training_seed: 42                # Seed for PyTorch/Transformers training
-  dataloader_seed: 42              # Seed for DataLoader worker initialization
+  dataloader_seed: 42             # Seed for DataLoader worker initialization
   
   # Notes:
   # - All seeds set to 42 by default for reproducibility

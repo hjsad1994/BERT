@@ -50,6 +50,7 @@ class MultiLabelABSADataset(Dataset):
             input_ids: [max_length]
             attention_mask: [max_length]
             labels: [num_aspects] (sentiment IDs)
+            loss_mask: [num_aspects] (1.0 for labeled, 0.0 for NaN)
         """
         row = self.df.iloc[idx]
         
@@ -65,24 +66,30 @@ class MultiLabelABSADataset(Dataset):
             return_tensors='pt'
         )
         
-        # Get labels for all aspects
+        # Get labels and masks for all aspects
         labels = []
+        masks = []
+        
         for aspect in self.aspects:
             sentiment = row[aspect]
             
             # Handle missing or NaN values
             if pd.isna(sentiment):
-                label_id = 2  # Default to Neutral
+                label_id = 2  # Placeholder (will be masked out in loss)
+                mask = 0.0    # MASK = 0 (don't train on this aspect)
             else:
                 sentiment = str(sentiment).strip()
                 label_id = self.sentiment_map.get(sentiment, 2)
+                mask = 1.0    # MASK = 1 (train on this aspect)
             
             labels.append(label_id)
+            masks.append(mask)
         
         return {
             'input_ids': encoding['input_ids'].squeeze(0),
             'attention_mask': encoding['attention_mask'].squeeze(0),
-            'labels': torch.tensor(labels, dtype=torch.long)
+            'labels': torch.tensor(labels, dtype=torch.long),
+            'loss_mask': torch.tensor(masks, dtype=torch.float)
         }
     
     def get_aspect_counts(self):

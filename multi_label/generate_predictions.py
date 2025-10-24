@@ -160,7 +160,15 @@ def main(args):
     
     print(f"📦 Loading checkpoint: {checkpoint_path}")
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
-    model.load_state_dict(checkpoint['model_state_dict'])
+    
+    # Load with strict=False to ignore pooler keys (old model has pooler, new doesn't)
+    missing_keys, unexpected_keys = model.load_state_dict(checkpoint['model_state_dict'], strict=False)
+    
+    if unexpected_keys:
+        print(f"⚠️  Ignored unexpected keys (old pooler): {unexpected_keys}")
+    if missing_keys:
+        print(f"⚠️  Missing keys: {missing_keys}")
+    
     model.to(device)
     
     # Get metrics

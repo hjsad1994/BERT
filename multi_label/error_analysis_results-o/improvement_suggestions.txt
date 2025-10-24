@@ -3,22 +3,30 @@
 ======================================================================
 
 
+🎯 SENTIMENT CLASSES YẾU:
+
+   📍 NEUTRAL (Error Rate: 16.19%)
+      ✓ Đã apply: Focal Loss + Oversampling
+      • Có thể tăng oversampling ratio thêm (hiện tại: 40%)
+      • Cân nhắc tăng Focal Loss gamma từ 2.0 → 3.0
+      • Thêm data augmentation cho neutral class
+
+
 🎯 CONFUSION PATTERNS PHỔ BIẾN:
 
-   📍 Nhầm NEGATIVE thành POSITIVE (18 cases, 27.7%)
+   📍 Nhầm NEGATIVE thành POSITIVE (28 cases, 31.8%)
       • Confusion nghiêm trọng (ngược hoàn toàn)
       • Kiểm tra sarcasm, irony, context
       • Cân nhắc thêm features hoặc context window
 
-   📍 Nhầm POSITIVE thành NEGATIVE (18 cases, 27.7%)
+   📍 Nhầm NEUTRAL thành NEGATIVE (20 cases, 22.7%)
+      • Model có xu hướng negative bias
+      • Review các neutral samples có từ tiêu cực
+
+   📍 Nhầm POSITIVE thành NEGATIVE (19 cases, 21.6%)
       • Confusion nghiêm trọng (ngược hoàn toàn)
       • Kiểm tra data quality và labeling
       • Có thể có sarcasm hoặc context phức tạp
-
-   📍 Nhầm NEUTRAL thành POSITIVE (13 cases, 20.0%)
-      • Model có xu hướng positive bias
-      • Cân nhắc tăng alpha weight cho neutral trong Focal Loss
-      • Review các neutral samples có từ tích cực
 
 
 🎯 GENERAL IMPROVEMENTS:

@@ -128,8 +128,8 @@ class MultilabelFocalLoss(nn.Module):
         # Compute focal weight: (1 - p_t)^gamma
         focal_weight = (1.0 - pt).pow(self.gamma)
         
-        # Apply alpha weighting
-        alpha_t = self.alpha[target_flat]
+        # Apply alpha weighting (move alpha to same device as target)
+        alpha_t = self.alpha.to(target_flat.device)[target_flat]
         
         # Focal loss: -alpha_t * (1 - p_t)^gamma * log(p_t)
         loss = -alpha_t * focal_weight * log_pt

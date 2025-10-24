@@ -4,26 +4,26 @@ ERROR ANALYSIS REPORT
 
 📊 OVERALL STATISTICS
 ----------------------------------------------------------------------
-Total samples:     1,617
-Correct:           1,393 (86.15%)
-Errors:            224 (13.85%)
+Total samples:     1,539
+Correct:           1,474 (95.78%)
+Errors:            65 (4.22%)
 
 📊 ERRORS BY ASPECT
 ----------------------------------------------------------------------
-Battery         Accuracy: 95.51%  Errors: 8/178
-Camera          Accuracy: 93.94%  Errors: 8/132
-Design          Accuracy: 74.48%  Errors: 37/145
-Display         Accuracy: 90.32%  Errors: 9/93
-General         Accuracy: 68.40%  Errors: 73/231
+Battery         Accuracy: 96.93%  Errors: 5/163
+Camera          Accuracy: 96.64%  Errors: 4/119
+Design          Accuracy: 95.83%  Errors: 6/144
+Display         Accuracy: 94.67%  Errors: 4/75
+General         Accuracy: 93.24%  Errors: 19/281
 Others          Accuracy: 100.00%  Errors: 0/22
-Packaging       Accuracy: 89.13%  Errors: 15/138
-Performance     Accuracy: 83.44%  Errors: 26/157
-Price           Accuracy: 87.12%  Errors: 21/163
-Shipping        Accuracy: 93.03%  Errors: 14/201
-Shop_Service    Accuracy: 91.72%  Errors: 13/157
+Packaging       Accuracy: 99.22%  Errors: 1/128
+Performance     Accuracy: 94.37%  Errors: 8/142
+Price           Accuracy: 93.89%  Errors: 8/131
+Shipping        Accuracy: 97.08%  Errors: 5/171
+Shop_Service    Accuracy: 96.93%  Errors: 5/163
 
 📊 ERRORS BY SENTIMENT
 ----------------------------------------------------------------------
-positive     Accuracy: 85.30%  Errors: 112/762
-negative     Accuracy: 85.32%  Errors: 96/654
-neutral      Accuracy: 92.04%  Errors: 16/201
+positive     Accuracy: 96.93%  Errors: 22/716
+negative     Accuracy: 95.99%  Errors: 25/624
+neutral      Accuracy: 90.95%  Errors: 18/199
