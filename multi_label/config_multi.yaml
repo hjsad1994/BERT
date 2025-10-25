@@ -9,6 +9,7 @@
 paths:
   data_dir: "multi_label/data"
   train_file: "multi_label/data/train_multilabel_balanced.csv"  # Balanced data (15,921 samples)
+  # train_file: "multi_label/data/train_multilabel.csv"
   validation_file: "multi_label/data/validation_multilabel.csv"
   test_file: "multi_label/data/test_multilabel.csv"
   output_dir: "multi_label/models/multilabel_focal_contrastive"
@@ -47,12 +48,12 @@ sentiment_labels:
 
 training:
   # Batch size for multi-label (larger samples)
-  per_device_train_batch_size: 32
-  per_device_eval_batch_size: 64
-  gradient_accumulation_steps: 2  # Effective batch = 64
-  # per_device_train_batch_size: 16
-  # per_device_eval_batch_size: 32
-  # gradient_accumulation_steps: 4  
+  # per_device_train_batch_size: 32
+  # per_device_eval_batch_size: 64
+  # gradient_accumulation_steps: 2  # Effective batch = 64
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 32
+  gradient_accumulation_steps: 4  
   # Optimizer settings
   optim: "adamw_bnb_8bit"
   learning_rate: 2.0e-5
@@ -64,7 +65,7 @@ training:
   
   # Learning rate scheduler
   lr_scheduler_type: "cosine"
-  warmup_ratio: 0.06
+  warmup_ratio: 0.05
   
   # Training duration
   num_train_epochs: 8  # More epochs for contrastive learning
@@ -122,12 +123,12 @@ general:
 # Change master_seed to run different experiments (e.g., 42, 123, 456, 789, 2024)
 # ========================================================================
 reproducibility:
-  master_seed: 45                  # Master seed for all operations
+  master_seed: 42                 # Master seed for all operations
   
   # Data preprocessing seeds
-  data_split_seed: 45              # Seed for train/val/test split
-  oversampling_seed: 45            # Seed for aspect-wise oversampling
-  shuffle_seed: 45               # Seed for data shuffling
+  data_split_seed: 42              # Seed for train/val/test split
+  oversampling_seed: 42            # Seed for aspect-wise oversampling
+  shuffle_seed: 42               # Seed for data shuffling
   
   # Model training seeds
   training_seed: 42                # Seed for PyTorch/Transformers training

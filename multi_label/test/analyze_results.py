@@ -76,22 +76,35 @@ def load_predictions(file_path="multi_label/results/test_predictions_multi.csv")
     # Long: text, aspect, true_sentiment, predicted_sentiment (one row per aspect)
     
     long_data = []
+    skipped_nan = 0
+    
     for idx in range(len(pred_df)):
         text = pred_df.iloc[idx]['data']
         for aspect in aspect_cols:
             pred_sentiment = pred_df.iloc[idx][aspect]
             true_sentiment = true_df.iloc[idx][aspect]
             
+            # SKIP NaN aspects (not mentioned in review)
+            # NaN means aspect was not mentioned, not "neutral sentiment"
+            if pd.isna(true_sentiment):
+                skipped_nan += 1
+                continue
+            
+            # Only include LABELED aspects (with real sentiment)
             long_data.append({
                 'text': text,
                 'aspect': aspect,
-                'true_sentiment': true_sentiment.lower() if isinstance(true_sentiment, str) else 'neutral',
+                'true_sentiment': true_sentiment.lower(),
                 'predicted_sentiment': pred_sentiment.lower() if isinstance(pred_sentiment, str) else 'neutral'
             })
     
     df = pd.DataFrame(long_data)
     
+    total_aspects = len(pred_df) * len(aspect_cols)
     print(f"✓ Converted to long format: {len(df)} predictions (sentences × aspects)")
+    print(f"✓ Skipped {skipped_nan} NaN aspects (not mentioned in reviews)")
+    print(f"✓ Coverage: {len(df)}/{total_aspects} labeled aspects ({len(df)/total_aspects*100:.1f}%)")
+    print(f"\n⭐ NOTE: Metrics calculated ONLY on labeled aspects (NaN = not mentioned, skipped)")
     
     return df
 

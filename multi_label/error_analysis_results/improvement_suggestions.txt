@@ -5,17 +5,17 @@
 
 🎯 CONFUSION PATTERNS PHỔ BIẾN:
 
-   📍 Nhầm NEGATIVE thành POSITIVE (18 cases, 27.7%)
+   📍 Nhầm NEGATIVE thành POSITIVE (22 cases, 28.9%)
       • Confusion nghiêm trọng (ngược hoàn toàn)
       • Kiểm tra sarcasm, irony, context
       • Cân nhắc thêm features hoặc context window
 
-   📍 Nhầm POSITIVE thành NEGATIVE (18 cases, 27.7%)
+   📍 Nhầm POSITIVE thành NEGATIVE (20 cases, 26.3%)
       • Confusion nghiêm trọng (ngược hoàn toàn)
       • Kiểm tra data quality và labeling
       • Có thể có sarcasm hoặc context phức tạp
 
-   📍 Nhầm NEUTRAL thành POSITIVE (13 cases, 20.0%)
+   📍 Nhầm NEUTRAL thành POSITIVE (16 cases, 21.1%)
       • Model có xu hướng positive bias
       • Cân nhắc tăng alpha weight cho neutral trong Focal Loss
       • Review các neutral samples có từ tích cực
