@@ -109,7 +109,35 @@ def main(args):
     config = load_config(args.config)
     
     # Paths
-    model_dir = args.model_dir if args.model_dir else config['paths']['output_dir']
+    if args.model_dir:
+        model_dir = args.model_dir
+    else:
+        # Try to find available models
+        default_dir = config['paths']['output_dir']
+        possible_dirs = [
+            default_dir,
+            'multi_label/models/single_task_focal',
+            'multi_label/models/dual_task_focal',
+            'multi_label/models/multilabel_focal_contrastive'
+        ]
+        
+        model_dir = None
+        for dir_path in possible_dirs:
+            checkpoint_path = os.path.join(dir_path, 'best_model.pt')
+            if os.path.exists(checkpoint_path):
+                model_dir = dir_path
+                break
+        
+        if model_dir is None:
+            print("\n❌ ERROR: No trained model found!")
+            print("\nSearched in:")
+            for dir_path in possible_dirs:
+                print(f"   - {dir_path}")
+            print("\nPlease train a model first using one of:")
+            print("   python multi_label/train_multilabel.py --config multi_label/config_single_task.yaml")
+            print("   python multi_label/train_dual_task.py --config multi_label/config_dual_task.yaml")
+            sys.exit(1)
+    
     test_file = config['paths']['test_file']
     output_file = args.output if args.output else 'multi_label/results/test_predictions_multi.csv'
     

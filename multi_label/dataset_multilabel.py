@@ -73,14 +73,24 @@ class MultiLabelABSADataset(Dataset):
         for aspect in self.aspects:
             sentiment = row[aspect]
             
-            # Handle missing or NaN values
-            if pd.isna(sentiment):
-                label_id = 2  # Placeholder (will be masked out in loss)
-                mask = 0.0    # MASK = 0 (don't train on this aspect)
+            # Handle missing or NaN values (UNLABELED - NOT Neutral!)
+            if pd.isna(sentiment) or str(sentiment).strip() == '':
+                # IMPORTANT: NaN/empty != Neutral!
+                # Use label_id = 0 as placeholder (value doesn't matter since mask=0.0)
+                # The loss_mask=0.0 ensures this aspect is NOT trained on
+                label_id = 0  # Placeholder (unused when mask=0.0)
+                mask = 0.0    # MASK = 0 (skip training on unlabeled aspects)
             else:
                 sentiment = str(sentiment).strip()
-                label_id = self.sentiment_map.get(sentiment, 2)
-                mask = 1.0    # MASK = 1 (train on this aspect)
+                # Only map valid sentiments: Positive, Negative, Neutral
+                label_id = self.sentiment_map.get(sentiment, None)
+                if label_id is None:
+                    # Invalid sentiment value -> treat as unlabeled
+                    label_id = 0  # Placeholder (unused when mask=0.0)
+                    mask = 0.0    # Don't train on invalid labels
+                else:
+                    # Valid labeled aspect (Positive/Negative/Neutral)
+                    mask = 1.0    # MASK = 1 (train on this labeled aspect)
             
             labels.append(label_id)
             masks.append(mask)
@@ -93,18 +103,25 @@ class MultiLabelABSADataset(Dataset):
         }
     
     def get_aspect_counts(self):
-        """Get sentiment counts per aspect"""
+        """Get sentiment counts per aspect (ONLY labeled, excludes NaN/unlabeled)"""
         counts = {}
         
         for aspect in self.aspects:
-            aspect_sentiments = self.df[aspect].fillna('Neutral')
+            # IMPORTANT: Do NOT fillna('Neutral') - NaN is UNLABELED, not Neutral!
+            # Only count labeled aspects (Positive, Negative, Neutral)
+            aspect_sentiments = self.df[aspect].dropna()  # Drop NaN (unlabeled)
             counts[aspect] = aspect_sentiments.value_counts().to_dict()
+            
+            # Add count for unlabeled
+            n_unlabeled = self.df[aspect].isna().sum()
+            if n_unlabeled > 0:
+                counts[aspect]['Unlabeled'] = n_unlabeled
         
         return counts
     
     def get_label_weights(self):
         """
-        Calculate class weights for imbalanced data
+        Calculate class weights for imbalanced data (ONLY labeled aspects)
         
         Returns:
             weights: [num_aspects, num_sentiments]
@@ -112,17 +129,18 @@ class MultiLabelABSADataset(Dataset):
         weights = []
         
         for aspect in self.aspects:
-            # Count sentiments for this aspect
-            sentiments = self.df[aspect].fillna('Neutral')
+            # IMPORTANT: Do NOT fillna('Neutral') - NaN is UNLABELED, not Neutral!
+            # Only count labeled sentiments (drop NaN/unlabeled)
+            sentiments = self.df[aspect].dropna()  # Drop NaN (unlabeled)
             sentiment_counts = sentiments.value_counts()
             
-            # Calculate weights (inverse frequency)
-            total = len(sentiments)
+            # Calculate weights (inverse frequency) - only on labeled data
+            total = len(sentiments)  # Only labeled count (excluding NaN)
             aspect_weights = []
             
             for sentiment in ['Positive', 'Negative', 'Neutral']:
                 count = sentiment_counts.get(sentiment, 1)  # At least 1
-                weight = total / (count * 3)  # 3 classes
+                weight = total / (count * 3) if total > 0 else 1.0  # 3 classes
                 aspect_weights.append(weight)
             
             weights.append(aspect_weights)
@@ -140,7 +158,7 @@ def test_dataset():
     
     # Load tokenizer
     print("\n1. Loading tokenizer...")
-    tokenizer = AutoTokenizer.from_pretrained("5CD-AI/Vietnamese-Sentiment-visobert")
+    tokenizer = AutoTokenizer.from_pretrained("5CD-AI/visobert-14gb-corpus")
     
     # Create dataset
     print("\n2. Creating dataset...")

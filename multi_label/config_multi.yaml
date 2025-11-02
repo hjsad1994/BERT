@@ -1,9 +1,8 @@
-# Multi-Label ABSA Configuration
+# Multi-Label Sentiment Classification Configuration
 # ========================================================================
-# For multi-label approach (all 11 aspects predicted simultaneously)
-# Model: ViSoBERT with multi-label classification head
-# Method: Focal Loss + Contrastive Learning (SOTA 2024)
-# Expected: 96.0-96.5% F1
+# Multi-label approach: Predict sentiment for all 11 aspects simultaneously
+# Output: 33 binary predictions (11 aspects × 3 sentiments)
+# Each aspect-sentiment pair is predicted independently
 # ========================================================================
 
 paths:
@@ -17,15 +16,14 @@ paths:
   predictions_file: "multi_label/results/test_predictions_multi.csv"
 
 model:
-  name: "5CD-AI/Vietnamese-Sentiment-visobert"
-  num_labels: 33  # 11 aspects × 3 sentiments = 33 outputs
+  name: "5CD-AI/visobert-14gb-corpus"  # ViSoBERT base model (14GB Vietnamese corpus)
+  num_labels: 33  # 11 aspects × 3 sentiments = 33 binary outputs
   num_aspects: 11
   num_sentiments: 3
   max_length: 256
   
   # Model architecture
   hidden_size: 512      # Dense layer
-  projection_dim: 256   # Contrastive learning projection
   dropout: 0.3
 
 valid_aspects:
@@ -65,10 +63,10 @@ training:
   
   # Learning rate scheduler
   lr_scheduler_type: "cosine"
-  warmup_ratio: 0.05
+  warmup_ratio: 0.06
   
   # Training duration
-  num_train_epochs: 8  # More epochs for contrastive learning
+  num_train_epochs: 10  # More epochs for contrastive learning
   
   # Mixed precision (RTX 3070 Ampere)
   fp16: true
@@ -139,17 +137,17 @@ reproducibility:
   # - For multiple runs, change master_seed: [42, 123, 456, 789, 2024]
   # - Recommended: Keep all seeds = master_seed unless specific reason
 
-# Multi-label specific settings
+# Multi-label sentiment classification settings
 multi_label:
-  # Focal Loss settings (ONLY)
+  # Focal Loss settings
   use_focal_loss: true      # Enable Focal Loss
   focal_gamma: 2.0          # Focusing parameter (higher = more focus on hard examples)
   focal_alpha: "auto"       # Auto class weights from data
   
-  # Data augmentation
+  # Data settings
   use_balanced_data: true   # Use balanced oversampled data
   balance_method: "aspect_wise"  # Per-aspect balancing
   
   # Inference settings
-  batch_prediction: true    # Predict all 11 aspects in one pass
+  batch_prediction: true    # Predict all 11 aspects × 3 sentiments in one pass
   use_class_weights: true   # Apply class weights in loss

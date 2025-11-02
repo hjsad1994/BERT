@@ -8,7 +8,7 @@
 paths:
   data_dir: "single_label/data"
   # train_file: "single_label/data/train.csv"
-  train_file: "single_label/data/train_oversampled_aspect_wise.csv"
+  train_file: "single_label/data/train_augmented_neutral_nhung.csv"
   validation_file: "single_label/data/validation.csv"
   test_file: "single_label/data/test.csv"
   output_dir: "single_label/models/finetuned_visobert_single"
@@ -16,7 +16,7 @@ paths:
   predictions_file: "single_label/results/test_predictions_single.csv"
 
 model:
-  name: "5CD-AI/Vietnamese-Sentiment-visobert"
+  name: "5CD-AI/visobert-14gb-corpus"
   num_labels: 3  # positive, negative, neutral
   max_length: 256  # Covers 97.7% of sequences
 
@@ -65,7 +65,7 @@ training:
   warmup_ratio: 0.06
   
   # Training duration
-  num_train_epochs: 5
+  num_train_epochs: 4
   
   # Mixed precision (RTX 3070 Ampere)
   fp16: true
@@ -123,13 +123,13 @@ reproducibility:
   master_seed: 42                  # Master seed for all operations
   
   # Data preprocessing seeds
-  data_split_seed: 42              # Seed for train/val/test split
-  oversampling_seed: 42            # Seed for aspect-wise oversampling
-  shuffle_seed: 42                 # Seed for data shuffling
+  data_split_seed: 78              # Seed for train/val/test split
+  oversampling_seed: 78            # Seed for aspect-wise oversampling
+  shuffle_seed: 78                 # Seed for data shuffling
   
   # Model training seeds
-  training_seed: 42                # Seed for PyTorch/Transformers training
-  dataloader_seed: 42              # Seed for DataLoader worker initialization
+  training_seed: 78                # Seed for PyTorch/Transformers training
+  dataloader_seed: 78              # Seed for DataLoader worker initialization
   
   # Notes:
   # - All seeds set to 42 by default for reproducibility

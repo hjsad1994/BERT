@@ -45,66 +45,141 @@ RESULTS_DIR = "multi_label/analysis_results"
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
-def load_predictions(file_path="multi_label/results/test_predictions_multi.csv"):
-    """Load predictions từ CSV (multi-label wide format) và convert sang long format for analysis"""
+def normalize_value(value):
+    """Normalize a value to lowercase string sentiment label"""
+    if isinstance(value, str):
+        value = value.strip().lower()
+        return value if value else None
+    if pd.isna(value):
+        return None
+    # If it's a numeric value, convert using id2label
+    if isinstance(value, (int, float)) and not pd.isna(value):
+        id2label = {0: 'positive', 1: 'negative', 2: 'neutral'}
+        return id2label.get(int(value), None)
+    value = str(value).strip().lower()
+    return value if value else None
+
+
+def load_predictions(predictions_file='multi_label/models/multilabel_focal_contrastive/test_predictions_detailed.csv',
+                     test_file='multi_label/data/test_multilabel.csv'):
+    """
+    Load predictions từ CSV và convert sang long format for analysis
+    IMPORTANT: Sử dụng test data làm ground truth để phân biệt neutral thật vs unlabeled placeholder
+    """
     print(f"\n{'='*70}")
-    print(f"📂 Đang tải predictions từ: {file_path}")
+    print(f"📂 Đang tải predictions và test data...")
     print(f"{'='*70}")
     
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Không tìm thấy file: {file_path}")
+    # Load test data (ground truth source)
+    if not os.path.exists(test_file):
+        raise FileNotFoundError(f"Không tìm thấy file: {test_file}")
+    test_wide = pd.read_csv(test_file, encoding='utf-8-sig')
+    print(f"✓ Loaded test data: {len(test_wide)} sentences")
     
-    # Load wide format predictions
-    pred_df = pd.read_csv(file_path, encoding='utf-8-sig')
+    # Load predictions file
+    if not os.path.exists(predictions_file):
+        raise FileNotFoundError(f"Không tìm thấy file: {predictions_file}")
+    pred_raw = pd.read_csv(predictions_file, encoding='utf-8-sig')
+    print(f"✓ Loaded predictions file: {len(pred_raw)} rows")
     
-    # Load true labels (wide format)
-    true_file = file_path.replace('.csv', '_true.csv')
-    if not os.path.exists(true_file):
-        raise FileNotFoundError(f"Không tìm thấy file true labels: {true_file}")
-    true_df = pd.read_csv(true_file, encoding='utf-8-sig')
-    
-    print(f"✓ Đã tải {len(pred_df)} sentences")
-    print(f"✓ Format: Multi-label wide format (aspect as columns)")
-    
-    # Get aspect columns (all columns except 'data')
-    aspect_cols = [col for col in pred_df.columns if col != 'data']
-    
-    print(f"✓ Các aspect: {len(aspect_cols)} khía cạnh: {', '.join(aspect_cols)}")
-    
-    # Convert wide format to long format for analysis
-    # Wide: data, Battery, Camera, ... (one row per sentence)
-    # Long: text, aspect, true_sentiment, predicted_sentiment (one row per aspect)
-    
-    long_data = []
-    skipped_nan = 0
-    
-    for idx in range(len(pred_df)):
-        text = pred_df.iloc[idx]['data']
-        for aspect in aspect_cols:
-            pred_sentiment = pred_df.iloc[idx][aspect]
-            true_sentiment = true_df.iloc[idx][aspect]
+    # Check format: numeric (test_predictions_detailed.csv) or string
+    if 'sample_id' in pred_raw.columns and '_pred' in str(pred_raw.columns):
+        print("✓ Detected numeric format predictions file")
+        
+        # Ensure alignment
+        min_len = min(len(pred_raw), len(test_wide))
+        pred_raw = pred_raw.iloc[:min_len]
+        test_wide = test_wide.iloc[:min_len]
+        
+        # Extract aspects
+        aspects = sorted(set(
+            col.replace('_pred', '') 
+            for col in pred_raw.columns 
+            if col.endswith('_pred')
+        ))
+        print(f"✓ Found {len(aspects)} aspects: {', '.join(aspects)}")
+        
+        # Convert to wide format
+        pred_wide = pd.DataFrame()
+        pred_wide['data'] = test_wide['data'].values
+        
+        true_wide = pd.DataFrame()
+        true_wide['data'] = test_wide['data'].values
+        
+        for aspect in aspects:
+            pred_col = f"{aspect}_pred"
             
-            # SKIP NaN aspects (not mentioned in review)
-            # NaN means aspect was not mentioned, not "neutral sentiment"
-            if pd.isna(true_sentiment):
-                skipped_nan += 1
+            # Predictions: convert numeric to string
+            if pred_col in pred_raw.columns:
+                id2label = {0: 'positive', 1: 'negative', 2: 'neutral'}
+                pred_wide[aspect] = pred_raw[pred_col].map(id2label).fillna('neutral')
+            else:
+                pred_wide[aspect] = 'neutral'
+            
+            # IMPORTANT: Always use test data as ground truth
+            # This distinguishes real Neutral from unlabeled placeholder (NaN)
+            if aspect in test_wide.columns:
+                true_wide[aspect] = test_wide[aspect].apply(
+                    lambda x: normalize_value(x) if pd.notna(x) and str(x).strip() != '' else None
+                )
+            else:
+                true_wide[aspect] = None
+    else:
+        # String format
+        print("✓ Detected string format predictions file")
+        pred_wide = pred_raw
+        true_wide = test_wide.copy()
+        aspects = [col for col in pred_wide.columns if col != 'data']
+        print(f"✓ Found {len(aspects)} aspects: {', '.join(aspects)}")
+    
+    # Convert wide format to long format
+    # Only include LABELED aspects (positive/negative/neutral)
+    # Skip unlabeled aspects (NaN)
+    long_data = []
+    skipped_unlabeled = 0
+    
+    for idx in range(len(pred_wide)):
+        text = pred_wide.iloc[idx]['data']
+        
+        for aspect in aspects:
+            pred_val = pred_wide.iloc[idx][aspect] if aspect in pred_wide.columns else None
+            true_val = true_wide.iloc[idx][aspect] if aspect in true_wide.columns else None
+            
+            true_sentiment = normalize_value(true_val)
+            pred_sentiment = normalize_value(pred_val)
+            
+            # SKIP unlabeled aspects (NaN in test data = not mentioned)
+            if true_sentiment is None:
+                skipped_unlabeled += 1
                 continue
             
-            # Only include LABELED aspects (with real sentiment)
+            # Default prediction if None (shouldn't happen, but handle it)
+            if pred_sentiment is None:
+                pred_sentiment = 'neutral'
+            
+            # Only include labeled aspects
             long_data.append({
                 'text': text,
                 'aspect': aspect,
-                'true_sentiment': true_sentiment.lower(),
-                'predicted_sentiment': pred_sentiment.lower() if isinstance(pred_sentiment, str) else 'neutral'
+                'true_sentiment': true_sentiment,
+                'predicted_sentiment': pred_sentiment
             })
     
     df = pd.DataFrame(long_data)
     
-    total_aspects = len(pred_df) * len(aspect_cols)
-    print(f"✓ Converted to long format: {len(df)} predictions (sentences × aspects)")
-    print(f"✓ Skipped {skipped_nan} NaN aspects (not mentioned in reviews)")
-    print(f"✓ Coverage: {len(df)}/{total_aspects} labeled aspects ({len(df)/total_aspects*100:.1f}%)")
-    print(f"\n⭐ NOTE: Metrics calculated ONLY on labeled aspects (NaN = not mentioned, skipped)")
+    total_aspects = len(test_wide) * len(aspects)
+    sentiment_counts = df['true_sentiment'].value_counts().to_dict()
+    
+    print(f"✓ Converted to long format: {len(df)} predictions (labeled aspects)")
+    print(f"   • Total aspects in dataset: {total_aspects:,}")
+    print(f"   • Labeled aspects: {len(df):,} ({len(df)/total_aspects*100:.1f}%)")
+    print(f"     - Positive: {sentiment_counts.get('positive', 0):,}")
+    print(f"     - Negative: {sentiment_counts.get('negative', 0):,}")
+    print(f"     - Neutral: {sentiment_counts.get('neutral', 0):,}")
+    print(f"   • Skipped unlabeled: {skipped_unlabeled:,} ({skipped_unlabeled/total_aspects*100:.1f}%)")
+    print(f"\n⭐ NOTE: Metrics calculated ONLY on labeled aspects (positive/negative/neutral)")
+    print(f"   • Unlabeled aspects (NaN) are excluded")
+    print(f"   • Neutral ≠ Unlabeled (Neutral is a real label, Unlabeled means not mentioned)")
     
     return df
 
@@ -631,7 +706,10 @@ def main():
     print(f"{'='*70}")
     
     # Load predictions
-    df = load_predictions("multi_label/results/test_predictions_multi.csv")
+    df = load_predictions(
+        predictions_file='multi_label/models/multilabel_focal_contrastive/test_predictions_detailed.csv',
+        test_file='multi_label/data/test_multilabel.csv'
+    )
     
     # Analyze by aspect
     results, confusion_matrices = analyze_by_aspect(df)

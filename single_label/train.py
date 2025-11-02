@@ -178,8 +178,18 @@ def main():
         train_df, val_df, test_df, label_map, id2label = load_and_preprocess_data(config)
     except Exception as e:
         print(f"\n❌ Lỗi khi load dữ liệu: {str(e)}")
-        print(f"\nGợi ý: Chạy 'python prepare_data.py' để tạo dữ liệu trước")
-        return
+        print(f"\n🔄 Thử tự động tạo dữ liệu bằng 'prepare_data.py'...")
+        try:
+            # Tự động tạo dữ liệu đầu vào cho single_label từ config hiện tại
+            import prepare_data
+            prepare_data.main(config_path=args.config)
+            # Thử load lại sau khi đã tạo dữ liệu
+            train_df, val_df, test_df, label_map, id2label = load_and_preprocess_data(config)
+            print("\n✓ Đã tạo dữ liệu và load lại thành công")
+        except Exception as e2:
+            print(f"\n❌ Vẫn không thể load dữ liệu sau khi tạo tự động: {str(e2)}")
+            print(f"\nGợi ý: Chạy thủ công: python prepare_data.py --config {args.config}")
+            return
     
     # =====================================================================
     # 6. TẠO DATASETS

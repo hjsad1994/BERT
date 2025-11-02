@@ -17,7 +17,7 @@ class MultiLabelViSoBERT(nn.Module):
     
     def __init__(
         self, 
-        model_name="5CD-AI/Vietnamese-Sentiment-visobert",  # ViSoBERT - efficient and effective
+        model_name="5CD-AI/visobert-14gb-corpus",  # ViSoBERT base - 14GB Vietnamese corpus
         num_aspects=11, 
         num_sentiments=3,
         hidden_size=512,
@@ -134,7 +134,7 @@ def test_model():
     # Create model
     print("\n1. Creating model...")
     model = MultiLabelViSoBERT(
-        model_name="5CD-AI/Vietnamese-Sentiment-visobert",
+        model_name="5CD-AI/visobert-14gb-corpus",
         num_aspects=11,
         num_sentiments=3,
         hidden_size=512,
@@ -150,7 +150,7 @@ def test_model():
     
     # Test forward pass
     print("\n2. Testing forward pass...")
-    tokenizer = AutoTokenizer.from_pretrained("5CD-AI/Vietnamese-Sentiment-visobert")
+    tokenizer = AutoTokenizer.from_pretrained("5CD-AI/visobert-14gb-corpus")
     
     # Test text
     test_text = "Pin tot cam era xau"
