@@ -67,24 +67,24 @@ def load_predictions(predictions_file='multi_label/models/multilabel_focal_contr
     IMPORTANT: Sử dụng test data làm ground truth để phân biệt neutral thật vs unlabeled placeholder
     """
     print(f"\n{'='*70}")
-    print(f"📂 Đang tải predictions và test data...")
+    print(f"Đang tải predictions và test data...")
     print(f"{'='*70}")
     
     # Load test data (ground truth source)
     if not os.path.exists(test_file):
         raise FileNotFoundError(f"Không tìm thấy file: {test_file}")
     test_wide = pd.read_csv(test_file, encoding='utf-8-sig')
-    print(f"✓ Loaded test data: {len(test_wide)} sentences")
+    print(f" Loaded test data: {len(test_wide)} sentences")
     
     # Load predictions file
     if not os.path.exists(predictions_file):
         raise FileNotFoundError(f"Không tìm thấy file: {predictions_file}")
     pred_raw = pd.read_csv(predictions_file, encoding='utf-8-sig')
-    print(f"✓ Loaded predictions file: {len(pred_raw)} rows")
+    print(f" Loaded predictions file: {len(pred_raw)} rows")
     
     # Check format: numeric (test_predictions_detailed.csv) or string
     if 'sample_id' in pred_raw.columns and '_pred' in str(pred_raw.columns):
-        print("✓ Detected numeric format predictions file")
+        print(" Detected numeric format predictions file")
         
         # Ensure alignment
         min_len = min(len(pred_raw), len(test_wide))
@@ -97,7 +97,7 @@ def load_predictions(predictions_file='multi_label/models/multilabel_focal_contr
             for col in pred_raw.columns 
             if col.endswith('_pred')
         ))
-        print(f"✓ Found {len(aspects)} aspects: {', '.join(aspects)}")
+        print(f" Found {len(aspects)} aspects: {', '.join(aspects)}")
         
         # Convert to wide format
         pred_wide = pd.DataFrame()
@@ -126,11 +126,11 @@ def load_predictions(predictions_file='multi_label/models/multilabel_focal_contr
                 true_wide[aspect] = None
     else:
         # String format
-        print("✓ Detected string format predictions file")
+        print(" Detected string format predictions file")
         pred_wide = pred_raw
         true_wide = test_wide.copy()
         aspects = [col for col in pred_wide.columns if col != 'data']
-        print(f"✓ Found {len(aspects)} aspects: {', '.join(aspects)}")
+        print(f" Found {len(aspects)} aspects: {', '.join(aspects)}")
     
     # Convert wide format to long format
     # Only include LABELED aspects (positive/negative/neutral)
@@ -170,14 +170,14 @@ def load_predictions(predictions_file='multi_label/models/multilabel_focal_contr
     total_aspects = len(test_wide) * len(aspects)
     sentiment_counts = df['true_sentiment'].value_counts().to_dict()
     
-    print(f"✓ Converted to long format: {len(df)} predictions (labeled aspects)")
+    print(f" Converted to long format: {len(df)} predictions (labeled aspects)")
     print(f"   • Total aspects in dataset: {total_aspects:,}")
     print(f"   • Labeled aspects: {len(df):,} ({len(df)/total_aspects*100:.1f}%)")
     print(f"     - Positive: {sentiment_counts.get('positive', 0):,}")
     print(f"     - Negative: {sentiment_counts.get('negative', 0):,}")
     print(f"     - Neutral: {sentiment_counts.get('neutral', 0):,}")
     print(f"   • Skipped unlabeled: {skipped_unlabeled:,} ({skipped_unlabeled/total_aspects*100:.1f}%)")
-    print(f"\n⭐ NOTE: Metrics calculated ONLY on labeled aspects (positive/negative/neutral)")
+    print(f"\n NOTE: Metrics calculated ONLY on labeled aspects (positive/negative/neutral)")
     print(f"   • Unlabeled aspects (NaN) are excluded")
     print(f"   • Neutral ≠ Unlabeled (Neutral is a real label, Unlabeled means not mentioned)")
     
@@ -187,7 +187,7 @@ def load_predictions(predictions_file='multi_label/models/multilabel_focal_contr
 def create_all_confusion_matrices_grid(confusion_matrices):
     """Tạo grid chứa tất cả confusion matrices"""
     print(f"\n{'='*70}")
-    print("🎯 Tạo grid confusion matrices cho tất cả aspects...")
+    print(" Tạo grid confusion matrices cho tất cả aspects...")
     print(f"{'='*70}")
     
     n_aspects = len(confusion_matrices)
@@ -246,13 +246,13 @@ def create_all_confusion_matrices_grid(confusion_matrices):
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()
     
-    print(f"✓ Đã lưu: {save_path}")
+    print(f" Đã lưu: {save_path}")
 
 
 def analyze_by_aspect(df):
     """Phân tích chi tiết theo từng aspect"""
     print(f"\n{'='*70}")
-    print("📊 PHÂN TÍCH THEO TỪNG ASPECT")
+    print(" PHÂN TÍCH THEO TỪNG ASPECT")
     print(f"{'='*70}\n")
     
     aspects = sorted(df['aspect'].unique())
@@ -326,7 +326,7 @@ def analyze_by_aspect(df):
 def create_metrics_comparison_plot(results):
     """Tạo biểu đồ so sánh metrics giữa các aspects"""
     print(f"\n{'='*70}")
-    print("📈 Tạo biểu đồ so sánh metrics...")
+    print(" Tạo biểu đồ so sánh metrics...")
     print(f"{'='*70}")
     
     # Chuẩn bị data
@@ -367,7 +367,7 @@ def create_metrics_comparison_plot(results):
     save_path = os.path.join(RESULTS_DIR, 'metrics_comparison.png')
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()
-    print(f"✓ Đã lưu: {save_path}")
+    print(f" Đã lưu: {save_path}")
     
     # 2. Individual plots cho từng metric
     metrics_data = {
@@ -407,13 +407,13 @@ def create_metrics_comparison_plot(results):
         save_path = os.path.join(RESULTS_DIR, f'{metric_name.lower().replace(" ", "_")}_by_aspect.png')
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
         plt.close()
-        print(f"✓ Đã lưu: {save_path}")
+        print(f" Đã lưu: {save_path}")
 
 
 def create_sample_distribution_plot(results):
     """Tạo biểu đồ phân bố số mẫu"""
     print(f"\n{'='*70}")
-    print("📊 Tạo biểu đồ phân bố mẫu...")
+    print(" Tạo biểu đồ phân bố mẫu...")
     print(f"{'='*70}")
     
     aspects = [r['aspect'] for r in results]
@@ -448,13 +448,13 @@ def create_sample_distribution_plot(results):
     save_path = os.path.join(RESULTS_DIR, 'sample_distribution.png')
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()
-    print(f"✓ Đã lưu: {save_path}")
+    print(f" Đã lưu: {save_path}")
 
 
 def create_heatmap_metrics(results):
     """Tạo heatmap cho metrics của tất cả aspects"""
     print(f"\n{'='*70}")
-    print("🔥 Tạo heatmap metrics...")
+    print(" Tạo heatmap metrics...")
     print(f"{'='*70}")
     
     aspects = [r['aspect'] for r in results]
@@ -488,13 +488,13 @@ def create_heatmap_metrics(results):
     save_path = os.path.join(RESULTS_DIR, 'metrics_heatmap.png')
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()
-    print(f"✓ Đã lưu: {save_path}")
+    print(f" Đã lưu: {save_path}")
 
 
 def create_overall_confusion_matrix(df):
     """Tạo confusion matrix tổng thể"""
     print(f"\n{'='*70}")
-    print("🎯 Tạo confusion matrix tổng thể...")
+    print(" Tạo confusion matrix tổng thể...")
     print(f"{'='*70}")
     
     y_true = df['true_sentiment'].values
@@ -531,13 +531,13 @@ def create_overall_confusion_matrix(df):
     save_path = os.path.join(RESULTS_DIR, 'confusion_matrix_overall.png')
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()
-    print(f"✓ Đã lưu: {save_path}")
+    print(f" Đã lưu: {save_path}")
 
 
 def save_detailed_report(results, df):
     """Lưu báo cáo chi tiết dạng text"""
     print(f"\n{'='*70}")
-    print("💾 Đang lưu báo cáo chi tiết...")
+    print(" Đang lưu báo cáo chi tiết...")
     print(f"{'='*70}")
     
     report_path = os.path.join(RESULTS_DIR, 'detailed_analysis_report.txt')
@@ -595,7 +595,7 @@ def save_detailed_report(results, df):
         f.write(f"F1 Score cao nhất:    {max(f1_scores):.4f} ({results[f1_scores.index(max(f1_scores))]['aspect']})\n")
         f.write(f"F1 Score thấp nhất:   {min(f1_scores):.4f} ({results[f1_scores.index(min(f1_scores))]['aspect']})\n")
     
-    print(f"✓ Đã lưu: {report_path}")
+    print(f" Đã lưu: {report_path}")
 
 
 def create_summary_table_image(results):
@@ -671,7 +671,7 @@ def create_summary_table_image(results):
     save_path = os.path.join(RESULTS_DIR, 'summary_table.png')
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.close()
-    print(f"✓ Đã lưu: {save_path}")
+    print(f" Đã lưu: {save_path}")
 
 
 def main():
@@ -686,23 +686,23 @@ def main():
     oversampling_info_path = os.path.join(RESULTS_DIR, 'oversampling_info.json')
     if os.path.exists(oversampling_info_path):
         print(f"\n{'='*70}")
-        print("📊 VISUALIZE OVERSAMPLING")
+        print(" VISUALIZE OVERSAMPLING")
         print(f"{'='*70}")
         
         try:
             import visualize_oversampling
-            print("\n✓ Đang tạo visualization cho oversampling...")
+            print("\n Đang tạo visualization cho oversampling...")
             visualize_oversampling.main()
         except Exception as e:
-            print(f"\n⚠️  Cảnh báo: Không thể tạo oversampling visualization: {str(e)}")
+            print(f"\nWARNING:  Cảnh báo: Không thể tạo oversampling visualization: {str(e)}")
     else:
-        print(f"\n⚠️  Không tìm thấy oversampling info, bỏ qua visualization oversampling")
+        print(f"\nWARNING:  Không tìm thấy oversampling info, bỏ qua visualization oversampling")
     
     # =====================================================================
     # 2. PHÂN TÍCH KẾT QUẢ TEST
     # =====================================================================
     print(f"\n{'='*70}")
-    print("📊 PHÂN TÍCH KẾT QUẢ TEST")
+    print(" PHÂN TÍCH KẾT QUẢ TEST")
     print(f"{'='*70}")
     
     # Load predictions
@@ -727,16 +727,16 @@ def main():
     
     # Summary
     print(f"\n{'='*70}")
-    print("✅ HOÀN TẤT PHÂN TÍCH!")
+    print(" HOÀN TẤT PHÂN TÍCH!")
     print(f"{'='*70}")
-    print(f"\n✓ Tất cả kết quả đã được lưu vào: {os.path.abspath(RESULTS_DIR)}/")
-    print(f"\n✓ Các file đã tạo:")
+    print(f"\n Tất cả kết quả đã được lưu vào: {os.path.abspath(RESULTS_DIR)}/")
+    print(f"\n Các file đã tạo:")
     
     files = sorted(os.listdir(RESULTS_DIR))
     for file in files:
         print(f"   • {file}")
     
-    print(f"\n✓ Tổng số file: {len(files)}")
+    print(f"\n Tổng số file: {len(files)}")
     print("\n" + "="*70)
 
 

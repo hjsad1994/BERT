@@ -129,7 +129,7 @@ def main(args):
                 break
         
         if model_dir is None:
-            print("\n❌ ERROR: No trained model found!")
+            print("\nERROR: ERROR: No trained model found!")
             print("\nSearched in:")
             for dir_path in possible_dirs:
                 print(f"   - {dir_path}")
@@ -141,23 +141,23 @@ def main(args):
     test_file = config['paths']['test_file']
     output_file = args.output if args.output else 'multi_label/results/test_predictions_multi.csv'
     
-    print(f"\n📁 Model directory: {model_dir}")
-    print(f"📁 Test file: {test_file}")
-    print(f"📁 Output file: {output_file}")
+    print(f"\nModel directory: {model_dir}")
+    print(f"Test file: {test_file}")
+    print(f"Output file: {output_file}")
     
     # Create results directory
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     
     # Device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"\n🖥️  Device: {device}")
+    print(f"\nDevice: {device}")
     
     # Load tokenizer
-    print(f"\n📝 Loading tokenizer...")
+    print(f"\nLoading tokenizer...")
     tokenizer = AutoTokenizer.from_pretrained(config['model']['name'])
     
     # Load test dataset
-    print(f"\n📊 Loading test dataset...")
+    print(f"\nLoading test dataset...")
     test_dataset = MultiLabelABSADataset(
         csv_file=test_file,
         tokenizer=tokenizer,
@@ -172,7 +172,7 @@ def main(args):
     )
     
     # Load model
-    print(f"\n🤖 Loading model...")
+    print(f"\nLoading model...")
     model = MultiLabelViSoBERT(
         model_name=config['model']['name'],
         num_aspects=len(test_dataset.aspects),
@@ -186,16 +186,16 @@ def main(args):
     if not os.path.exists(checkpoint_path):
         raise FileNotFoundError(f"Checkpoint not found: {checkpoint_path}")
     
-    print(f"📦 Loading checkpoint: {checkpoint_path}")
+    print(f"Loading checkpoint: {checkpoint_path}")
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
     
     # Load with strict=False to ignore pooler keys (old model has pooler, new doesn't)
     missing_keys, unexpected_keys = model.load_state_dict(checkpoint['model_state_dict'], strict=False)
     
     if unexpected_keys:
-        print(f"⚠️  Ignored unexpected keys (old pooler): {unexpected_keys}")
+        print(f"WARNING: Ignored unexpected keys (old pooler): {unexpected_keys}")
     if missing_keys:
-        print(f"⚠️  Missing keys: {missing_keys}")
+        print(f"WARNING: Missing keys: {missing_keys}")
     
     model.to(device)
     
@@ -204,7 +204,7 @@ def main(args):
     metrics = checkpoint.get('metrics', {})
     f1_score = metrics.get('overall_f1', 0) * 100 if 'overall_f1' in metrics else 0
     
-    print(f"✓ Model loaded (Epoch {epoch}, F1: {f1_score:.2f}%)")
+    print(f"Model loaded (Epoch {epoch}, F1: {f1_score:.2f}%)")
     
     # Aspect and sentiment names
     aspect_names = test_dataset.aspects
@@ -214,34 +214,34 @@ def main(args):
     test_df = pd.read_csv(test_file, encoding='utf-8-sig')
     
     # Generate predictions
-    print(f"\n🔮 Generating predictions...")
+    print(f"\nGenerating predictions...")
     pred_df, true_df = generate_predictions(model, test_loader, device, aspect_names, sentiment_names, test_df)
     
     # Save predictions in wide format
-    print(f"\n💾 Saving predictions in MULTI-LABEL WIDE FORMAT...")
+    print(f"\nSaving predictions in MULTI-LABEL WIDE FORMAT...")
 
     # Primary output (for analysis scripts expecting the original path)
     pred_df.to_csv(output_file, index=False, encoding='utf-8-sig')
-    print(f"   ✓ Predictions saved: {output_file}")
+    print(f"   Predictions saved: {output_file}")
 
     # Optional suffix files for clarity/backward compatibility
     pred_output = output_file.replace('.csv', '_pred.csv')
     if pred_output != output_file:
         pred_df.to_csv(pred_output, index=False, encoding='utf-8-sig')
-        print(f"   ✓ Predictions saved (alias): {pred_output}")
+        print(f"   Predictions saved (alias): {pred_output}")
     
     # Save true sentiments (for reference)
     true_output = output_file.replace('.csv', '_true.csv')
     true_df.to_csv(true_output, index=False, encoding='utf-8-sig')
-    print(f"   ✓ True labels saved: {true_output}")
+    print(f"   True labels saved: {true_output}")
     
-    print(f"\n✅ PREDICTIONS SAVED IN MULTI-LABEL FORMAT!")
+    print(f"\nPREDICTIONS SAVED IN MULTI-LABEL FORMAT!")
     print(f"   Format: Wide format (one row per sentence, all aspects as columns)")
     print(f"   Total sentences: {len(pred_df)}")
     print(f"   Aspects per sentence: {len(aspect_names)}")
     
     # Calculate accuracy for each aspect
-    print(f"\n📊 Accuracy by Aspect:")
+    print(f"\nAccuracy by Aspect:")
     total_correct = 0
     total_predictions = 0
     
@@ -265,7 +265,7 @@ def main(args):
         print(f"\n   {'Overall':15s}:   N/A   (no ground-truth labels)")
     
     # Sentiment distribution
-    print(f"\n📊 Sentiment Distribution:")
+    print(f"\nSentiment Distribution:")
     print(f"\n   Predicted:")
     for sentiment in ['Positive', 'Negative', 'Neutral']:
         count = (pred_df[aspect_names] == sentiment).sum().sum()
@@ -283,7 +283,7 @@ def main(args):
             print(f"      {sentiment:8s}: {count:5d} ({pct:5.1f}%)")
     
     print(f"\n{'='*80}")
-    print(f"✅ DONE! Multi-label predictions saved in wide format.")
+    print(f"DONE! Multi-label predictions saved in wide format.")
     print(f"   You can now use these files for multi-label evaluation.")
     print(f"{'='*80}\n")
 

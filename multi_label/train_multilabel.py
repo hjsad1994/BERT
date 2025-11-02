@@ -217,7 +217,7 @@ def print_metrics(metrics, epoch=None):
         print(f"Epoch {epoch} Results")
         print(f"{'='*80}")
     
-    print(f"\n📊 Overall Metrics:")
+    print(f"\nOverall Metrics:")
     print(f"   Accuracy:  {metrics['overall_accuracy']*100:.2f}%")
     print(f"   F1 Score:  {metrics['overall_f1']*100:.2f}%")
     print(f"   Precision: {metrics['overall_precision']*100:.2f}%")
@@ -257,7 +257,7 @@ def save_checkpoint(model, optimizer, epoch, metrics, output_dir, is_best=False)
     if is_best:
         best_path = os.path.join(output_dir, 'best_model.pt')
         torch.save(checkpoint, best_path)
-        print(f"✓ Saved best model: {best_path}")
+        print(f"Saved best model: {best_path}")
     
     return checkpoint_path
 
@@ -347,7 +347,7 @@ def main(args):
     print("=" * 80)
     
     # Load config
-    print(f"\n📖 Loading config from: {args.config}")
+    print(f"\nLoading config from: {args.config}")
     config = load_config(args.config)
     
     # Setup logging
@@ -358,7 +358,7 @@ def main(args):
     
     # Device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"✓ Using device: {device}")
+    print(f"Using device: {device}")
     
     # Set seed from reproducibility config
     seed = config['reproducibility']['training_seed']
@@ -370,11 +370,11 @@ def main(args):
         torch.backends.cudnn.benchmark = False
     
     # Load tokenizer
-    print(f"\n✓ Loading tokenizer...")
+    print(f"\nLoading tokenizer...")
     tokenizer = AutoTokenizer.from_pretrained(config['model']['name'])
     
     # Load datasets
-    print(f"\n✓ Loading datasets...")
+    print(f"\nLoading datasets...")
     train_dataset = MultiLabelABSADataset(
         config['paths']['train_file'],
         tokenizer,
@@ -426,7 +426,7 @@ def main(args):
     # SETUP FOCAL LOSS
     # =====================================================================
     print(f"\n{'='*80}")
-    print("🔥 Setting up Focal Loss...")
+    print("Setting up Focal Loss...")
     print(f"{'='*80}")
     
     # Read focal loss config
@@ -436,7 +436,7 @@ def main(args):
     focal_alpha_config = focal_config.get('focal_alpha', 'auto')
     
     if not use_focal_loss:
-        print(f"\n⚠️  Focal Loss is DISABLED in config!")
+        print(f"\nWARNING: Focal Loss is DISABLED in config!")
         print(f"   Using standard CrossEntropyLoss")
         # Fallback to cross entropy (not recommended for imbalanced data)
         focal_loss_fn = None  # Will handle this in train_epoch
@@ -445,7 +445,7 @@ def main(args):
         
         # Determine alpha weights
         if focal_alpha_config == 'auto':
-            print(f"\n🎯 Alpha mode: AUTO (global inverse frequency)")
+            print(f"\nAlpha mode: AUTO (global inverse frequency)")
             alpha = calculate_global_alpha(
                 config['paths']['train_file'],
                 train_dataset.aspects,
@@ -453,17 +453,17 @@ def main(args):
             )
         
         elif isinstance(focal_alpha_config, list) and len(focal_alpha_config) == 3:
-            print(f"\n🎯 Alpha mode: USER-DEFINED (global)")
+            print(f"\nAlpha mode: USER-DEFINED (global)")
             alpha = focal_alpha_config
             print(f"   Using custom alpha: {alpha}")
         
         elif focal_alpha_config is None:
-            print(f"\n🎯 Alpha mode: EQUAL (no class weighting)")
+            print(f"\nAlpha mode: EQUAL (no class weighting)")
             alpha = [1.0, 1.0, 1.0]
             print(f"   Using equal weights: {alpha}")
         
         else:
-            print(f"\n⚠️  Invalid focal_alpha config: {focal_alpha_config}")
+            print(f"\nWARNING: Invalid focal_alpha config: {focal_alpha_config}")
             print(f"   Falling back to AUTO mode")
             alpha = calculate_global_alpha(
                 config['paths']['train_file'],
@@ -480,12 +480,12 @@ def main(args):
         )
         focal_loss_fn = focal_loss_fn.to(device)
         
-        print(f"\n✓ Focal Loss ready:")
+        print(f"\nFocal Loss ready:")
         print(f"   Gamma: {focal_gamma}")
         print(f"   Alpha: {alpha}")
         print(f"   Reduction: 'none' (for per-aspect masking)")
         print(f"   Mode: Global (same alpha for all 11 aspects)")
-        print(f"\n⭐ TRAINING WILL SKIP NaN ASPECTS (masking enabled)")
+        print(f"\nTRAINING WILL SKIP NaN ASPECTS (masking enabled)")
     
     # Create model
     print(f"\nCreating model...")
@@ -511,10 +511,10 @@ def main(args):
     # Use epochs from config unless explicitly overridden
     if args.epochs is not None:
         num_epochs = args.epochs
-        print(f"\n⚠️  Using epochs from command line: {num_epochs} (overrides config: {config['training'].get('num_train_epochs')})")
+        print(f"\nWARNING: Using epochs from command line: {num_epochs} (overrides config: {config['training'].get('num_train_epochs')})")
     else:
         num_epochs = config['training'].get('num_train_epochs', 5)
-        print(f"\n✓ Using epochs from config: {num_epochs}")
+        print(f"\nUsing epochs from config: {num_epochs}")
     
     total_steps = len(train_loader) * num_epochs
     warmup_ratio = config['training'].get('warmup_ratio', 0.06)
@@ -526,7 +526,7 @@ def main(args):
         num_training_steps=total_steps
     )
     
-    print(f"\n✓ Training setup:")
+    print(f"\nTraining setup:")
     print(f"   Epochs: {num_epochs}")
     print(f"   Batch size: {batch_size}")
     print(f"   Learning rate: {learning_rate}")
@@ -589,7 +589,7 @@ def main(args):
         is_best = val_metrics['overall_f1'] > best_f1
         if is_best:
             best_f1 = val_metrics['overall_f1']
-            print(f"\n🎉 New best F1: {best_f1*100:.2f}%")
+            print(f"\nNew best F1: {best_f1*100:.2f}%")
             logging.info(f"New best F1: {best_f1*100:.2f}%")
         
         # Use output_dir from config if not specified
@@ -617,9 +617,9 @@ def main(args):
     # Load with strict=False to handle old checkpoints with pooler
     missing_keys, unexpected_keys = model.load_state_dict(best_checkpoint['model_state_dict'], strict=False)
     if unexpected_keys:
-        print(f"⚠️  Ignored unexpected keys from old checkpoint: {len(unexpected_keys)} keys")
+        print(f"WARNING: Ignored unexpected keys from old checkpoint: {len(unexpected_keys)} keys")
     if missing_keys:
-        print(f"⚠️  Missing keys: {missing_keys}")
+        print(f"WARNING: Missing keys: {missing_keys}")
     
     test_metrics = evaluate(model, test_loader, device, aspect_names,
                            raw_data_file=config['paths']['test_file'],
@@ -660,17 +660,17 @@ def main(args):
     with open(results_file, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False, default=str)
     
-    print(f"\n✓ Results saved to: {results_file}")
+    print(f"\nResults saved to: {results_file}")
     logging.info(f"Results saved to: {results_file}")
     
     print(f"\n{'='*80}")
     print("Training Complete!")
     print(f"{'='*80}")
-    print(f"\n✅ Best Model Performance:")
+    print(f"\nBest Model Performance:")
     print(f"   Test Accuracy: {test_metrics['overall_accuracy']*100:.2f}%")
     print(f"   Test F1:       {test_metrics['overall_f1']*100:.2f}%")
-    print(f"\n📁 Model saved to: {output_dir}")
-    print(f"\n📊 Training logs and results:")
+    print(f"\nModel saved to: {output_dir}")
+    print(f"\nTraining logs and results:")
     print(f"   - Training history: {output_dir}/training_history.csv")
     print(f"   - Test predictions: {output_dir}/test_predictions_detailed.csv")
     print(f"   - Evaluation summary: {output_dir}/test_evaluation_summary.txt")

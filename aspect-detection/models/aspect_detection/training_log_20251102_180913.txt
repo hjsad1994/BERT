@@ -1,0 +1,2 @@
+2025-11-02 18:09:13,910 - INFO - Training started at 2025-11-02 18:09:13.910171
+2025-11-02 18:09:13,911 - INFO - Log file: aspect-detection/models/aspect_detection\training_log_20251102_180913.txt

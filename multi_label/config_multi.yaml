@@ -3,12 +3,18 @@
 # Multi-label approach: Predict sentiment for all 11 aspects simultaneously
 # Output: 33 binary predictions (11 aspects × 3 sentiments)
 # Each aspect-sentiment pair is predicted independently
+# 
+# Base Model: 5CD-AI/Vietnamese-Sentiment-visobert
+# - Pre-trained on 120K Vietnamese sentiment analysis datasets
+# - Fine-tuned from visobert-14gb-corpus
+# - Labels: 0=Negative, 1=Positive, 2=Neutral
+# - We further fine-tune this model for multi-label ABSA task
 # ========================================================================
 
 paths:
   data_dir: "multi_label/data"
-  train_file: "multi_label/data/train_multilabel_balanced.csv"  # Balanced data (15,921 samples)
-  # train_file: "multi_label/data/train_multilabel.csv"
+  # train_file: "multi_label/data/train_multilabel_balanced.csv"  # Balanced data (15,921 samples)
+  train_file: "multi_label/data/train_multilabel.csv"
   validation_file: "multi_label/data/validation_multilabel.csv"
   test_file: "multi_label/data/test_multilabel.csv"
   output_dir: "multi_label/models/multilabel_focal_contrastive"
@@ -16,7 +22,9 @@ paths:
   predictions_file: "multi_label/results/test_predictions_multi.csv"
 
 model:
-  name: "5CD-AI/visobert-14gb-corpus"  # ViSoBERT base model (14GB Vietnamese corpus)
+  name: "5CD-AI/Vietnamese-Sentiment-visobert"  # Pre-trained sentiment model (fine-tuned on 120K Vietnamese sentiment data)
+  # Note: This model is pre-trained for sentiment analysis (Negative/Positive/Neutral)
+  # We will fine-tune it further for multi-label ABSA task (11 aspects × 3 sentiments)
   num_labels: 33  # 11 aspects × 3 sentiments = 33 binary outputs
   num_aspects: 11
   num_sentiments: 3
@@ -121,16 +129,14 @@ general:
 # Change master_seed to run different experiments (e.g., 42, 123, 456, 789, 2024)
 # ========================================================================
 reproducibility:
-  master_seed: 42                 # Master seed for all operations
-  
   # Data preprocessing seeds
-  data_split_seed: 42              # Seed for train/val/test split
-  oversampling_seed: 42            # Seed for aspect-wise oversampling
-  shuffle_seed: 42               # Seed for data shuffling
+  data_split_seed: 99              # Seed for train/val/test split
+  oversampling_seed: 99            # Seed for aspect-wise oversampling
+  shuffle_seed: 99               # Seed for data shuffling
   
   # Model training seeds
-  training_seed: 42                # Seed for PyTorch/Transformers training
-  dataloader_seed: 42             # Seed for DataLoader worker initialization
+  training_seed: 99                # Seed for PyTorch/Transformers training
+  dataloader_seed: 99             # Seed for DataLoader worker initialization
   
   # Notes:
   # - All seeds set to 42 by default for reproducibility
@@ -141,7 +147,7 @@ reproducibility:
 multi_label:
   # Focal Loss settings
   use_focal_loss: true      # Enable Focal Loss
-  focal_gamma: 2.0          # Focusing parameter (higher = more focus on hard examples)
+  focal_gamma: 2.1          # Focusing parameter (higher = more focus on hard examples)
   focal_alpha: "auto"       # Auto class weights from data
   
   # Data settings

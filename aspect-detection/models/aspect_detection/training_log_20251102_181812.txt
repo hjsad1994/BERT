@@ -1,0 +1,54 @@
+2025-11-02 18:18:12,367 - INFO - Training started at 2025-11-02 18:18:12.367921
+2025-11-02 18:18:12,368 - INFO - Log file: aspect-detection/models/aspect_detection\training_log_20251102_181812.txt
+2025-11-02 18:18:23,481 - INFO - Starting training loop
+2025-11-02 18:18:23,481 - INFO - Epoch 1/10
+2025-11-02 18:21:34,263 - INFO - Train Loss: 0.5614
+2025-11-02 18:21:57,229 - INFO - Validation - Acc: 95.79%, F1: 87.86%, Precision: 85.77%, Recall: 90.70%
+2025-11-02 18:21:57,229 - INFO - New best F1: 87.86%
+2025-11-02 18:22:00,733 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:22:00,736 - INFO - Epoch 2/10
+2025-11-02 18:25:10,904 - INFO - Train Loss: 0.2296
+2025-11-02 18:25:33,805 - INFO - Validation - Acc: 96.02%, F1: 88.32%, Precision: 86.77%, Recall: 90.86%
+2025-11-02 18:25:33,805 - INFO - New best F1: 88.32%
+2025-11-02 18:25:36,727 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:25:36,727 - INFO - Epoch 3/10
+2025-11-02 18:28:57,520 - INFO - Train Loss: 0.1657
+2025-11-02 18:29:20,520 - INFO - Validation - Acc: 96.26%, F1: 89.64%, Precision: 87.07%, Recall: 92.54%
+2025-11-02 18:29:20,520 - INFO - New best F1: 89.64%
+2025-11-02 18:29:23,021 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:29:23,021 - INFO - Epoch 4/10
+2025-11-02 18:32:33,342 - INFO - Train Loss: 0.1240
+2025-11-02 18:32:56,259 - INFO - Validation - Acc: 96.21%, F1: 89.19%, Precision: 86.61%, Recall: 92.22%
+2025-11-02 18:32:57,435 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:32:57,435 - INFO - Epoch 5/10
+2025-11-02 18:36:08,261 - INFO - Train Loss: 0.0912
+2025-11-02 18:36:32,120 - INFO - Validation - Acc: 96.24%, F1: 89.54%, Precision: 87.63%, Recall: 91.66%
+2025-11-02 18:36:33,379 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:36:33,380 - INFO - Epoch 6/10
+2025-11-02 18:39:45,578 - INFO - Train Loss: 0.0684
+2025-11-02 18:40:08,513 - INFO - Validation - Acc: 96.31%, F1: 89.36%, Precision: 87.89%, Recall: 91.03%
+2025-11-02 18:40:09,677 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:40:09,677 - INFO - Epoch 7/10
+2025-11-02 18:43:20,416 - INFO - Train Loss: 0.0509
+2025-11-02 18:43:44,289 - INFO - Validation - Acc: 96.35%, F1: 89.58%, Precision: 88.47%, Recall: 90.81%
+2025-11-02 18:43:45,480 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:43:45,481 - INFO - Epoch 8/10
+2025-11-02 18:46:56,766 - INFO - Train Loss: 0.0399
+2025-11-02 18:47:19,949 - INFO - Validation - Acc: 96.33%, F1: 89.78%, Precision: 88.10%, Recall: 91.61%
+2025-11-02 18:47:19,949 - INFO - New best F1: 89.78%
+2025-11-02 18:47:22,439 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:47:22,440 - INFO - Epoch 9/10
+2025-11-02 18:50:34,340 - INFO - Train Loss: 0.0336
+2025-11-02 18:50:58,390 - INFO - Validation - Acc: 96.35%, F1: 89.74%, Precision: 88.39%, Recall: 91.21%
+2025-11-02 18:50:59,573 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:50:59,573 - INFO - Epoch 10/10
+2025-11-02 18:54:12,289 - INFO - Train Loss: 0.0302
+2025-11-02 18:54:35,207 - INFO - Validation - Acc: 96.39%, F1: 89.84%, Precision: 88.60%, Recall: 91.19%
+2025-11-02 18:54:35,207 - INFO - New best F1: 89.84%
+2025-11-02 18:54:37,657 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
+2025-11-02 18:55:01,177 - INFO - Test Results - Acc: 96.30%, F1: 87.22%
+2025-11-02 18:55:01,498 - INFO - Evaluation results saved to: aspect-detection/models/aspect_detection\test_predictions_detailed.csv and aspect-detection/models/aspect_detection\test_evaluation_summary.txt
+2025-11-02 18:55:01,500 - INFO - Results saved to: aspect-detection/models/aspect_detection\test_results.json
+2025-11-02 18:55:01,501 - INFO - Training completed successfully
+2025-11-02 18:55:01,501 - INFO - Final Test Accuracy: 96.30%
+2025-11-02 18:55:01,501 - INFO - Final Test F1: 87.22%

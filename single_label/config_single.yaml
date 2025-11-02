@@ -116,25 +116,40 @@ general:
 # ========================================================================
 # REPRODUCIBILITY: Master Seed Configuration
 # ========================================================================
-# All random operations use seeds derived from master_seed for consistency
-# Change master_seed to run different experiments (e.g., 42, 123, 456, 789, 2024)
+# For academic research and fair comparison:
+# 
+# 1. FIXED SEEDS (keep same across all experiments):
+#    - data_split_seed: Keep FIXED to ensure same train/val/test splits
+#      This ensures fair comparison between different methods/models
+#    - oversampling_seed: Keep FIXED if using same augmentation strategy
+#    - shuffle_seed: Keep FIXED (usually same as data_split_seed)
+# 
+# 2. VARIABLE SEEDS (change for multiple runs):
+#    - training_seed: CHANGE for each run (e.g., 79, 123, 456, 789, 2024)
+#      This affects: weight initialization, dropout, DataLoader shuffling (main process)
+#      Multiple runs are needed for statistical significance (mean ± std)
+#    - dataloader_seed: SYNC with training_seed (change together)
+#      This seeds DataLoader worker processes when num_workers > 0
+#      Recommended: Keep same as training_seed for consistency
+# 
+# 3. RECOMMENDED PRACTICE FOR MULTIPLE RUNS:
+#    - Run 1: training_seed = 79, dataloader_seed = 79
+#    - Run 2: training_seed = 123, dataloader_seed = 123
+#    - Run 3: training_seed = 456, dataloader_seed = 456
+#    - Run 4: training_seed = 789, dataloader_seed = 789
+#    - Run 5: training_seed = 2024, dataloader_seed = 2024
+#    Then report: Mean ± Std across all 5 runs
+# 
 # ========================================================================
 reproducibility:
-  master_seed: 42                  # Master seed for all operations
+  # FIXED: Data preprocessing seeds (keep same for fair comparison)
+  data_split_seed: 79              # FIXED: Train/val/test split seed
+  oversampling_seed: 79            # FIXED: Data augmentation seed
+  shuffle_seed: 79                 # FIXED: Data shuffling seed
   
-  # Data preprocessing seeds
-  data_split_seed: 78              # Seed for train/val/test split
-  oversampling_seed: 78            # Seed for aspect-wise oversampling
-  shuffle_seed: 78                 # Seed for data shuffling
-  
-  # Model training seeds
-  training_seed: 78                # Seed for PyTorch/Transformers training
-  dataloader_seed: 78              # Seed for DataLoader worker initialization
-  
-  # Notes:
-  # - All seeds set to 42 by default for reproducibility
-  # - For multiple runs, change master_seed: [42, 123, 456, 789, 2024]
-  # - Recommended: Keep all seeds = master_seed unless specific reason
+  # VARIABLE: Model training seeds (change for multiple runs)
+  training_seed: 79                # CHANGE THIS: For different training runs [79, 123, 456, 789, 2024]
+  dataloader_seed: 79              # SYNC with training_seed (seeds DataLoader workers when num_workers > 0)
 
 # Single-label specific settings
 single_label:

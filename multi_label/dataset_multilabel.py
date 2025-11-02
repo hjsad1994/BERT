@@ -201,10 +201,10 @@ def test_dataset():
         print(f"   Weight shape: {weights.shape}")
         print(f"   Weight range: [{weights.min():.3f}, {weights.max():.3f}]")
         
-        print("\n✅ Dataset tests passed!")
+        print("\n Dataset tests passed!")
         
     except FileNotFoundError:
-        print("   ⚠️  File not found: data/train_multilabel.csv")
+        print("   WARNING:  File not found: data/train_multilabel.csv")
         print("   Please run: python prepare_data_multilabel.py first")
     
     print("=" * 80)

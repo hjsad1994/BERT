@@ -85,7 +85,7 @@ class ErrorAnalyzer:
             if col.endswith('_pred')
         ))
         
-        print(f"✓ Found {len(aspects)} aspects: {', '.join(aspects)}")
+        print(f" Found {len(aspects)} aspects: {', '.join(aspects)}")
         
         # Convert predictions and true labels
         for aspect in aspects:
@@ -115,20 +115,20 @@ class ErrorAnalyzer:
         true_file = self.predictions_file.replace('.csv', '_true.csv')
         if os.path.exists(true_file):
             true_wide = pd.read_csv(true_file, encoding='utf-8-sig')
-            print(f"✓ Loaded true labels: {len(true_wide)} sentences (wide format)")
+            print(f" Loaded true labels: {len(true_wide)} sentences (wide format)")
         else:
             true_wide = test_wide.copy()
-            print(f"⚠️  True labels file not found, using test data")
+            print(f"WARNING:  True labels file not found, using test data")
         
         aspects = [col for col in pred_wide.columns if col != 'data']
-        print(f"✓ Found {len(aspects)} aspects: {', '.join(aspects)}")
+        print(f" Found {len(aspects)} aspects: {', '.join(aspects)}")
         
         return pred_wide, true_wide, aspects
     
     def load_data(self):
         """Load test data và predictions, convert to long format"""
         print(f"\n{'='*70}")
-        print("📁 Đang tải dữ liệu...")
+        print(" Đang tải dữ liệu...")
         print(f"{'='*70}")
         
         # Load ground truth
@@ -136,24 +136,24 @@ class ErrorAnalyzer:
             raise FileNotFoundError(f"Không tìm thấy file: {self.test_file}")
         
         test_wide = pd.read_csv(self.test_file, encoding='utf-8-sig')
-        print(f"✓ Loaded test data: {len(test_wide)} sentences (wide format)")
+        print(f" Loaded test data: {len(test_wide)} sentences (wide format)")
         
         # Load predictions
         if not os.path.exists(self.predictions_file):
             raise FileNotFoundError(f"Không tìm thấy file: {self.predictions_file}")
         
         pred_raw = pd.read_csv(self.predictions_file, encoding='utf-8-sig')
-        print(f"✓ Loaded predictions file: {len(pred_raw)} rows")
+        print(f" Loaded predictions file: {len(pred_raw)} rows")
         
         # Detect format and load accordingly
         if 'sample_id' in pred_raw.columns and '_pred' in str(pred_raw.columns):
-            print("✓ Detected numeric format predictions file")
+            print(" Detected numeric format predictions file")
             pred_wide, true_wide, aspects = self._load_numeric_format_predictions(pred_raw, test_wide)
         else:
-            print("✓ Detected string format predictions file")
+            print(" Detected string format predictions file")
             pred_wide, true_wide, aspects = self._load_string_format_predictions(pred_raw, test_wide)
         
-        print(f"✓ Loaded predictions: {len(pred_wide)} sentences (wide format)")
+        print(f" Loaded predictions: {len(pred_wide)} sentences (wide format)")
         
         # Convert to long format: only include labeled aspects
         long_data = []
@@ -198,23 +198,23 @@ class ErrorAnalyzer:
         total_aspects = len(test_wide) * len(aspects)
         sentiment_counts = self.df['sentiment'].value_counts().to_dict()
         
-        print(f"✓ Converted to long format: {len(self.df)} predictions (labeled aspects)")
+        print(f" Converted to long format: {len(self.df)} predictions (labeled aspects)")
         print(f"   • Total aspects in dataset: {total_aspects:,}")
         print(f"   • Labeled aspects: {labeled_count:,} ({labeled_count/total_aspects*100:.1f}%)")
         print(f"     - Positive: {sentiment_counts.get('positive', 0):,}")
         print(f"     - Negative: {sentiment_counts.get('negative', 0):,}")
         print(f"     - Neutral: {sentiment_counts.get('neutral', 0):,}")
         print(f"   • Skipped unlabeled: {skipped_unlabeled:,} ({skipped_unlabeled/total_aspects*100:.1f}%)")
-        print(f"✓ Overall accuracy (on labeled aspects): {accuracy:.2%}")
-        print(f"✓ Total errors: {(~self.df['correct']).sum()} / {len(self.df)}")
-        print(f"⚠️  NOTE: Includes all labeled aspects (positive/negative/neutral), excludes only unlabeled")
+        print(f" Overall accuracy (on labeled aspects): {accuracy:.2%}")
+        print(f" Total errors: {(~self.df['correct']).sum()} / {len(self.df)}")
+        print(f"WARNING:  NOTE: Includes all labeled aspects (positive/negative/neutral), excludes only unlabeled")
         
         return self
     
     def analyze_by_aspect(self):
         """Phân tích lỗi theo từng aspect"""
         print(f"\n{'='*70}")
-        print("📊 PHÂN TÍCH THEO ASPECT (LABELED ASPECTS: POSITIVE/NEGATIVE/NEUTRAL)")
+        print(" PHÂN TÍCH THEO ASPECT (LABELED ASPECTS: POSITIVE/NEGATIVE/NEUTRAL)")
         print(f"{'='*70}")
         
         aspect_stats = []
@@ -242,7 +242,7 @@ class ErrorAnalyzer:
                   f"{row['errors']:<8} {row['accuracy']:<10.2%} {row['error_rate']:.2%}")
         
         aspect_stats_df.to_csv(f"{self.output_dir}/aspect_error_analysis.csv", index=False, encoding='utf-8-sig')
-        print(f"\n✓ Saved: {self.output_dir}/aspect_error_analysis.csv")
+        print(f"\n Saved: {self.output_dir}/aspect_error_analysis.csv")
         
         # Top 5 weakest
         print(f"\n🔴 TOP 5 ASPECTS YẾU NHẤT (Error Rate cao nhất):")
@@ -254,7 +254,7 @@ class ErrorAnalyzer:
     def analyze_by_sentiment(self):
         """Phân tích lỗi theo sentiment class"""
         print(f"\n{'='*70}")
-        print("📊 PHÂN TÍCH THEO SENTIMENT")
+        print(" PHÂN TÍCH THEO SENTIMENT")
         print(f"{'='*70}")
         
         # Filter to only valid labels
@@ -263,9 +263,9 @@ class ErrorAnalyzer:
             self.df['predicted_sentiment'].isin(self.VALID_LABELS)
         ].copy()
         
-        print(f"✓ Filtered data: {len(df_filtered)} samples (only positive/negative/neutral)")
+        print(f" Filtered data: {len(df_filtered)} samples (only positive/negative/neutral)")
         if len(df_filtered) < len(self.df):
-            print(f"  ⚠️  Excluded {len(self.df) - len(df_filtered)} samples with invalid labels")
+            print(f"  WARNING:  Excluded {len(self.df) - len(df_filtered)} samples with invalid labels")
         
         # Calculate stats per sentiment
         sentiment_stats = []
@@ -293,7 +293,7 @@ class ErrorAnalyzer:
                   f"{row['errors']:<8} {row['accuracy']:<10.2%} {row['error_rate']:.2%}")
         
         # Confusion matrix
-        print(f"\n📊 CONFUSION MATRIX (CHỈ 3 NHÃN: Positive/Negative/Neutral):")
+        print(f"\n CONFUSION MATRIX (CHỈ 3 NHÃN: Positive/Negative/Neutral):")
         cm = confusion_matrix(df_filtered['sentiment'], df_filtered['predicted_sentiment'], 
                              labels=self.VALID_LABELS)
         
@@ -307,14 +307,14 @@ class ErrorAnalyzer:
             print(row_str)
         
         sentiment_stats_df.to_csv(f"{self.output_dir}/sentiment_error_analysis.csv", index=False, encoding='utf-8-sig')
-        print(f"\n✓ Saved: {self.output_dir}/sentiment_error_analysis.csv")
+        print(f"\n Saved: {self.output_dir}/sentiment_error_analysis.csv")
         
         return sentiment_stats_df, cm
     
     def analyze_confusion_patterns(self):
         """Phân tích các confusion patterns chi tiết"""
         print(f"\n{'='*70}")
-        print("🔍 PHÂN TÍCH CONFUSION PATTERNS")
+        print(" PHÂN TÍCH CONFUSION PATTERNS")
         print(f"{'='*70}")
         
         errors_df = self.df[~self.df['correct']].copy()
@@ -334,7 +334,7 @@ class ErrorAnalyzer:
                   f"{row['count']:<8} {pct:.1f}%")
         
         # Analyze by aspect
-        print(f"\n🔍 CONFUSION PATTERNS BY ASPECT:")
+        print(f"\n CONFUSION PATTERNS BY ASPECT:")
         aspect_confusion = defaultdict(lambda: defaultdict(int))
         
         for _, row in errors_df.iterrows():
@@ -350,7 +350,7 @@ class ErrorAnalyzer:
                     print(f"      • {pattern}: {count} cases")
         
         confusion_counts.to_csv(f"{self.output_dir}/confusion_patterns.csv", index=False, encoding='utf-8-sig')
-        print(f"\n✓ Saved: {self.output_dir}/confusion_patterns.csv")
+        print(f"\n Saved: {self.output_dir}/confusion_patterns.csv")
         
         return confusion_counts
     
@@ -366,7 +366,7 @@ class ErrorAnalyzer:
         aspect_errors = errors_df.groupby('aspect').size().reset_index(name='error_count')
         aspect_errors = aspect_errors.sort_values('error_count', ascending=False)
         
-        print(f"\n📊 Aspects có NHIỀU LỖI NHẤT:")
+        print(f"\n Aspects có NHIỀU LỖI NHẤT:")
         for i, (_, row) in enumerate(aspect_errors.head(5).iterrows(), 1):
             print(f"   {i}. {row['aspect']:<15} {row['error_count']} errors")
         
@@ -374,7 +374,7 @@ class ErrorAnalyzer:
         sentence_error_counts = errors_df.groupby('data').size().reset_index(name='error_count')
         sentence_error_counts = sentence_error_counts.sort_values('error_count', ascending=False)
         
-        print(f"\n📝 Câu có NHIỀU LỖI NHẤT (confused across multiple aspects):")
+        print(f"\n Câu có NHIỀU LỖI NHẤT (confused across multiple aspects):")
         for i, (_, row) in enumerate(sentence_error_counts.head(10).iterrows(), 1):
             sentence = row['data']
             count = row['error_count']
@@ -387,7 +387,7 @@ class ErrorAnalyzer:
                 print(f"      • {err['aspect']}: {err['sentiment']} → {err['predicted_sentiment']}")
         
         # Save hard cases
-        print(f"\n💾 Saving detailed error examples...")
+        print(f"\n Saving detailed error examples...")
         hard_cases = []
         for aspect in errors_df['aspect'].unique():
             aspect_errors_df = errors_df[errors_df['aspect'] == aspect]
@@ -402,18 +402,18 @@ class ErrorAnalyzer:
         
         hard_cases_df = pd.DataFrame(hard_cases)
         hard_cases_df.to_csv(f"{self.output_dir}/hard_cases.csv", index=False, encoding='utf-8-sig')
-        print(f"✓ Saved: {self.output_dir}/hard_cases.csv")
+        print(f" Saved: {self.output_dir}/hard_cases.csv")
         
         return hard_cases_df
     
     def save_all_errors(self):
         """Lưu TẤT CẢ các errors để phân tích chi tiết"""
         print(f"\n{'='*70}")
-        print("💾 LƯU TẤT CẢ ERRORS CHO PHÂN TÍCH CHI TIẾT")
+        print(" LƯU TẤT CẢ ERRORS CHO PHÂN TÍCH CHI TIẾT")
         print(f"{'='*70}")
         
         errors_df = self.df[~self.df['correct']].copy()
-        print(f"\n📊 Tổng số errors: {len(errors_df)}")
+        print(f"\n Tổng số errors: {len(errors_df)}")
         
         # Add columns
         errors_df['confusion_type'] = errors_df.apply(
@@ -432,22 +432,22 @@ class ErrorAnalyzer:
         all_errors_path = f"{self.output_dir}/all_errors_detailed.csv"
         errors_df_sorted[columns_to_save].to_csv(all_errors_path, index=False, encoding='utf-8-sig')
         
-        print(f"✓ Saved ALL {len(errors_df)} errors to: {all_errors_path}")
+        print(f" Saved ALL {len(errors_df)} errors to: {all_errors_path}")
         
         # Print statistics
-        print(f"\n📊 THỐNG KÊ ERRORS:")
+        print(f"\n THỐNG KÊ ERRORS:")
         print(f"   • Tổng số errors: {len(errors_df)}")
         print(f"   • Số câu unique có errors: {errors_df['data'].nunique()}")
         print(f"   • Số aspects bị ảnh hưởng: {errors_df['aspect'].nunique()}")
         
-        print(f"\n📊 TOP 5 CONFUSION TYPES:")
+        print(f"\n TOP 5 CONFUSION TYPES:")
         confusion_stats = errors_df.groupby('confusion_type').size().reset_index(name='count')
         confusion_stats = confusion_stats.sort_values('count', ascending=False)
         for i, (_, row) in enumerate(confusion_stats.head(5).iterrows(), 1):
             pct = row['count'] / len(errors_df) * 100
             print(f"   {i}. {row['confusion_type']:<25} {row['count']:>4} errors ({pct:.1f}%)")
         
-        print(f"\n📊 ERRORS BY ASPECT:")
+        print(f"\n ERRORS BY ASPECT:")
         aspect_error_counts = errors_df.groupby('aspect').size().reset_index(name='count')
         aspect_error_counts = aspect_error_counts.sort_values('count', ascending=False)
         for _, row in aspect_error_counts.iterrows():
@@ -459,14 +459,14 @@ class ErrorAnalyzer:
         summary_df.columns = ['aspect', 'confusion_type', 'error_count']
         summary_df = summary_df.sort_values(['aspect', 'error_count'], ascending=[True, False])
         summary_df.to_csv(f"{self.output_dir}/errors_summary_by_aspect.csv", index=False, encoding='utf-8-sig')
-        print(f"\n✓ Saved error summary to: {self.output_dir}/errors_summary_by_aspect.csv")
+        print(f"\n Saved error summary to: {self.output_dir}/errors_summary_by_aspect.csv")
         
         return errors_df_sorted
     
     def generate_improvement_suggestions(self, aspect_stats_df, sentiment_stats_df):
         """Tạo đề xuất cải thiện dựa trên phân tích"""
         print(f"\n{'='*70}")
-        print("💡 ĐỀ XUẤT CÁCH CẢI THIỆN")
+        print(" ĐỀ XUẤT CÁCH CẢI THIỆN")
         print(f"{'='*70}")
         
         suggestions = []
@@ -474,9 +474,9 @@ class ErrorAnalyzer:
         # 1. Weak aspects
         weak_aspects = aspect_stats_df[aspect_stats_df['error_rate'] > 0.15].head(5)
         if len(weak_aspects) > 0:
-            suggestions.append("\n🎯 ASPECTS YẾU (Error Rate > 15%):")
+            suggestions.append("\n ASPECTS YẾU (Error Rate > 15%):")
             for _, row in weak_aspects.iterrows():
-                suggestions.append(f"\n   📍 {row['aspect']} (Error Rate: {row['error_rate']:.2%})")
+                suggestions.append(f"\n    {row['aspect']} (Error Rate: {row['error_rate']:.2%})")
                 suggestions.append(f"      • Thu thập thêm {int(row['errors'] * 2)} samples cho aspect này")
                 suggestions.append(f"      • Kiểm tra quality của labels")
                 suggestions.append(f"      • Cân nhắc thêm keywords/features đặc trưng")
@@ -484,11 +484,11 @@ class ErrorAnalyzer:
         # 2. Weak sentiment classes
         weak_sentiments = sentiment_stats_df[sentiment_stats_df['error_rate'] > 0.15]
         if len(weak_sentiments) > 0:
-            suggestions.append("\n\n🎯 SENTIMENT CLASSES YẾU:")
+            suggestions.append("\n\n SENTIMENT CLASSES YẾU:")
             for _, row in weak_sentiments.iterrows():
-                suggestions.append(f"\n   📍 {row['sentiment'].upper()} (Error Rate: {row['error_rate']:.2%})")
+                suggestions.append(f"\n    {row['sentiment'].upper()} (Error Rate: {row['error_rate']:.2%})")
                 if row['sentiment'] == 'neutral':
-                    suggestions.append(f"      ✓ Đã apply: Focal Loss + Oversampling")
+                    suggestions.append(f"       Đã apply: Focal Loss + Oversampling")
                     suggestions.append(f"      • Có thể tăng oversampling ratio thêm (hiện tại: 40%)")
                     suggestions.append(f"      • Cân nhắc tăng Focal Loss gamma từ 2.0 → 3.0")
                     suggestions.append(f"      • Thêm data augmentation cho neutral class")
@@ -500,10 +500,10 @@ class ErrorAnalyzer:
         errors_df = self.df[~self.df['correct']]
         top_confusions = errors_df.groupby(['sentiment', 'predicted_sentiment']).size().nlargest(3)
         
-        suggestions.append("\n\n🎯 CONFUSION PATTERNS PHỔ BIẾN:")
+        suggestions.append("\n\n CONFUSION PATTERNS PHỔ BIẾN:")
         for (true_sent, pred_sent), count in top_confusions.items():
             pct = count / len(errors_df) * 100
-            suggestions.append(f"\n   📍 Nhầm {true_sent.upper()} thành {pred_sent.upper()} ({count} cases, {pct:.1f}%)")
+            suggestions.append(f"\n    Nhầm {true_sent.upper()} thành {pred_sent.upper()} ({count} cases, {pct:.1f}%)")
             
             if true_sent == 'neutral' and pred_sent == 'positive':
                 suggestions.append(f"      • Model có xu hướng positive bias")
@@ -515,14 +515,14 @@ class ErrorAnalyzer:
                 suggestions.append(f"      • Kiểm tra sarcasm, irony, context")
         
         # 4. General improvements
-        suggestions.append("\n\n🎯 GENERAL IMPROVEMENTS:")
-        suggestions.append("\n   📍 Data Quality:")
+        suggestions.append("\n\n GENERAL IMPROVEMENTS:")
+        suggestions.append("\n    Data Quality:")
         suggestions.append(f"      • Review lại labeling consistency")
         suggestions.append(f"      • Thêm inter-annotator agreement check")
-        suggestions.append(f"\n   📍 Model Improvements:")
+        suggestions.append(f"\n    Model Improvements:")
         suggestions.append(f"      • Fine-tune learning rate")
         suggestions.append(f"      • Thử different warmup ratios")
-        suggestions.append(f"\n   📍 Training Strategy:")
+        suggestions.append(f"\n    Training Strategy:")
         suggestions.append(f"      • Train thêm epochs nếu chưa converge")
         suggestions.append(f"      • Sử dụng early stopping với patience")
         
@@ -534,14 +534,14 @@ class ErrorAnalyzer:
             f.write(suggestions_text)
         
         print(suggestions_text)
-        print(f"\n✓ Saved: {self.output_dir}/improvement_suggestions.txt")
+        print(f"\n Saved: {self.output_dir}/improvement_suggestions.txt")
         
         return suggestions_text
     
     def create_visualizations(self, aspect_stats_df, sentiment_stats_df, cm):
         """Tạo các visualizations"""
         print(f"\n{'='*70}")
-        print("📊 Tạo visualizations...")
+        print(" Tạo visualizations...")
         print(f"{'='*70}")
         
         plt.style.use('seaborn-v0_8-darkgrid')
@@ -562,14 +562,14 @@ class ErrorAnalyzer:
         plt.tight_layout()
         plt.savefig(f"{self.output_dir}/aspect_error_rates.png", dpi=300, bbox_inches='tight')
         plt.close()
-        print(f"✓ Saved: {self.output_dir}/aspect_error_rates.png")
+        print(f" Saved: {self.output_dir}/aspect_error_rates.png")
         
         # 2. Confusion matrix
         fig, ax = plt.subplots(figsize=(8, 6))
         
         # Verify cm shape is 3x3
         if cm.shape != (3, 3):
-            print(f"⚠️  Warning: Confusion matrix shape is {cm.shape}, expected (3, 3)")
+            print(f"WARNING:  Warning: Confusion matrix shape is {cm.shape}, expected (3, 3)")
             cm_padded = np.zeros((3, 3), dtype=int)
             min_rows, min_cols = min(3, cm.shape[0]), min(3, cm.shape[1])
             cm_padded[:min_rows, :min_cols] = cm[:min_rows, :min_cols]
@@ -585,7 +585,7 @@ class ErrorAnalyzer:
         plt.tight_layout()
         plt.savefig(f"{self.output_dir}/confusion_matrix.png", dpi=300, bbox_inches='tight')
         plt.close()
-        print(f"✓ Saved: {self.output_dir}/confusion_matrix.png")
+        print(f" Saved: {self.output_dir}/confusion_matrix.png")
         
         # 3. Sentiment error rates
         fig, ax = plt.subplots(figsize=(8, 6))
@@ -604,12 +604,12 @@ class ErrorAnalyzer:
         plt.tight_layout()
         plt.savefig(f"{self.output_dir}/sentiment_error_rates.png", dpi=300, bbox_inches='tight')
         plt.close()
-        print(f"✓ Saved: {self.output_dir}/sentiment_error_rates.png")
+        print(f" Saved: {self.output_dir}/sentiment_error_rates.png")
     
     def generate_report(self):
         """Tạo comprehensive report"""
         print(f"\n{'='*70}")
-        print("📝 Tạo Error Analysis Report...")
+        print(" Tạo Error Analysis Report...")
         print(f"{'='*70}")
         
         report_lines = [
@@ -627,7 +627,7 @@ class ErrorAnalyzer:
         sentiment_counts = self.df['sentiment'].value_counts().to_dict()
         
         report_lines.extend([
-            "📊 OVERALL STATISTICS",
+            " OVERALL STATISTICS",
             "-"*70,
             f"Total labeled aspects:     {total:,}",
             f"  - Positive: {sentiment_counts.get('positive', 0):,}",
@@ -636,13 +636,13 @@ class ErrorAnalyzer:
             f"Correct:           {correct:,} ({accuracy:.2%})",
             f"Errors:            {total - correct:,} ({1-accuracy:.2%})",
             "",
-            "⚠️  NOTE: Includes all labeled aspects (positive/negative/neutral)",
+            "WARNING:  NOTE: Includes all labeled aspects (positive/negative/neutral)",
             "   (Only unlabeled aspects are excluded)",
             ""
         ])
         
         # By aspect
-        report_lines.append("📊 ERRORS BY ASPECT")
+        report_lines.append(" ERRORS BY ASPECT")
         report_lines.append("-"*70)
         aspect_stats = self.df.groupby('aspect').agg({
             'correct': ['sum', 'count', 'mean']
@@ -657,7 +657,7 @@ class ErrorAnalyzer:
         report_lines.append("")
         
         # By sentiment
-        report_lines.append("📊 ERRORS BY SENTIMENT")
+        report_lines.append(" ERRORS BY SENTIMENT")
         report_lines.append("-"*70)
         for sentiment in self.VALID_LABELS:
             sent_df = self.df[self.df['sentiment'] == sentiment]
@@ -670,13 +670,13 @@ class ErrorAnalyzer:
         with open(f"{self.output_dir}/error_analysis_report.txt", 'w', encoding='utf-8') as f:
             f.write(report_text)
         
-        print(f"✓ Saved: {self.output_dir}/error_analysis_report.txt")
+        print(f" Saved: {self.output_dir}/error_analysis_report.txt")
         return report_text
     
     def run_full_analysis(self):
         """Chạy toàn bộ error analysis"""
         print(f"\n{'='*70}")
-        print("🔍 BẮT ĐẦU ERROR ANALYSIS")
+        print(" BẮT ĐẦU ERROR ANALYSIS")
         print(f"{'='*70}")
         
         self.load_data()
@@ -690,10 +690,10 @@ class ErrorAnalyzer:
         report = self.generate_report()
         
         print(f"\n{'='*70}")
-        print("✅ ERROR ANALYSIS HOÀN TẤT!")
+        print(" ERROR ANALYSIS HOÀN TẤT!")
         print(f"{'='*70}")
-        print(f"\n📁 Kết quả được lưu tại: {self.output_dir}/")
-        print(f"\n⚠️  LƯU Ý: Chỉ tính trên LABELED ASPECTS (positive/negative/neutral)")
+        print(f"\n Kết quả được lưu tại: {self.output_dir}/")
+        print(f"\nWARNING:  LƯU Ý: Chỉ tính trên LABELED ASPECTS (positive/negative/neutral)")
         print(f"   • Bao gồm: positive, negative, và neutral labels")
         print(f"   • Bỏ qua: unlabeled aspects (NaN/empty)")
         print(f"\nFiles:")

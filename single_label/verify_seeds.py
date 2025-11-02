@@ -40,15 +40,17 @@ def verify_seeds(config_path):
     
     print("\n✓ Reproducibility section found")
     
-    # Required seeds
+    # Required seeds (master_seed removed - not used in code)
     required_seeds = [
-        'master_seed',
         'data_split_seed',
         'oversampling_seed',
         'shuffle_seed',
         'training_seed',
         'dataloader_seed'
     ]
+    
+    # Optional seeds (for reference only)
+    optional_seeds = ['master_seed']
     
     # Verify all seeds
     repro_config = config['reproducibility']
@@ -65,6 +67,12 @@ def verify_seeds(config_path):
         else:
             print(f"  ✗ {seed_name:25} = MISSING")
             all_ok = False
+    
+    # Check optional seeds
+    for seed_name in optional_seeds:
+        if seed_name in repro_config:
+            seed_value = repro_config[seed_name]
+            print(f"  ○ {seed_name:25} = {seed_value} (optional)")
     
     # Check paths section
     print("\n" + "-"*70)
