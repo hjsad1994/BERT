@@ -1,0 +1,215 @@
+# Dual-Task ABSA Configuration
+# ========================================================================
+# APPROACH: Multi-task learning with 2 separate tasks
+# TASK 1: Aspect Detection: Focal Loss (binary, per aspect)
+# TASK 2: Sentiment Classification: Focal Loss (3-class, per detected aspect)
+# LOSS: Focal Loss ONLY (no standard cross-entropy)
+# USE WITH: train_dual_task.py
+# ========================================================================
+
+paths:
+  data_dir: "multi_label/data"
+  train_file: "multi_label/data/train_multilabel_balanced.csv"  # Balanced data (15,921 samples)
+  # train_file: "multi_label/data/train_multilabel.csv"  # Original unbalanced
+  validation_file: "multi_label/data/validation_multilabel.csv"
+  test_file: "multi_label/data/test_multilabel.csv"
+  output_dir: "multi_label/models/dual_task_focal"
+  evaluation_report: "multi_label/results/evaluation_report_dual.txt"
+  predictions_file: "multi_label/results/test_predictions_dual.csv"
+
+model:
+  name: "5CD-AI/visobert-14gb-corpus"  # ViSoBERT base model (14GB Vietnamese corpus)
+  num_labels: 33  # Total outputs: (11 × 2 detection) + (11 × 3 sentiment) = 55 logits
+  num_aspects: 11
+  num_sentiments: 3
+  max_length: 256
+  
+  # Model architecture
+  hidden_size: 512      # Dense layer size
+  projection_dim: 256   # For feature extraction
+  dropout: 0.3
+  
+  # Dual-task specific
+  use_separate_encoders: false  # Share encoder between tasks (recommended)
+
+valid_aspects:
+  - Battery
+  - Camera
+  - Performance
+  - Display
+  - Design
+  - Packaging
+  - Price
+  - Shop_Service
+  - Shipping
+  - General
+  - Others
+
+sentiment_labels:
+  positive: 0
+  negative: 1
+  neutral: 2
+
+training:
+  # Batch size configuration (dual-task can use smaller batches)
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 32
+  gradient_accumulation_steps: 4  # Effective batch = 16 × 4 = 64
+  
+  # Optimizer settings
+  optim: "adamw_bnb_8bit"
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1.0e-8
+  max_grad_norm: 1.0
+  
+  # Learning rate scheduler
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.06
+  
+  # Training duration (dual-task may need more epochs)
+  num_train_epochs: 8
+  
+  # Mixed precision (RTX 3070 Ampere)
+  fp16: true
+  fp16_opt_level: "O2"
+  fp16_full_eval: false
+  tf32: true
+  
+  # DataLoader settings
+  dataloader_num_workers: 2
+  dataloader_pin_memory: true
+  dataloader_prefetch_factor: 4
+  dataloader_persistent_workers: true
+  
+  # Memory optimization
+  gradient_checkpointing: false
+  auto_find_batch_size: false
+  group_by_length: false
+  
+  # Evaluation & checkpointing
+  evaluation_strategy: "epoch"
+  save_strategy: "epoch"
+  save_total_limit: 4
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_sentiment_f1"  # Focus on sentiment task
+  greater_is_better: true
+  
+  # Early stopping
+  early_stopping_patience: 5
+  early_stopping_threshold: 0.001
+  
+  # Logging
+  logging_strategy: "steps"
+  logging_steps: 50
+  logging_first_step: true
+  report_to: []
+  
+  # Misc
+  disable_tqdm: false
+  prediction_loss_only: false
+  remove_unused_columns: true
+  label_names: ["detection_labels", "sentiment_labels"]
+  include_inputs_for_metrics: false
+
+general:
+  device: "auto"
+  log_level: "info"
+
+# ========================================================================
+# REPRODUCIBILITY: Master Seed Configuration
+# ========================================================================
+reproducibility:
+  master_seed: 42                 # Master seed for all operations
+  
+  # Data preprocessing seeds
+  data_split_seed: 42              # Seed for train/val/test split
+  oversampling_seed: 42            # Seed for aspect-wise oversampling
+  shuffle_seed: 42                 # Seed for data shuffling
+  
+  # Model training seeds
+  training_seed: 42                # Seed for PyTorch/Transformers training
+  dataloader_seed: 42              # Seed for DataLoader worker initialization
+
+# ========================================================================
+# DUAL-TASK SPECIFIC SETTINGS
+# ========================================================================
+multi_label:
+  # Detection loss type: 'focal' (default) or 'bce'
+  detection_loss_type: "bce"   # Use weighted BCE for severe imbalance in detection
+
+  # Focal Loss settings (used when detection_loss_type='focal' and for sentiment)
+  use_focal_loss: true      # Keep focal available (used for sentiment regardless)
+  focal_gamma: 2.0          # Default focusing parameter (used if task-specific not provided)
+  focal_alpha: "auto"       # Auto class weights from data distribution
+  
+  # Task-specific focal gamma (overrides focal_gamma when set)
+  detection_gamma: 3.0      # If using focal for detection
+  sentiment_gamma: 2.0      # Focal for sentiment stability
+  
+  # ====================================================================
+  # DUAL-TASK LOSS WEIGHTS (CRITICAL!)
+  # ====================================================================
+  # These control the relative importance of each task
+  # detection_weight + sentiment_weight should = 1.0
+  # ====================================================================
+  detection_weight: 0.5     # Weight for aspect detection loss (Task 1)
+  sentiment_weight: 0.5     # Weight for sentiment classification loss (Task 2)
+  
+  # Recommended weight configurations:
+  # - Balanced:         detection=0.5, sentiment=0.5
+  # - Sentiment-focus:  detection=0.3, sentiment=0.7 (DEFAULT)
+  # - Detection-focus:  detection=0.7, sentiment=0.3
+  
+  # Data augmentation
+  use_balanced_data: true   # Use balanced oversampled data
+  balance_method: "aspect_wise"  # Per-aspect balancing
+  
+  # Inference settings
+  batch_prediction: true    # Predict all 11 aspects in one pass
+  use_class_weights: true   # Apply class weights in loss calculation
+  
+  # Performance expectations
+  expected_detection_f1: "95-97"    # Expected F1 for Task 1 (Detection)
+  expected_sentiment_f1: "94-96"    # Expected F1 for Task 2 (Sentiment)
+
+# ========================================================================
+# DUAL-TASK EXPLANATION
+# ========================================================================
+# 
+# TASK 1: ASPECT DETECTION (Binary Classification)
+# -------------------------------------------------
+# For each of 11 aspects, predict: present (1) or not present (0)
+# 
+# Example:
+#   Input:  "Pin trâu camera xấu"
+#   Output: Battery=1, Camera=1, Performance=0, Display=0, ...
+# 
+# Loss:   Binary Cross-Entropy with Focal Loss
+# Metrics: Accuracy, Precision, Recall, F1 per aspect
+# 
+# TASK 2: SENTIMENT CLASSIFICATION (3-way Classification)
+# --------------------------------------------------------
+# For each DETECTED aspect (from Task 1), predict sentiment: pos/neg/neu
+# 
+# Example:
+#   Input:  "Pin trâu camera xấu" + Detection=[Battery=1, Camera=1, ...]
+#   Output: Battery=positive, Camera=negative, Others=N/A
+# 
+# Loss:   Cross-Entropy with Focal Loss (only on detected aspects)
+# Metrics: Accuracy, Precision, Recall, F1 per aspect (conditional on detection)
+# 
+# COMBINED LOSS
+# -------------
+# total_loss = (detection_weight × detection_loss) + (sentiment_weight × sentiment_loss)
+# 
+# ADVANTAGES OF DUAL-TASK
+# ------------------------
+# 1. Explicit modeling of aspect presence
+# 2. Sentiment prediction only for relevant aspects
+# 3. Better handling of imbalanced data
+# 4. Interpretable intermediate outputs
+# 
+# ========================================================================
