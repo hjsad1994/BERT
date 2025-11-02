@@ -27,18 +27,18 @@ def verify_seeds(config_path):
     try:
         with open(config_path, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
-        print(f"\n✓ Config loaded: {config_path}")
+        print(f"\nConfig loaded: {config_path}")
     except Exception as e:
-        print(f"\n✗ Failed to load config: {e}")
+        print(f"\nFailed to load config: {e}")
         return False
     
     # Check reproducibility section exists
     if 'reproducibility' not in config:
-        print("\n✗ ERROR: 'reproducibility' section not found in config")
+        print("\nERROR: 'reproducibility' section not found in config")
         print("  Add reproducibility section to your config file")
         return False
     
-    print("\n✓ Reproducibility section found")
+    print("\nReproducibility section found")
     
     # Required seeds (master_seed removed - not used in code)
     required_seeds = [
@@ -63,16 +63,16 @@ def verify_seeds(config_path):
     for seed_name in required_seeds:
         if seed_name in repro_config:
             seed_value = repro_config[seed_name]
-            print(f"  ✓ {seed_name:25} = {seed_value}")
+            print(f"  OK {seed_name:25} = {seed_value}")
         else:
-            print(f"  ✗ {seed_name:25} = MISSING")
+            print(f"  X  {seed_name:25} = MISSING")
             all_ok = False
     
     # Check optional seeds
     for seed_name in optional_seeds:
         if seed_name in repro_config:
             seed_value = repro_config[seed_name]
-            print(f"  ○ {seed_name:25} = {seed_value} (optional)")
+            print(f"  OPT {seed_name:25} = {seed_value} (optional)")
     
     # Check paths section
     print("\n" + "-"*70)
@@ -83,25 +83,25 @@ def verify_seeds(config_path):
         paths = config['paths']
         for key in ['train_file', 'validation_file', 'test_file']:
             if key in paths:
-                print(f"  ✓ {key:20} = {paths[key]}")
+                print(f"  OK {key:20} = {paths[key]}")
             else:
-                print(f"  ✗ {key:20} = MISSING")
+                print(f"  X  {key:20} = MISSING")
                 all_ok = False
     else:
-        print("  ✗ 'paths' section not found")
+        print("  X  'paths' section not found")
         all_ok = False
     
     # Summary
     print("\n" + "="*70)
     if all_ok:
-        print("✓ VERIFICATION PASSED")
+        print("VERIFICATION PASSED")
         print("="*70)
         print("\nAll seeds are configured correctly.")
         print("You can now run the pipeline:")
         print("\n  python run_full_pipeline.py --config", config_path)
         return True
     else:
-        print("✗ VERIFICATION FAILED")
+        print("VERIFICATION FAILED")
         print("="*70)
         print("\nSome seeds or paths are missing.")
         print("Please check your config file.")
@@ -115,7 +115,7 @@ if __name__ == '__main__':
         config_path = 'config_single.yaml'
     
     if not os.path.exists(config_path):
-        print(f"\n✗ Config file not found: {config_path}")
+        print(f"\nConfig file not found: {config_path}")
         print("\nUsage: python verify_seeds.py [config_file]")
         sys.exit(1)
     

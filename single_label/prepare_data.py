@@ -74,7 +74,7 @@ class ABSADataPreparator:
     def load_data(self):
         """Tải dataset từ file CSV"""
         print(f"\n{'='*70}")
-        print(f"📁 Đang tải dataset từ: {self.input_file}")
+        print(f"Đang tải dataset từ: {self.input_file}")
         print(f"{'='*70}")
         
         if not os.path.exists(self.input_file):
@@ -94,14 +94,14 @@ class ABSADataPreparator:
         # Xử lý VNCoreNLP segmentation: remove underscores cho BERT tokenizer
         underscore_count = self.df['data'].astype(str).str.count('_').sum()
         if underscore_count > 0:
-            print(f"\n🔧 Phát hiện {underscore_count:,} underscores (VNCoreNLP segmentation)")
-            print(f"🔧 Đang chuyển đổi để tương thích với BERT tokenizer: 'Chăm_sóc' → 'Chăm sóc'")
+            print(f"\nPhát hiện {underscore_count:,} underscores (VNCoreNLP segmentation)")
+            print(f"Đang chuyển đổi để tương thích với BERT tokenizer: 'Chăm_sóc' → 'Chăm sóc'")
             self.df['data'] = self.df['data'].astype(str).str.replace('_', ' ', regex=False)
-            print(f"✓ Đã xử lý VNCoreNLP segmentation (BERT-friendly format)")
+            print(f"Đã xử lý VNCoreNLP segmentation (BERT-friendly format)")
         
         # Kiểm tra các cột aspect
         found_aspects = [col for col in self.VALID_ASPECTS if col in self.df.columns]
-        print(f"✓ Tìm thấy {len(found_aspects)} khía cạnh: {', '.join(found_aspects)}")
+        print(f"Tìm thấy {len(found_aspects)} khía cạnh: {', '.join(found_aspects)}")
         
         if len(found_aspects) == 0:
             raise ValueError("Không tìm thấy cột aspect nào trong dataset")
@@ -113,7 +113,7 @@ class ABSADataPreparator:
     def clean_data(self):
         """Làm sạch dữ liệu"""
         print(f"\n{'='*70}")
-        print("🧹 Đang làm sạch dữ liệu...")
+        print("Đang làm sạch dữ liệu...")
         print(f"{'='*70}")
         
         initial_size = len(self.df)
@@ -137,7 +137,7 @@ class ABSADataPreparator:
     def convert_to_single_label(self):
         """Chuyển đổi từ multi-label sang single-label format"""
         print(f"\n{'='*70}")
-        print("🔄 Đang chuyển đổi sang format ABSA single-label...")
+        print("Đang chuyển đổi sang format ABSA single-label...")
         print(f"{'='*70}")
         
         absa_samples = []
@@ -186,7 +186,7 @@ class ABSADataPreparator:
     def analyze_distribution(self):
         """Phân tích phân bố dữ liệu"""
         print(f"\n{'='*70}")
-        print("📊 Phân tích phân bố dữ liệu...")
+        print("Phân tích phân bố dữ liệu...")
         print(f"{'='*70}")
         
         # Phân bố theo sentiment
@@ -219,7 +219,7 @@ class ABSADataPreparator:
     def stratified_split(self):
         """Chia dữ liệu với stratified sampling để đảm bảo phân bố cân bằng"""
         print(f"\n{'='*70}")
-        print("✂️  Đang chia dữ liệu với stratified sampling...")
+        print("Đang chia dữ liệu với stratified sampling...")
         print(f"{'='*70}")
         
         # Set random seed
@@ -270,7 +270,7 @@ class ABSADataPreparator:
     def validate_splits(self):
         """Kiểm tra tính hợp lệ của các splits"""
         print(f"\n{'='*70}")
-        print("✅ Đang kiểm tra tính hợp lệ của các splits...")
+        print("Đang kiểm tra tính hợp lệ của các splits...")
         print(f"{'='*70}")
         
         # Kiểm tra sentiment distribution trong từng split
@@ -294,7 +294,7 @@ class ABSADataPreparator:
     def save_splits(self):
         """Lưu các splits thành CSV files"""
         print(f"\n{'='*70}")
-        print("💾 Đang lưu các splits...")
+        print("Đang lưu các splits...")
         print(f"{'='*70}")
         
         # Define output paths
@@ -308,16 +308,16 @@ class ABSADataPreparator:
         self.test_df.to_csv(test_path, index=False, encoding='utf-8-sig')
         
         # In thông tin file
-        print(f"\n✓ Files đã được lưu thành công:")
-        print(f"\n   📄 Train:      {train_path}")
+        print(f"\nFiles đã được lưu thành công:")
+        print(f"\n   Train:      {train_path}")
         print(f"      Kích thước: {os.path.getsize(train_path) / 1024:.2f} KB")
         print(f"      Số mẫu:     {len(self.train_df)}")
         
-        print(f"\n   📄 Validation: {val_path}")
+        print(f"\n   Validation: {val_path}")
         print(f"      Kích thước: {os.path.getsize(val_path) / 1024:.2f} KB")
         print(f"      Số mẫu:     {len(self.val_df)}")
         
-        print(f"\n   📄 Test:       {test_path}")
+        print(f"\n   Test:       {test_path}")
         print(f"      Kích thước: {os.path.getsize(test_path) / 1024:.2f} KB")
         print(f"      Số mẫu:     {len(self.test_df)}")
         
@@ -373,17 +373,17 @@ class ABSADataPreparator:
             self.save_metadata()
             
             print(f"\n{'='*70}")
-            print("🎉 [THÀNH CÔNG] Chuẩn bị dữ liệu hoàn tất!")
+            print("[THÀNH CÔNG] Chuẩn bị dữ liệu hoàn tất!")
             print(f"{'='*70}")
-            print(f"\n✓ Output files đã được lưu tại: {os.path.abspath(self.output_dir)}/")
-            print(f"\n✓ Bạn có thể bắt đầu huấn luyện bằng lệnh:")
+            print(f"\nOutput files đã được lưu tại: {os.path.abspath(self.output_dir)}/")
+            print(f"\nBạn có thể bắt đầu huấn luyện bằng lệnh:")
             print(f"   python train.py --config config.yaml")
             
             return self
             
         except Exception as e:
             print(f"\n{'='*70}")
-            print(f"❌ [LỖI] Đã xảy ra lỗi trong quá trình chuẩn bị dữ liệu!")
+            print(f"[LỖI] Đã xảy ra lỗi trong quá trình chuẩn bị dữ liệu!")
             print(f"{'='*70}")
             print(f"Chi tiết lỗi: {str(e)}")
             raise

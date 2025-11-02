@@ -73,17 +73,17 @@ def main():
     
     # Kiểm tra device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    print(f"\n✓ Device: {device}")
+    print(f"\nDevice: {device}")
     
     # Load mô hình và tokenizer
-    print(f"\n✓ Đang load mô hình từ: {model_path}")
+    print(f"\nĐang load mô hình từ: {model_path}")
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_path)
         model = AutoModelForSequenceClassification.from_pretrained(model_path)
         model.to(device)
-        print(f"✓ Load mô hình thành công!")
+        print(f"Load mô hình thành công!")
     except Exception as e:
-        print(f"\n❌ Lỗi: {str(e)}")
+        print(f"\nLỗi: {str(e)}")
         print(f"\nGợi ý: Hãy chạy 'python train.py' để fine-tune mô hình trước")
         return
     
@@ -124,15 +124,7 @@ def main():
                 model, tokenizer, sentence, aspect, device
             )
             
-            # Biểu tượng cho sentiment
-            emoji_map = {
-                'positive': '😊',
-                'negative': '😞',
-                'neutral': '😐'
-            }
-            emoji = emoji_map.get(sentiment, '')
-            
-            print(f"  • {aspect:>15}: {emoji} {sentiment:>10} (confidence: {confidence:.2%})")
+            print(f"  • {aspect:>15}: {sentiment:>10} (confidence: {confidence:.2%})")
         
         print()
     
@@ -159,24 +151,17 @@ def main():
                 model, tokenizer, sentence, aspect, device
             )
             
-            emoji_map = {
-                'positive': '😊',
-                'negative': '😞',
-                'neutral': '😐'
-            }
-            emoji = emoji_map.get(sentiment, '')
-            
-            print(f"\n→ Kết quả: {emoji} {sentiment.upper()} (confidence: {confidence:.2%})\n")
+            print(f"\n→ Kết quả: {sentiment.upper()} (confidence: {confidence:.2%})\n")
             print("-" * 70 + "\n")
             
         except KeyboardInterrupt:
             print("\n\nThoát chương trình.")
             break
         except Exception as e:
-            print(f"\n❌ Lỗi: {str(e)}\n")
+            print(f"\nLỗi: {str(e)}\n")
     
     print("\n" + "="*70)
-    print("Cảm ơn bạn đã sử dụng! 👋")
+    print("Cảm ơn bạn đã sử dụng!")
     print("="*70 + "\n")
 
 

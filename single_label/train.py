@@ -77,7 +77,7 @@ def setup_logging():
     sys.stdout = tee
     sys.stderr = tee
     
-    print(f"📝 Training log sẽ được lưu tại: {log_file}\n")
+    print(f"Training log sẽ được lưu tại: {log_file}\n")
     
     return tee, log_file
 
@@ -108,7 +108,7 @@ def main():
     # 1. PARSE ARGUMENTS VÀ LOAD CONFIG
     # =====================================================================
     print("\n" + "="*70)
-    print("🚀 FINE-TUNING VISOBERT CHO ABSA")
+    print("FINE-TUNING VISOBERT CHO ABSA")
     print("="*70)
     
     args = parse_arguments()
@@ -117,7 +117,7 @@ def main():
     try:
         config = load_config(args.config)
     except Exception as e:
-        print(f"\n❌ Lỗi khi load config: {str(e)}")
+        print(f"\nLỗi khi load config: {str(e)}")
         return
     
     # =====================================================================
@@ -135,18 +135,18 @@ def main():
     # =====================================================================
     if torch.cuda.is_available():
         device = torch.device('cuda')
-        print(f"✓ Sử dụng GPU: {torch.cuda.get_device_name(0)}")
+        print(f"Sử dụng GPU: {torch.cuda.get_device_name(0)}")
     else:
         device = torch.device('cpu')
-        print(f"✓ Sử dụng CPU")
+        print(f"Sử dụng CPU")
     
-    print(f"✓ Device: {device}")
+    print(f"Device: {device}")
     
     # =====================================================================
     # 4. TẢI TOKENIZER VÀ MÔ HÌNH
     # =====================================================================
     print(f"\n{'='*70}")
-    print("🤖 Đang tải tokenizer và mô hình...")
+    print("Đang tải tokenizer và mô hình...")
     print(f"{'='*70}")
     
     model_name = config['model']['name']
@@ -167,7 +167,7 @@ def main():
         print(f"✓ Số lượng labels: {num_labels}")
         
     except Exception as e:
-        print(f"\n❌ Lỗi khi tải mô hình: {str(e)}")
+        print(f"\nLỗi khi tải mô hình: {str(e)}")
         print(f"\nGợi ý: Kiểm tra kết nối internet hoặc tên mô hình trong config.yaml")
         return
     
@@ -177,8 +177,8 @@ def main():
     try:
         train_df, val_df, test_df, label_map, id2label = load_and_preprocess_data(config)
     except Exception as e:
-        print(f"\n❌ Lỗi khi load dữ liệu: {str(e)}")
-        print(f"\n🔄 Thử tự động tạo dữ liệu bằng 'prepare_data.py'...")
+        print(f"\nLỗi khi load dữ liệu: {str(e)}")
+        print(f"\nThử tự động tạo dữ liệu bằng 'prepare_data.py'...")
         try:
             # Tự động tạo dữ liệu đầu vào cho single_label từ config hiện tại
             import prepare_data
@@ -187,7 +187,7 @@ def main():
             train_df, val_df, test_df, label_map, id2label = load_and_preprocess_data(config)
             print("\n✓ Đã tạo dữ liệu và load lại thành công")
         except Exception as e2:
-            print(f"\n❌ Vẫn không thể load dữ liệu sau khi tạo tự động: {str(e2)}")
+            print(f"\nVẫn không thể load dữ liệu sau khi tạo tự động: {str(e2)}")
             print(f"\nGợi ý: Chạy thủ công: python prepare_data.py --config {args.config}")
             return
     
@@ -195,7 +195,7 @@ def main():
     # 6. TẠO DATASETS
     # =====================================================================
     print(f"\n{'='*70}")
-    print("📦 Đang tạo PyTorch Datasets...")
+    print("Đang tạo PyTorch Datasets...")
     print(f"{'='*70}")
     
     max_length = config['model']['max_length']
@@ -218,14 +218,14 @@ def main():
         print(f"   Label:                {sample['labels'].item()} ({id2label[sample['labels'].item()]})")
         
     except Exception as e:
-        print(f"\n❌ Lỗi khi tạo datasets: {str(e)}")
+        print(f"\nLỗi khi tạo datasets: {str(e)}")
         return
     
     # =====================================================================
     # 7. THIẾT LẬP TRAINING ARGUMENTS
     # =====================================================================
     print(f"\n{'='*70}")
-    print("⚙️  Đang thiết lập Training Arguments...")
+    print("Đang thiết lập Training Arguments...")
     print(f"{'='*70}")
     
     training_config = config['training']
@@ -299,7 +299,7 @@ def main():
     # 8. OVERSAMPLING - TEMPORARILY DISABLED
     # =====================================================================
     print(f"\n{'='*70}")
-    print("⚠️  OVERSAMPLING TEMPORARILY DISABLED - Sử dụng dữ liệu gốc")
+    print("OVERSAMPLING TEMPORARILY DISABLED - Sử dụng dữ liệu gốc")
     print(f"{'='*70}")
     
     # Lưu class counts gốc để tính Focal Loss alpha weights
@@ -312,7 +312,7 @@ def main():
     # from oversampling_utils import aspect_wise_oversample  # DISABLED
     
     # In phân bố class trong training data
-    print(f"\n📊 Training Data Distribution (ORIGINAL - NO OVERSAMPLING):")
+    print(f"\nTraining Data Distribution (ORIGINAL - NO OVERSAMPLING):")
     total_samples = len(train_df)
     for sentiment, count in sorted(class_counts_original.items()):
         pct = (count / total_samples) * 100
@@ -386,7 +386,7 @@ def main():
     # 9. TÍNH CLASS WEIGHTS VÀ KHỞI TẠO FOCAL LOSS
     # =====================================================================
     print(f"\n{'='*70}")
-    print("🔥 Đang tính class weights cho Focal Loss...")
+    print("Đang tính class weights cho Focal Loss...")
     print(f"{'='*70}")
     
     # Tính phân bố classes trong training data
@@ -394,7 +394,7 @@ def main():
     total = sum(label_counts.values())
     
     # Class distribution
-    print(f"\n📊 Phân bố classes trong training data:")
+    print(f"\nPhân bố classes trong training data:")
     for label in ['positive', 'negative', 'neutral']:
         count = label_counts.get(label, 0)
         pct = (count / total) * 100
@@ -414,7 +414,7 @@ def main():
     # Determine alpha weights based on config
     if focal_alpha_config == 'auto':
         # Auto: Tính từ inverse frequency
-        print(f"\n🎯 Alpha weights mode: AUTO (inverse frequency)")
+        print(f"\nAlpha weights mode: AUTO (inverse frequency)")
         alpha = [0.0, 0.0, 0.0]
         for label, idx in label_map.items():
             count = label_counts.get(label, 1)
@@ -426,7 +426,7 @@ def main():
     
     elif isinstance(focal_alpha_config, list) and len(focal_alpha_config) == 3:
         # User-defined weights
-        print(f"\n🎯 Alpha weights mode: USER-DEFINED")
+        print(f"\nAlpha weights mode: USER-DEFINED")
         alpha = focal_alpha_config
         print(f"\n   Using custom alpha weights:")
         for label, idx in label_map.items():
@@ -434,13 +434,13 @@ def main():
     
     elif focal_alpha_config is None:
         # Equal weights (no class weighting)
-        print(f"\n🎯 Alpha weights mode: EQUAL (no class weighting)")
+        print(f"\nAlpha weights mode: EQUAL (no class weighting)")
         alpha = [1.0, 1.0, 1.0]
         print(f"\n   Using equal weights: {alpha}")
     
     else:
         # Invalid config, fallback to auto
-        print(f"\n⚠️  Invalid focal_alpha config: {focal_alpha_config}")
+        print(f"\nInvalid focal_alpha config: {focal_alpha_config}")
         print(f"   Falling back to AUTO (inverse frequency)")
         alpha = [0.0, 0.0, 0.0]
         for label, idx in label_map.items():
@@ -458,7 +458,7 @@ def main():
     # 10. KHỞI TẠO TRAINER VỚI FOCAL LOSS
     # =====================================================================
     print(f"\n{'='*70}")
-    print("🏋️  Đang khởi tạo Custom Trainer với Focal Loss...")
+    print("Đang khởi tạo Custom Trainer với Focal Loss...")
     print(f"{'='*70}")
     
     trainer = CustomTrainer.create_trainer_with_focal_loss(
@@ -479,7 +479,7 @@ def main():
     # =====================================================================
     # 10.5. ADD CHECKPOINT RENAMER CALLBACK
     # =====================================================================
-    print(f"\n📁 Đang thiết lập Checkpoint Renamer...")
+    print(f"\nĐang thiết lập Checkpoint Renamer...")
     
     from checkpoint_renamer import SimpleMetricCheckpointCallback
     
@@ -502,28 +502,28 @@ def main():
     # 11. BẮT ĐẦU HUẤN LUYỆN
     # =====================================================================
     print(f"\n{'='*70}")
-    print("🎯 BẮT ĐẦU HUẤN LUYỆN")
+    print("BAT DAU HUAN LUYEN")
     print(f"{'='*70}\n")
     
     try:
         train_result = trainer.train()
         
         print(f"\n{'='*70}")
-        print("✅ HOÀN TẤT HUẤN LUYỆN")
+        print("HOAN TAT HUAN LUYEN")
         print(f"{'='*70}")
         print(f"✓ Training loss: {train_result.training_loss:.4f}")
         print(f"✓ Training time: {train_result.metrics['train_runtime']:.2f}s")
         print(f"✓ Samples/second: {train_result.metrics['train_samples_per_second']:.2f}")
         
     except Exception as e:
-        print(f"\n❌ Lỗi trong quá trình huấn luyện: {str(e)}")
+        print(f"\nLỗi trong quá trình huấn luyện: {str(e)}")
         return
     
     # =====================================================================
     # 9.5. TẠO TRAINER MỚI CHO EVALUATION (KHÔNG CÓ OPTIMIZER)
     # =====================================================================
     print(f"\n{'='*70}")
-    print("🔄 TẠO TRAINER MỚI CHO EVALUATION")
+    print("TAO TRAINER MOI CHO EVALUATION")
     print(f"{'='*70}")
     
     # Lưu model hiện tại
@@ -549,12 +549,12 @@ def main():
     # 10. ĐÁNH GIÁ TRÊN TẬP TEST
     # =====================================================================
     print(f"\n{'='*70}")
-    print("📊 ĐÁNH GIÁ TRÊN TẬP TEST")
+    print("DANH GIA TREN TAP TEST")
     print(f"{'='*70}")
     
     try:
         # Evaluate
-        print("⏳ Đang evaluate trên test dataset...")
+        print("Đang evaluate trên test dataset...")
         test_results = eval_trainer.evaluate(test_dataset)
         
         print(f"\n✓ Kết quả đánh giá trên tập test:")
@@ -568,7 +568,7 @@ def main():
         
         # Lấy detailed metrics
         # CHÚ Ý: Chỉ predict 1 LẦN DUY NHẤT ở đây, sau đó tái sử dụng cho save_predictions
-        print("\n⏳ Đang predict để lấy detailed metrics...")
+        print("\nĐang predict để lấy detailed metrics...")
         predictions_output = eval_trainer.predict(test_dataset)
         print("✓ Predict hoàn tất")
         label_names = [id2label[i] for i in sorted(id2label.keys())]
@@ -608,7 +608,7 @@ def main():
         print(f"\n✓ Đã lưu báo cáo chi tiết vào: {report_path}")
         
     except Exception as e:
-        print(f"\n❌ Lỗi khi đánh giá: {str(e)}")
+        print(f"\nLỗi khi đánh giá: {str(e)}")
         import traceback
         traceback.print_exc()
         return
@@ -627,13 +627,13 @@ def main():
             shutil.copy(config['paths']['predictions_file'], predictions_standard_path)
             print(f"✓ Đã copy predictions sang: {predictions_standard_path}")
     except Exception as e:
-        print(f"\n⚠️  Cảnh báo: Không thể lưu predictions: {str(e)}")
+        print(f"\nCảnh báo: Không thể lưu predictions: {str(e)}")
     
     # =====================================================================
     # 12. LƯU MÔ HÌNH VÀ TOKENIZER
     # =====================================================================
     print(f"\n{'='*70}")
-    print("💾 Đang lưu mô hình và tokenizer...")
+    print("Đang lưu mô hình và tokenizer...")
     print(f"{'='*70}")
     
     try:
@@ -651,7 +651,7 @@ def main():
         print(f"   model = AutoModelForSequenceClassification.from_pretrained('{final_model_dir}')")
         
     except Exception as e:
-        print(f"\n⚠️  Cảnh báo: Không thể lưu mô hình: {str(e)}")
+        print(f"\nCảnh báo: Không thể lưu mô hình: {str(e)}")
         import traceback
         traceback.print_exc()
     
@@ -659,7 +659,7 @@ def main():
     # 12.5. GIẢI PHÓNG GPU MEMORY TRƯỚC ANALYSIS
     # =====================================================================
     print(f"\n{'='*70}")
-    print("🧹 GIẢI PHÓNG GPU MEMORY")
+    print("GIAI PHONG GPU MEMORY")
     print(f"{'='*70}")
     
     # Xóa eval_trainer và model sau khi đã save xong
@@ -673,7 +673,7 @@ def main():
     # 13. TỰ ĐỘNG PHÂN TÍCH KẾT QUẢ
     # =====================================================================
     print(f"\n{'='*70}")
-    print("📊 TỰ ĐỘNG PHÂN TÍCH KẾT QUẢ CHI TIẾT")
+    print("TU DONG PHAN TICH KET QUA CHI TIET")
     print(f"{'='*70}")
     
     try:
@@ -684,14 +684,14 @@ def main():
         analyze_results.main()
         
     except Exception as e:
-        print(f"\n⚠️  Cảnh báo: Không thể tự động phân tích: {str(e)}")
+        print(f"\nCảnh báo: Không thể tự động phân tích: {str(e)}")
         print(f"   Bạn có thể chạy thủ công: python analyze_results.py")
     
     # =====================================================================
     # 14. KẾT THÚC
     # =====================================================================
     print(f"\n{'='*70}")
-    print("🎉 HOÀN TẤT TOÀN BỘ QUÁ TRÌNH!")
+    print("HOAN TAT TOAN BO QUA TRINH!")
     print(f"{'='*70}")
     
     print(f"\n✓ Tổng kết:")
@@ -702,12 +702,12 @@ def main():
     print(f"   • Predictions: {config['paths']['predictions_file']}")
     print(f"   • Phân tích chi tiết: analysis_results/")
     
-    print(f"\n✓ Cảm ơn bạn đã sử dụng! 🙏\n")
+    print(f"\nCảm ơn bạn đã sử dụng!\n")
     
     # =====================================================================
     # ĐÓNG LOGGER VÀ RESTORE STDOUT/STDERR
     # =====================================================================
-    print(f"\n📝 Training log đã được lưu tại: {log_file_path}")
+    print(f"\nTraining log đã được lưu tại: {log_file_path}")
     
     # Restore stdout/stderr và đóng file log
     sys.stdout = tee_logger.terminal

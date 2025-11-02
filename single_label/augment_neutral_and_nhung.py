@@ -44,7 +44,7 @@ def augment_neutral_and_nhung(
             - 'nhung': Prioritize nhung oversample
     """
     print("="*80)
-    print("🔄 INDEPENDENT AUGMENTATION: NEUTRAL + 'NHƯNG' (NO OVERLAP)")
+    print("INDEPENDENT AUGMENTATION: NEUTRAL + 'NHUNG' (NO OVERLAP)")
     print("="*80)
     print("\nStrategy:")
     print(f"  1. Oversample Neutral (excluding overlap) → Target: ~{neutral_target} total")
@@ -60,10 +60,10 @@ def augment_neutral_and_nhung(
         return
     
     df = pd.read_csv(train_file, encoding='utf-8-sig')
-    print(f"\n📊 Original data: {len(df)} samples")
+    print(f"\nOriginal data: {len(df)} samples")
     
     # Analyze original distribution
-    print(f"\n📊 Original Sentiment Distribution:")
+    print(f"\nOriginal Sentiment Distribution:")
     sentiment_counts = df['sentiment'].value_counts()
     for sent, count in sentiment_counts.items():
         print(f"  {sent:>10}: {count:>6} ({count/len(df)*100:>5.1f}%)")
@@ -84,7 +84,7 @@ def augment_neutral_and_nhung(
     # Group D: Baseline (no Neutral, no "nhưng")
     group_d_baseline = df[~is_neutral & ~has_nhung].copy()
     
-    print(f"\n📊 EXCLUSIVE Groups (no overlap):")
+    print(f"\nEXCLUSIVE Groups (no overlap):")
     print(f"  Group A (Neutral + 'nhưng'):     {len(group_a_overlap):>5} ({len(group_a_overlap)/len(df)*100:>5.1f}%)")
     print(f"  Group B (Neutral only):          {len(group_b_neutral_only):>5} ({len(group_b_neutral_only)/len(df)*100:>5.1f}%)")
     print(f"  Group C ('Nhưng' only):          {len(group_c_nhung_only):>5} ({len(group_c_nhung_only)/len(df)*100:>5.1f}%)")
@@ -101,7 +101,7 @@ def augment_neutral_and_nhung(
         pos_count = (df['sentiment'] == 'positive').sum()
         neg_count = (df['sentiment'] == 'negative').sum()
         neutral_target = int((pos_count + neg_count) / 2)
-        print(f"\n💡 Auto-calculated Neutral target: {neutral_target} (avg of Pos & Neg)")
+        print(f"\nAuto-calculated Neutral target: {neutral_target} (avg of Pos & Neg)")
     
     # Total current Neutral samples
     total_neutral = len(group_a_overlap) + len(group_b_neutral_only)
@@ -117,14 +117,14 @@ def augment_neutral_and_nhung(
     else:
         group_a_factor = max(neutral_factor, nhung_factor)
     
-    print(f"\n🔄 Augmentation Plan:")
+    print(f"\nAugmentation Plan:")
     print(f"  Group A (overlap): x{group_a_factor:.2f} (strategy: {overlap_strategy})")
     print(f"  Group B (Neutral only): x{neutral_factor:.2f}")
     print(f"  Group C ('Nhưng' only): x{nhung_factor}")
     print(f"  Group D (Baseline): x1")
     
     # Oversample each group
-    print(f"\n🔄 Oversampling each group...")
+    print(f"\nOversampling each group...")
     
     # Helper function
     def oversample_group(group, factor):
@@ -157,7 +157,7 @@ def augment_neutral_and_nhung(
     print(f"  Group D: {len(group_d_baseline)} → {len(oversampled_d)} (x1)")
     
     # Combine all groups
-    print(f"\n🔄 Combining all groups...")
+    print(f"\nCombining all groups...")
     augmented_df = pd.concat([
         oversampled_a,
         oversampled_b,
@@ -168,20 +168,20 @@ def augment_neutral_and_nhung(
     # Shuffle
     augmented_df = augmented_df.sample(frac=1, random_state=42).reset_index(drop=True)
     
-    print(f"\n✓ Augmented data: {len(augmented_df)} samples")
-    print(f"✓ Increase: +{len(augmented_df) - len(df)} samples (+{(len(augmented_df) - len(df))/len(df)*100:.1f}%)")
+    print(f"\nAugmented data: {len(augmented_df)} samples")
+    print(f"Increase: +{len(augmented_df) - len(df)} samples (+{(len(augmented_df) - len(df))/len(df)*100:.1f}%)")
     
     # Save
     augmented_df.to_csv(output_file, index=False, encoding='utf-8-sig')
-    print(f"\n✓ Saved to: {output_file}")
+    print(f"\nSaved to: {output_file}")
     
     # Detailed statistics
     print(f"\n{'='*80}")
-    print("📊 AUGMENTED DATA STATISTICS")
+    print("AUGMENTED DATA STATISTICS")
     print(f"{'='*80}")
     
     # Sentiment distribution
-    print(f"\n📊 Sentiment Distribution:")
+    print(f"\nSentiment Distribution:")
     augmented_sentiment = augmented_df['sentiment'].value_counts()
     for sent, count in augmented_sentiment.items():
         print(f"  {sent:>10}: {count:>6} ({count/len(augmented_df)*100:>5.1f}%)")
@@ -190,17 +190,17 @@ def augment_neutral_and_nhung(
     max_sent = augmented_sentiment.max()
     min_sent = augmented_sentiment.min()
     imbalance_ratio = max_sent / min_sent
-    print(f"\n⚖️  Imbalance Ratio: {imbalance_ratio:.2f}x")
+    print(f"\nImbalance Ratio: {imbalance_ratio:.2f}x")
     if imbalance_ratio > 2:
-        print(f"   ⚠️  HIGH IMBALANCE (> 2x)")
+        print(f"   HIGH IMBALANCE (> 2x)")
     elif imbalance_ratio > 1.5:
-        print(f"   ⚠️  MODERATE IMBALANCE (> 1.5x)")
+        print(f"   MODERATE IMBALANCE (> 1.5x)")
     else:
-        print(f"   ✓  BALANCED (< 1.5x)")
+        print(f"   BALANCED (< 1.5x)")
     
     # "nhưng" distribution
     nhung_augmented = augmented_df[augmented_df['sentence'].str.contains('nhưng', case=False, na=False)]
-    print(f"\n📊 'Nhưng' Samples:")
+    print(f"\n'Nhưng' Samples:")
     print(f"  Total: {len(nhung_augmented)} ({len(nhung_augmented)/len(augmented_df)*100:.1f}%)")
     nhung_sent_dist = nhung_augmented['sentiment'].value_counts()
     for sent, count in nhung_sent_dist.items():
@@ -209,20 +209,20 @@ def augment_neutral_and_nhung(
     # Overlap statistics
     overlap_augmented = augmented_df[(augmented_df['sentiment'] == 'neutral') & 
                                       (augmented_df['sentence'].str.contains('nhưng', case=False, na=False))]
-    print(f"\n📊 Overlap (Neutral + 'nhưng'):")
+    print(f"\nOverlap (Neutral + 'nhưng'):")
     print(f"  Before: {len(group_a_overlap)} ({len(group_a_overlap)/len(df)*100:.1f}%)")
     print(f"  After:  {len(overlap_augmented)} ({len(overlap_augmented)/len(augmented_df)*100:.1f}%)")
     print(f"  Factor: x{group_a_factor:.2f} (NO double counting)")
     
     # Aspect distribution
-    print(f"\n📊 Top 10 Aspects:")
+    print(f"\nTop 10 Aspects:")
     aspect_dist = augmented_df['aspect'].value_counts().head(10)
     for asp, count in aspect_dist.items():
         print(f"  {asp:<15}: {count:>5} ({count/len(augmented_df)*100:>5.1f}%)")
     
     # Comparison table
     print(f"\n{'='*80}")
-    print("📊 BEFORE vs AFTER COMPARISON")
+    print("BEFORE vs AFTER COMPARISON")
     print(f"{'='*80}")
     
     print(f"\n{'Metric':<30} {'Before':>12} {'After':>12} {'Change':>12}")
@@ -250,7 +250,7 @@ def augment_neutral_and_nhung(
     print(f"{'Nhưng + Neutral':<30} {before_overlap:>12} {after_overlap:>12} {after_overlap-before_overlap:>+12}")
     
     print(f"\n{'='*80}")
-    print("🎯 NEXT STEPS")
+    print("NEXT STEPS")
     print(f"{'='*80}")
     print("\n1. Update config.yaml:")
     print(f"   train_file: {output_file}")
@@ -268,7 +268,7 @@ def augment_neutral_and_nhung(
 def analyze_current_data(train_file='single_label/data/train.csv'):
     """Analyze current data distribution"""
     print("="*80)
-    print("📊 CURRENT DATA ANALYSIS")
+    print("CURRENT DATA ANALYSIS")
     print("="*80)
     
     os.chdir('D:/BERT')
@@ -279,10 +279,10 @@ def analyze_current_data(train_file='single_label/data/train.csv'):
     
     df = pd.read_csv(train_file, encoding='utf-8-sig')
     
-    print(f"\n📊 Total samples: {len(df)}")
+    print(f"\nTotal samples: {len(df)}")
     
     # Sentiment distribution
-    print(f"\n📊 Sentiment Distribution:")
+    print(f"\nSentiment Distribution:")
     sentiment_dist = df['sentiment'].value_counts()
     for sent, count in sentiment_dist.items():
         print(f"  {sent:>10}: {count:>6} ({count/len(df)*100:>5.1f}%)")
@@ -291,23 +291,23 @@ def analyze_current_data(train_file='single_label/data/train.csv'):
     max_count = sentiment_dist.max()
     min_count = sentiment_dist.min()
     imbalance_ratio = max_count / min_count
-    print(f"\n⚖️  Imbalance Ratio: {imbalance_ratio:.2f}x")
+    print(f"\nImbalance Ratio: {imbalance_ratio:.2f}x")
     
     # "nhưng" samples
     has_nhung = df['sentence'].str.contains('nhưng', case=False, na=False)
     nhung_df = df[has_nhung]
     
-    print(f"\n📊 'Nhưng' Samples: {len(nhung_df)} ({len(nhung_df)/len(df)*100:.1f}%)")
+    print(f"\n'Nhưng' Samples: {len(nhung_df)} ({len(nhung_df)/len(df)*100:.1f}%)")
     nhung_sent = nhung_df['sentiment'].value_counts()
     for sent, count in nhung_sent.items():
         print(f"  {sent:>10}: {count:>5} ({count/len(nhung_df)*100:>5.1f}%)")
     
     # Overlap
     overlap = df[(df['sentiment'] == 'neutral') & has_nhung]
-    print(f"\n📊 Overlap (Neutral + 'nhưng'): {len(overlap)} ({len(overlap)/len(df)*100:.1f}%)")
+    print(f"\nOverlap (Neutral + 'nhưng'): {len(overlap)} ({len(overlap)/len(df)*100:.1f}%)")
     
     # Recommendations
-    print(f"\n💡 RECOMMENDATIONS:")
+    print(f"\nRECOMMENDATIONS:")
     
     neutral_count = (df['sentiment'] == 'neutral').sum()
     pos_count = (df['sentiment'] == 'positive').sum()
@@ -355,4 +355,4 @@ if __name__ == '__main__':
         overlap_strategy='max'   # 'max', 'neutral', or 'nhung'
     )
     
-    print("\n✅ COMPLETED!\n")
+    print("\nCOMPLETED!\n")

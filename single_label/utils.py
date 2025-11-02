@@ -98,7 +98,7 @@ def load_config(config_path):
         FileNotFoundError: Nếu file không tồn tại
         yaml.YAMLError: Nếu file YAML không hợp lệ
     """
-    print(f"📖 Đang tải cấu hình từ: {config_path}")
+    print(f"Đang tải cấu hình từ: {config_path}")
     
     if not os.path.exists(config_path):
         raise FileNotFoundError(f"Không tìm thấy file cấu hình: {config_path}")
@@ -106,7 +106,7 @@ def load_config(config_path):
     try:
         with open(config_path, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
-        print(f"✓ Đã tải cấu hình thành công")
+        print(f"Đã tải cấu hình thành công")
         return config
     except yaml.YAMLError as e:
         raise yaml.YAMLError(f"Lỗi khi đọc file YAML: {str(e)}")
@@ -119,7 +119,7 @@ def set_seed(seed):
     Args:
         seed: Giá trị seed (integer)
     """
-    print(f"🎲 Đang thiết lập seed = {seed} cho reproducibility")
+    print(f"Đang thiết lập seed = {seed} cho reproducibility")
     
     random.seed(seed)
     np.random.seed(seed)
@@ -131,7 +131,7 @@ def set_seed(seed):
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
     
-    print(f"✓ Đã thiết lập seed thành công")
+    print(f"Đã thiết lập seed thành công")
 
 
 def load_and_preprocess_data(config):
@@ -149,7 +149,7 @@ def load_and_preprocess_data(config):
         ValueError: Nếu dữ liệu không hợp lệ
     """
     print(f"\n{'='*70}")
-    print("📊 Đang tải và xử lý dữ liệu...")
+    print("Đang tải và xử lý dữ liệu...")
     print(f"{'='*70}")
     
     # Lấy đường dẫn từ config
@@ -195,7 +195,7 @@ def load_and_preprocess_data(config):
         for df_name, df in [('train', train_df), ('validation', val_df), ('test', test_df)]:
             invalid_aspects = set(df['aspect'].unique()) - valid_aspects
             if invalid_aspects:
-                print(f"\n⚠️  Cảnh báo: File {df_name} chứa các aspect không hợp lệ: {invalid_aspects}")
+                print(f"\nCảnh báo: File {df_name} chứa các aspect không hợp lệ: {invalid_aspects}")
     
     # Lấy label mapping từ config
     if 'sentiment_labels' in config:
@@ -384,7 +384,7 @@ def save_predictions(trainer, test_dataset, test_df, config, id2label):
         id2label: Dictionary mapping từ label_id sang tên sentiment
     """
     print(f"\n{'='*70}")
-    print("🔮 Đang dự đoán trên tập test...")
+    print("Đang dự đoán trên tập test...")
     print(f"{'='*70}")
     
     # Dự đoán
@@ -421,7 +421,7 @@ def save_predictions(trainer, test_dataset, test_df, config, id2label):
     sample_size = min(5, len(results_df))
     for idx in range(sample_size):
         row = results_df.iloc[idx]
-        status = "✓" if row['true_sentiment'] == row['predicted_sentiment'] else "✗"
+        status = "OK" if row['true_sentiment'] == row['predicted_sentiment'] else "X"
         print(f"\n   {status} Mẫu {idx + 1}:")
         print(f"      Câu:    {row['sentence'][:60]}...")
         print(f"      Aspect: {row['aspect']}")
@@ -442,7 +442,7 @@ def save_predictions_from_output(predictions_output, test_df, config, id2label):
         id2label: Dictionary mapping từ label_id sang tên sentiment
     """
     print(f"\n{'='*70}")
-    print("💾 Đang lưu predictions vào file...")
+    print("Đang lưu predictions vào file...")
     print(f"{'='*70}")
     
     predictions = predictions_output.predictions
@@ -477,7 +477,7 @@ def save_predictions_from_output(predictions_output, test_df, config, id2label):
     sample_size = min(5, len(results_df))
     for idx in range(sample_size):
         row = results_df.iloc[idx]
-        status = "✓" if row['true_sentiment'] == row['predicted_sentiment'] else "✗"
+        status = "OK" if row['true_sentiment'] == row['predicted_sentiment'] else "X"
         print(f"\n   {status} Mẫu {idx + 1}:")
         print(f"      Câu:    {row['sentence'][:60]}...")
         print(f"      Aspect: {row['aspect']}")
@@ -489,7 +489,7 @@ def save_predictions_from_output(predictions_output, test_df, config, id2label):
 def print_system_info():
     """In thông tin về hệ thống và các thư viện"""
     print(f"\n{'='*70}")
-    print("💻 THÔNG TIN HỆ THỐNG")
+    print("THONG TIN HE THONG")
     print(f"{'='*70}")
     
     # Python version
@@ -506,7 +506,7 @@ def print_system_info():
         print(f"   GPU device: {torch.cuda.get_device_name(0)}")
         print(f"   GPU count: {torch.cuda.device_count()}")
     else:
-        print(f"✗ CUDA available: False (sẽ sử dụng CPU)")
+        print(f"CUDA available: False (sẽ sử dụng CPU)")
     
     # Transformers version
     try:

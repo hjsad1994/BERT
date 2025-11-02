@@ -53,7 +53,7 @@ class MetricCheckpointCallback(TrainerCallback):
                 break
         
         if eval_metrics is None:
-            print(f"   ⚠️  No metrics found for {checkpoint_folder}, keeping original name")
+                print(f"   No metrics found for {checkpoint_folder}, keeping original name")
             return
         
         # Extract metric values
@@ -85,7 +85,7 @@ class MetricCheckpointCallback(TrainerCallback):
             try:
                 # Check if target already exists
                 if new_path.exists():
-                    print(f"   ⚠️  {new_name} already exists, adding suffix")
+                    print(f"   {new_name} already exists, adding suffix")
                     counter = 1
                     while new_path.exists():
                         new_name_with_suffix = f"{new_name}-v{counter}"
@@ -98,10 +98,10 @@ class MetricCheckpointCallback(TrainerCallback):
                 # Track mapping
                 self.checkpoint_mapping[checkpoint_folder] = new_path.name
                 
-                print(f"   ✅ Renamed: {checkpoint_folder} → {new_path.name}")
+                print(f"   Renamed: {checkpoint_folder} → {new_path.name}")
                 
             except Exception as e:
-                print(f"   ❌ Failed to rename {checkpoint_folder}: {e}")
+                print(f"   Failed to rename {checkpoint_folder}: {e}")
 
 
 class SimpleMetricCheckpointCallback(TrainerCallback):
@@ -151,11 +151,11 @@ class SimpleMetricCheckpointCallback(TrainerCallback):
         
         # Store for later renaming
         self.pending_renames[checkpoint_folder] = new_name
-        print(f"   📝 Will rename: {checkpoint_folder} → {new_name}")
+        print(f"   Will rename: {checkpoint_folder} → {new_name}")
     
     def on_train_end(self, args, state, control, **kwargs):
         """Rename checkpoints after training ends (after load_best_model_at_end)"""
-        print(f"\n📁 Renaming checkpoints after training...")
+        print(f"\nRenaming checkpoints after training...")
         
         for old_name, new_name in self.pending_renames.items():
             old_path = Path(args.output_dir) / old_name
@@ -178,10 +178,10 @@ class SimpleMetricCheckpointCallback(TrainerCallback):
                     counter += 1
                 
                 old_path.rename(new_path)
-                print(f"   ✅ Renamed: {old_name} → {new_path.name}")
+                print(f"   Renamed: {old_name} → {new_path.name}")
                 
             except Exception as e:
-                print(f"   ❌ Rename failed for {old_name}: {e}")
+                print(f"   Rename failed for {old_name}: {e}")
 
 
 # Example usage in train.py:
@@ -196,15 +196,15 @@ if __name__ == '__main__':
     print("Checkpoint Renamer - Examples")
     print("="*70)
     
-    print("\n1️⃣ Simple callback (4 chữ số, không làm tròn):")
+    print("\n1. Simple callback (4 chữ số, không làm tròn):")
     print("   checkpoint-227 → checkpoint-9005-e1  (F1: 0.9005...)")
     print("   checkpoint-681 → checkpoint-9185-e3  (F1: 0.9185...)")
     
-    print("\n2️⃣ Full callback (accuracy + F1):")
+    print("\n2. Full callback (accuracy + F1):")
     print("   checkpoint-1000 → checkpoint-acc90-f189")
     print("   checkpoint-2000 → checkpoint-acc92-f191")
     
-    print("\n3️⃣ With decimal places:")
+    print("\n3. With decimal places:")
     print("   checkpoint-1000 → checkpoint-acc90_5-f189_3")
     
     print("\n" + "="*70)

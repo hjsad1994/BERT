@@ -17,33 +17,33 @@ def analyze_nhung_errors():
     os.chdir('D:/BERT')
     
     print("="*80)
-    print("🔍 PHÂN TÍCH ERRORS CÓ TỪ 'NHƯNG' (Adversative Conjunction)")
+    print("PHAN TICH ERRORS CO TU 'NHUNG' (Adversative Conjunction)")
     print("="*80)
     
-    # Load all errors
+    # Load all errors1
     errors_file = "error_analysis_results/all_errors_detailed.csv"
     
     if not os.path.exists(errors_file):
-        print(f"❌ File không tồn tại: {errors_file}")
+        print(f"File không tồn tại: {errors_file}")
         print("Vui lòng chạy: python tests/error_analysis.py")
         return
     
     df = pd.read_csv(errors_file, encoding='utf-8-sig')
     
-    print(f"\n📊 Tổng số errors: {len(df)}")
+    print(f"\nTổng số errors: {len(df)}")
     
     # Find errors with "nhưng"
     nhung_errors = df[df['sentence'].str.contains('nhưng', case=False, na=False)]
     
-    print(f"📊 Số errors có từ 'nhưng': {len(nhung_errors)} ({len(nhung_errors)/len(df)*100:.1f}%)")
+    print(f"Số errors có từ 'nhưng': {len(nhung_errors)} ({len(nhung_errors)/len(df)*100:.1f}%)")
     
     if len(nhung_errors) == 0:
-        print("\n✓ Không có errors nào chứa từ 'nhưng'")
+        print("\nKhông có errors nào chứa từ 'nhưng'")
         return
     
     # Analyze confusion patterns
     print(f"\n{'='*80}")
-    print("📈 CONFUSION PATTERNS CHO ERRORS CÓ 'NHƯNG':")
+    print("CONFUSION PATTERNS CHO ERRORS CO 'NHUNG':")
     print(f"{'='*80}")
     
     confusion_stats = nhung_errors.groupby('confusion_type').size().reset_index(name='count')
@@ -55,7 +55,7 @@ def analyze_nhung_errors():
     
     # Analyze by aspect
     print(f"\n{'='*80}")
-    print("📈 ERRORS CÓ 'NHƯNG' BY ASPECT:")
+    print("ERRORS CO 'NHUNG' BY ASPECT:")
     print(f"{'='*80}")
     
     aspect_stats = nhung_errors.groupby('aspect').size().reset_index(name='count')
@@ -67,7 +67,7 @@ def analyze_nhung_errors():
     
     # Show examples
     print(f"\n{'='*80}")
-    print("📝 TOP 10 ERRORS CÓ 'NHƯNG' (Examples):")
+    print("TOP 10 ERRORS CO 'NHUNG' (Examples):")
     print(f"{'='*80}\n")
     
     for i, row in nhung_errors.head(10).iterrows():
@@ -97,11 +97,11 @@ def analyze_nhung_errors():
     # Save nhung errors to separate file
     output_file = "error_analysis_results/nhung_errors_detailed.csv"
     nhung_errors.to_csv(output_file, index=False, encoding='utf-8-sig')
-    print(f"✓ Saved {len(nhung_errors)} errors có 'nhưng' to: {output_file}")
+    print(f"Saved {len(nhung_errors)} errors có 'nhưng' to: {output_file}")
     
     # Also check all data (not just errors)
     print(f"\n{'='*80}")
-    print("📊 PHÂN TÍCH TOÀN BỘ DATASET (bao gồm cả đúng + sai):")
+    print("PHAN TICH TOAN BO DATASET (bao gồm cả đúng + sai):")
     print(f"{'='*80}")
     
     # Load test set
@@ -120,11 +120,11 @@ def analyze_nhung_errors():
         # Find all "nhưng" sentences
         nhung_all = full_df[full_df['sentence'].str.contains('nhưng', case=False, na=False)]
         
-        print(f"\n📊 Tổng số samples có 'nhưng' trong test set: {len(nhung_all)}")
-        print(f"📊 Số samples đúng: {nhung_all['correct'].sum()} ({nhung_all['correct'].sum()/len(nhung_all)*100:.1f}%)")
-        print(f"📊 Số samples sai: {(~nhung_all['correct']).sum()} ({(~nhung_all['correct']).sum()/len(nhung_all)*100:.1f}%)")
+        print(f"\nTổng số samples có 'nhưng' trong test set: {len(nhung_all)}")
+        print(f"Số samples đúng: {nhung_all['correct'].sum()} ({nhung_all['correct'].sum()/len(nhung_all)*100:.1f}%)")
+        print(f"Số samples sai: {(~nhung_all['correct']).sum()} ({(~nhung_all['correct']).sum()/len(nhung_all)*100:.1f}%)")
         
-        print(f"\n💡 So sánh với overall performance:")
+        print(f"\nSo sánh với overall performance:")
         overall_acc = full_df['correct'].mean()
         nhung_acc = nhung_all['correct'].mean()
         print(f"   • Overall accuracy: {overall_acc:.2%}")
@@ -132,13 +132,13 @@ def analyze_nhung_errors():
         print(f"   • Difference: {(nhung_acc - overall_acc)*100:+.2f}%")
         
         if nhung_acc < overall_acc:
-            print(f"\n⚠️  Model performs WORSE on sentences with 'nhưng'!")
+            print(f"\nModel performs WORSE on sentences with 'nhưng'!")
         else:
-            print(f"\n✓ Model performs OK on sentences with 'nhưng'")
+            print(f"\nModel performs OK on sentences with 'nhưng'")
     
     # Generate solutions
     print(f"\n{'='*80}")
-    print("💡 GIẢI PHÁP ĐỀ XUẤT:")
+    print("GIAI PHAP DE XUAT:")
     print(f"{'='*80}\n")
     
     solutions = [
@@ -185,7 +185,7 @@ def analyze_nhung_errors():
         print(solution)
     
     print(f"\n{'='*80}")
-    print("🎯 HÀNH ĐỘNG ĐỀ XUẤT NGAY:")
+    print("HANH DONG DE XUAT NGAY:")
     print(f"{'='*80}\n")
     
     print("OPTION 1: DATA AUGMENTATION (Dễ nhất, hiệu quả cao)")
