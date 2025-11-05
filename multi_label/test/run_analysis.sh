@@ -10,7 +10,7 @@
 #     bash multi_label/test/run_analysis.sh
 #
 # Requirements:
-#   - multi_label/models/multilabel_focal_contrastive/test_predictions_detailed.csv (from training)
+#   - multi_label/models/multilabel_focal/test_predictions_detailed.csv (from training)
 #   - multi_label/data/test_multilabel.csv (ground truth)
 ################################################################################
 
@@ -38,7 +38,7 @@ if [ ! -f "multi_label/test/analyze_results.py" ]; then
 fi
 
 # Check if predictions file exists
-PREDICTIONS_FILE="multi_label/models/multilabel_focal_contrastive/test_predictions_detailed.csv"
+PREDICTIONS_FILE="multi_label/models/multilabel_focal/test_predictions_detailed.csv"
 if [ ! -f "$PREDICTIONS_FILE" ]; then
     echo -e "${RED}ERROR: Error: Predictions file not found!${NC}"
     echo ""

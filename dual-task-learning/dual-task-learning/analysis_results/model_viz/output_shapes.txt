@@ -1,0 +1,3 @@
+Output tensor shapes (dummy batch)
+  aspect_detection_logits: (1, 11)
+  sentiment_classification_logits: (1, 11, 3)

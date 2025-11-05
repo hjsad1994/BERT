@@ -7,8 +7,8 @@
 
 paths:
   data_dir: "single_label/data"
-  # train_file: "single_label/data/train.csv"
-  train_file: "single_label/data/train_augmented_neutral_nhung.csv"
+  train_file: "single_label/data/train.csv"
+  # train_file: "single_label/data/train_augmented_neutral_nhung.csv"
   validation_file: "single_label/data/validation.csv"
   test_file: "single_label/data/test.csv"
   output_dir: "single_label/models/finetuned_visobert_single"
@@ -65,7 +65,7 @@ training:
   warmup_ratio: 0.06
   
   # Training duration
-  num_train_epochs: 4
+  num_train_epochs: 3
   
   # Mixed precision (RTX 3070 Ampere)
   fp16: true
@@ -113,33 +113,6 @@ general:
   device: "auto"
   log_level: "info"
 
-# ========================================================================
-# REPRODUCIBILITY: Master Seed Configuration
-# ========================================================================
-# For academic research and fair comparison:
-# 
-# 1. FIXED SEEDS (keep same across all experiments):
-#    - data_split_seed: Keep FIXED to ensure same train/val/test splits
-#      This ensures fair comparison between different methods/models
-#    - oversampling_seed: Keep FIXED if using same augmentation strategy
-#    - shuffle_seed: Keep FIXED (usually same as data_split_seed)
-# 
-# 2. VARIABLE SEEDS (change for multiple runs):
-#    - training_seed: CHANGE for each run (e.g., 79, 123, 456, 789, 2024)
-#      This affects: weight initialization, dropout, DataLoader shuffling (main process)
-#      Multiple runs are needed for statistical significance (mean ± std)
-#    - dataloader_seed: SYNC with training_seed (change together)
-#      This seeds DataLoader worker processes when num_workers > 0
-#      Recommended: Keep same as training_seed for consistency
-# 
-# 3. RECOMMENDED PRACTICE FOR MULTIPLE RUNS:
-#    - Run 1: training_seed = 79, dataloader_seed = 79
-#    - Run 2: training_seed = 123, dataloader_seed = 123
-#    - Run 3: training_seed = 456, dataloader_seed = 456
-#    - Run 4: training_seed = 789, dataloader_seed = 789
-#    - Run 5: training_seed = 2024, dataloader_seed = 2024
-#    Then report: Mean ± Std across all 5 runs
-# 
 # ========================================================================
 reproducibility:
   # FIXED: Data preprocessing seeds (keep same for fair comparison)

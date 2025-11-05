@@ -4,12 +4,11 @@ Train ViSoBERT to predict all 13 aspects simultaneously
 """
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.optim import AdamW
 from transformers import AutoTokenizer, get_cosine_schedule_with_warmup
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -19,18 +18,27 @@ import argparse
 import json
 import logging
 from datetime import datetime
+from typing import Dict, Any, Optional, Tuple
 
 from model_multilabel import MultiLabelViSoBERT
 from dataset_multilabel import MultiLabelABSADataset
 from focal_loss_multilabel import MultilabelFocalLoss, calculate_global_alpha
 
-def load_config(config_path='config.yaml'):
+def load_config(config_path: str = 'config.yaml') -> Dict[str, Any]:
     """Load configuration"""
     with open(config_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
     return config
 
-def train_epoch(model, dataloader, optimizer, scheduler, device, focal_loss_fn):
+def train_epoch(
+    model: torch.nn.Module,
+    dataloader: DataLoader,
+    optimizer: torch.optim.Optimizer,
+    scheduler: torch.optim.lr_scheduler.LRScheduler,
+    device: torch.device,
+    focal_loss_fn: Optional[MultilabelFocalLoss],
+    scaler: Optional[torch.cuda.amp.GradScaler],
+) -> float:
     """Train for one epoch - ONLY on labeled aspects (masked)"""
     model.train()
     total_loss = 0
@@ -45,13 +53,25 @@ def train_epoch(model, dataloader, optimizer, scheduler, device, focal_loss_fn):
         loss_mask = batch['loss_mask'].to(device)  # NEW: Get mask
         
         optimizer.zero_grad()
-        
-        # Forward
-        logits = model(input_ids, attention_mask)
-        
-        # Compute Focal Loss (returns loss per aspect: [batch_size, num_aspects])
-        loss_per_aspect = focal_loss_fn(logits, labels)
-        
+        use_amp = scaler is not None
+        with torch.cuda.amp.autocast(enabled=use_amp):
+            # Forward
+            logits = model(input_ids, attention_mask)
+
+            # Compute per-aspect loss: focal if provided, else CrossEntropy per aspect
+            if focal_loss_fn is not None:
+                # returns [batch_size, num_aspects]
+                loss_per_aspect = focal_loss_fn(logits, labels)
+            else:
+                # logits: [B, A, C], labels: [B, A]
+                bsz, num_aspects, num_classes = logits.shape
+                ce = F.cross_entropy(
+                    logits.view(bsz * num_aspects, num_classes),
+                    labels.view(bsz * num_aspects),
+                    reduction='none'
+                )
+                loss_per_aspect = ce.view(bsz, num_aspects)
+
         # Apply mask: ONLY train on labeled aspects (mask=1.0)
         # NaN aspects have mask=0.0, so their loss is zeroed out
         masked_loss = loss_per_aspect * loss_mask
@@ -64,9 +84,15 @@ def train_epoch(model, dataloader, optimizer, scheduler, device, focal_loss_fn):
             loss = masked_loss.sum()  # Fallback (shouldn't happen)
         
         # Backward
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-        optimizer.step()
+        if use_amp:
+            scaler.scale(loss).backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            scaler.step(optimizer)
+            scaler.update()
+        else:
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            optimizer.step()
         scheduler.step()
         
         total_loss += loss.item()
@@ -80,7 +106,14 @@ def train_epoch(model, dataloader, optimizer, scheduler, device, focal_loss_fn):
     
     return avg_loss
 
-def evaluate(model, dataloader, device, aspect_names, raw_data_file=None, return_predictions=False):
+def evaluate(
+    model: torch.nn.Module,
+    dataloader: DataLoader,
+    device: torch.device,
+    aspect_names: list,
+    raw_data_file: Optional[str] = None,
+    return_predictions: bool = False,
+) -> Dict[str, Any]:
     """
     Evaluate model - ONLY on labeled aspects (skip NaN)
     
@@ -210,7 +243,7 @@ def evaluate(model, dataloader, device, aspect_names, raw_data_file=None, return
     
     return results
 
-def print_metrics(metrics, epoch=None):
+def print_metrics(metrics: Dict[str, Any], epoch: Optional[int] = None) -> None:
     """Pretty print metrics"""
     if epoch is not None:
         print(f"\n{'='*80}")
@@ -238,7 +271,14 @@ def print_metrics(metrics, epoch=None):
         n_samples_str = f"({m.get('n_samples', 'N/A')})" if 'n_samples' in m else ""
         print(f"{aspect:<15} {m['accuracy']*100:>8.2f}%  {m['f1']*100:>8.2f}%  {m['precision']*100:>8.2f}%  {m['recall']*100:>8.2f}%  {n_samples_str:<10}")
 
-def save_checkpoint(model, optimizer, epoch, metrics, output_dir, is_best=False):
+def save_checkpoint(
+    model: torch.nn.Module,
+    optimizer: torch.optim.Optimizer,
+    epoch: int,
+    metrics: Dict[str, Any],
+    output_dir: str,
+    is_best: bool = False,
+) -> str:
     """Save model checkpoint"""
     os.makedirs(output_dir, exist_ok=True)
     
@@ -261,7 +301,7 @@ def save_checkpoint(model, optimizer, epoch, metrics, output_dir, is_best=False)
     
     return checkpoint_path
 
-def setup_logging(output_dir):
+def setup_logging(output_dir: str) -> str:
     """Setup logging to file and console"""
     os.makedirs(output_dir, exist_ok=True)
     
@@ -279,7 +319,7 @@ def setup_logging(output_dir):
     
     return log_file
 
-def save_training_history(history, output_dir):
+def save_training_history(history: list, output_dir: str) -> Tuple[str, str]:
     """Save training history to CSV and JSON"""
     os.makedirs(output_dir, exist_ok=True)
     
@@ -296,7 +336,14 @@ def save_training_history(history, output_dir):
     logging.info(f"Training history saved to: {csv_path} and {json_path}")
     return csv_path, json_path
 
-def save_evaluation_results(metrics, all_preds, all_labels, aspect_names, output_dir, split='test'):
+def save_evaluation_results(
+    metrics: Dict[str, Any],
+    all_preds: torch.Tensor,
+    all_labels: torch.Tensor,
+    aspect_names: list,
+    output_dir: str,
+    split: str = 'test',
+) -> Tuple[str, str]:
     """Save detailed evaluation results including predictions"""
     os.makedirs(output_dir, exist_ok=True)
     
@@ -325,7 +372,7 @@ def save_evaluation_results(metrics, all_preds, all_labels, aspect_names, output
         f.write(f"  Precision: {metrics['overall_precision']*100:.2f}%\n")
         f.write(f"  Recall:    {metrics['overall_recall']*100:.2f}%\n\n")
         
-        if metrics.get('n_labeled') and metrics.get('n_total'):
+        if metrics.get('n_labeled') is not None and metrics.get('n_total') is not None:
             f.write(f"Coverage:\n")
             f.write(f"  Labeled: {metrics['n_labeled']:,}/{metrics['n_total']:,} ")
             f.write(f"({metrics['n_labeled']/metrics['n_total']*100:.1f}%)\n\n")
@@ -341,7 +388,7 @@ def save_evaluation_results(metrics, all_preds, all_labels, aspect_names, output
     logging.info(f"Evaluation results saved to: {pred_file} and {summary_file}")
     return pred_file, summary_file
 
-def main(args):
+def main(args: argparse.Namespace) -> None:
     print("=" * 80)
     print("Multi-Label ABSA Training")
     print("=" * 80)
@@ -543,6 +590,8 @@ def main(args):
     aspect_names = train_dataset.aspects
     training_history = []
     
+    scaler = torch.cuda.amp.GradScaler(enabled=torch.cuda.is_available())
+
     for epoch in range(1, num_epochs + 1):
         print(f"\n{'='*80}")
         print(f"Epoch {epoch}/{num_epochs}")
@@ -550,7 +599,15 @@ def main(args):
         logging.info(f"Epoch {epoch}/{num_epochs}")
         
         # Train
-        train_loss = train_epoch(model, train_loader, optimizer, scheduler, device, focal_loss_fn)
+        train_loss = train_epoch(
+            model,
+            train_loader,
+            optimizer,
+            scheduler,
+            device,
+            focal_loss_fn,
+            scaler,
+        )
         print(f"\nTrain Loss: {train_loss:.4f}")
         logging.info(f"Train Loss: {train_loss:.4f}")
         
@@ -611,15 +668,23 @@ def main(args):
     # Use output_dir from config if not specified
     output_dir = args.output_dir if args.output_dir else config['paths']['output_dir']
     
-    # Load best checkpoint
-    best_checkpoint = torch.load(os.path.join(output_dir, 'best_model.pt'))
-    
-    # Load with strict=False to handle old checkpoints with pooler
-    missing_keys, unexpected_keys = model.load_state_dict(best_checkpoint['model_state_dict'], strict=False)
-    if unexpected_keys:
-        print(f"WARNING: Ignored unexpected keys from old checkpoint: {len(unexpected_keys)} keys")
-    if missing_keys:
-        print(f"WARNING: Missing keys: {missing_keys}")
+    # Load best checkpoint (robust to absence/incompatibility)
+    best_model_path = os.path.join(output_dir, 'best_model.pt')
+    if os.path.exists(best_model_path):
+        try:
+            best_checkpoint = torch.load(best_model_path, map_location=device)
+            missing_keys, unexpected_keys = model.load_state_dict(
+                best_checkpoint['model_state_dict'], strict=False
+            )
+            if unexpected_keys:
+                print(f"WARNING: Ignored unexpected keys from old checkpoint: {len(unexpected_keys)} keys")
+            if missing_keys:
+                print(f"WARNING: Missing keys: {missing_keys}")
+        except Exception as e:
+            print(f"WARNING: Could not load best model ('{best_model_path}'): {e}")
+            print("   Proceeding with current model weights for testing.")
+    else:
+        print(f"WARNING: Best model not found at '{best_model_path}'. Testing current model.")
     
     test_metrics = evaluate(model, test_loader, device, aspect_names,
                            raw_data_file=config['paths']['test_file'],

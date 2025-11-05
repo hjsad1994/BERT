@@ -36,7 +36,7 @@ class ErrorAnalyzer:
     VALID_LABELS = ['positive', 'negative', 'neutral']
     
     def __init__(self, test_file='multi_label/data/test_multilabel.csv', 
-                 predictions_file='multi_label/models/multilabel_focal_contrastive/test_predictions_detailed.csv'):
+                 predictions_file='multi_label/models/multilabel_focal/test_predictions_detailed.csv'):
         """
         Khởi tạo ErrorAnalyzer
         
@@ -716,7 +716,7 @@ def main():
     """Main function"""
     analyzer = ErrorAnalyzer(
         test_file='multi_label/data/test_multilabel.csv',
-        predictions_file='multi_label/models/multilabel_focal_contrastive/test_predictions_detailed.csv'
+        predictions_file='multi_label/models/multilabel_focal/test_predictions_detailed.csv'
     )
     analyzer.run_full_analysis()
 

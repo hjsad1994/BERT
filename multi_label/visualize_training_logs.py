@@ -52,37 +52,27 @@ def plot_losses_from_csv(csv_path, output_dir='training_logs'):
                 arrowprops=dict(arrowstyle='->', color='green', lw=2),
                 fontsize=10, color='green', fontweight='bold')
     
-    # Plot 1.2: Focal vs Contrastive
+    # Plot 1.2: Focal Loss Only
     ax2 = axes[0, 1]
-    ax2.plot(df['epoch'], df['train_focal_loss'], 'r-s', linewidth=2, markersize=8, label='Focal Loss')
-    ax2.plot(df['epoch'], df['train_contrastive_loss'], 'g-^', linewidth=2, markersize=8, label='Contrastive Loss')
-    ax2.set_xlabel('Epoch', fontsize=12, fontweight='bold')
-    ax2.set_ylabel('Loss', fontsize=12, fontweight='bold')
-    ax2.set_title('Focal vs Contrastive Loss', fontsize=14, fontweight='bold')
-    ax2.legend(fontsize=11)
-    ax2.grid(True, alpha=0.3)
-    
-    # Check if both decrease
-    focal_decreasing = df['train_focal_loss'].iloc[-1] < df['train_focal_loss'].iloc[0]
-    contr_decreasing = df['train_contrastive_loss'].iloc[-1] < df['train_contrastive_loss'].iloc[0]
-    
-    if focal_decreasing and contr_decreasing:
-        status_text = 'Both decreasing - GOOD!'
-        status_color = 'green'
-    elif focal_decreasing and not contr_decreasing:
-        status_text = 'Contrastive not decreasing - increase weight'
-        status_color = 'red'
-    elif not focal_decreasing and contr_decreasing:
-        status_text = 'Focal not decreasing - increase weight'
-        status_color = 'red'
+    if 'train_focal_loss' in df.columns:
+        ax2.plot(df['epoch'], df['train_focal_loss'], 'r-s', linewidth=2, markersize=8, label='Focal Loss')
+        ax2.set_xlabel('Epoch', fontsize=12, fontweight='bold')
+        ax2.set_ylabel('Loss', fontsize=12, fontweight='bold')
+        ax2.set_title('Focal Loss', fontsize=14, fontweight='bold')
+        ax2.legend(fontsize=11)
+        ax2.grid(True, alpha=0.3)
+        # Decreasing status
+        focal_decreasing = df['train_focal_loss'].iloc[-1] < df['train_focal_loss'].iloc[0]
+        status_text = 'Focal loss decreasing - GOOD!' if focal_decreasing else 'Focal loss not decreasing - check config'
+        status_color = 'green' if focal_decreasing else 'red'
+        ax2.text(0.5, 0.95, status_text,
+                 transform=ax2.transAxes, ha='center', va='top',
+                 fontsize=11, color=status_color, fontweight='bold',
+                 bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.3))
     else:
-        status_text = 'Both not decreasing - check config'
-        status_color = 'red'
-    
-    ax2.text(0.5, 0.95, status_text,
-            transform=ax2.transAxes, ha='center', va='top',
-            fontsize=11, color=status_color, fontweight='bold',
-            bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.3))
+        ax2.text(0.5, 0.5, 'train_focal_loss not found in CSV',
+                 transform=ax2.transAxes, ha='center', va='center', fontsize=12)
+        ax2.axis('off')
     
     # Plot 1.3: Validation F1
     ax3 = axes[1, 0]
@@ -131,11 +121,7 @@ def plot_losses_from_csv(csv_path, output_dir='training_logs'):
     focal_start = df['train_focal_loss'].iloc[0]
     focal_reduction = (df['train_focal_loss'] - focal_start) / focal_start * 100
     
-    contr_start = df['train_contrastive_loss'].iloc[0]
-    contr_reduction = (df['train_contrastive_loss'] - contr_start) / contr_start * 100
-    
     ax.plot(df['epoch'], focal_reduction, 'r-o', linewidth=2, markersize=8, label='Focal Loss Reduction')
-    ax.plot(df['epoch'], contr_reduction, 'g-s', linewidth=2, markersize=8, label='Contrastive Loss Reduction')
     ax.axhline(y=0, color='black', linestyle='-', alpha=0.3)
     ax.set_xlabel('Epoch', fontsize=12, fontweight='bold')
     ax.set_ylabel('Loss Reduction (%)', fontsize=12, fontweight='bold')
@@ -145,8 +131,7 @@ def plot_losses_from_csv(csv_path, output_dir='training_logs'):
     
     # Final reductions
     focal_final = focal_reduction.iloc[-1]
-    contr_final = contr_reduction.iloc[-1]
-    ax.text(0.02, 0.98, f'Focal reduced: {abs(focal_final):.1f}%\nContrastive reduced: {abs(contr_final):.1f}%',
+    ax.text(0.02, 0.98, f'Focal reduced: {abs(focal_final):.1f}%',
            transform=ax.transAxes, va='top',
            fontsize=11, fontweight='bold',
            bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.5))
@@ -168,10 +153,7 @@ def plot_losses_from_csv(csv_path, output_dir='training_logs'):
     print(f"      End:   {df['train_focal_loss'].iloc[-1]:.4f}")
     print(f"      Change: {focal_final:.1f}%")
     
-    print(f"\n   Contrastive Loss:")
-    print(f"      Start: {df['train_contrastive_loss'].iloc[0]:.4f}")
-    print(f"      End:   {df['train_contrastive_loss'].iloc[-1]:.4f}")
-    print(f"      Change: {contr_final:.1f}%")
+    # Contrastive removed
     
     print(f"\nF1 Score:")
     print(f"      Start: {df['val_f1'].iloc[0]*100:.2f}%")
@@ -179,14 +161,10 @@ def plot_losses_from_csv(csv_path, output_dir='training_logs'):
     print(f"      End:   {df['val_f1'].iloc[-1]*100:.2f}%")
     
     print(f"\nTraining Behavior:")
-    if focal_decreasing and contr_decreasing:
-        print(f"   GOOD: Both losses decreasing!")
+    if focal_decreasing:
+        print(f"   GOOD: Focal loss decreasing!")
     else:
-        print(f"   WARNING: Check weight balance")
-        if not focal_decreasing:
-            print(f"      - Focal loss not decreasing -> increase focal_weight")
-        if not contr_decreasing:
-            print(f"      - Contrastive loss not decreasing -> increase contrastive_weight")
+        print(f"   WARNING: Focal loss not decreasing -> check focal settings")
     
     print("\n" + "="*80)
 
@@ -214,10 +192,10 @@ def plot_batch_losses(csv_path, output_dir='training_logs', num_epochs_to_show=3
         epoch_data = df_subset[df_subset['epoch'] == epoch]
         x = epoch_data['batch'].values + (epoch - 1) * df_subset['batch'].max()
         ax1.plot(x, epoch_data['focal_loss'], 'r-', alpha=0.6, linewidth=1)
-        ax1.plot(x, epoch_data['contrastive_loss'], 'g-', alpha=0.6, linewidth=1)
+        # Contrastive removed
     
     ax1.plot([], [], 'r-', label='Focal Loss', linewidth=2)
-    ax1.plot([], [], 'g-', label='Contrastive Loss', linewidth=2)
+    # Contrastive removed
     ax1.set_xlabel('Batch (across epochs)', fontsize=12, fontweight='bold')
     ax1.set_ylabel('Loss', fontsize=12, fontweight='bold')
     ax1.set_title(f'Batch-Level Losses (First {num_epochs_to_show} Epochs)', fontsize=14, fontweight='bold')
@@ -228,10 +206,10 @@ def plot_batch_losses(csv_path, output_dir='training_logs', num_epochs_to_show=3
     ax2 = axes[1]
     window = 50
     df_subset['focal_ma'] = df_subset['focal_loss'].rolling(window=window, min_periods=1).mean()
-    df_subset['contr_ma'] = df_subset['contrastive_loss'].rolling(window=window, min_periods=1).mean()
+    # Contrastive removed
     
     ax2.plot(df_subset.index, df_subset['focal_ma'], 'r-', linewidth=2, label=f'Focal (MA-{window})')
-    ax2.plot(df_subset.index, df_subset['contr_ma'], 'g-', linewidth=2, label=f'Contrastive (MA-{window})')
+    # Contrastive removed
     ax2.set_xlabel('Batch Index', fontsize=12, fontweight='bold')
     ax2.set_ylabel('Loss (Moving Average)', fontsize=12, fontweight='bold')
     ax2.set_title('Smoothed Batch Losses', fontsize=14, fontweight='bold')
@@ -271,12 +249,12 @@ def main():
         print("="*80)
         print("\nTo visualize training logs:")
         print("\n1. First, train with logging:")
-        print("   python train_multilabel_focal_contrastive_with_logging.py")
+        print("   python multi_label/train_multilabel.py --config multi_label/config_multi.yaml")
         print("\n2. Then visualize:")
         print("   python visualize_training_logs.py --epoch-log path/to/epoch_losses.csv")
         print("\nExample:")
         print("   python visualize_training_logs.py \\")
-        print("       --epoch-log multi_label/models/multilabel_ghm_only/training_logs/epoch_losses_20251021_212833.csv")
+        print("       --epoch-log multi_label/models/multilabel_focal/training_logs/epoch_losses_YYYYMMDD_HHMMSS.csv")
 
 
 if __name__ == '__main__':

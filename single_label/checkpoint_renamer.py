@@ -53,7 +53,7 @@ class MetricCheckpointCallback(TrainerCallback):
                 break
         
         if eval_metrics is None:
-                print(f"   No metrics found for {checkpoint_folder}, keeping original name")
+            print(f"   No metrics found for {checkpoint_folder}, keeping original name")
             return
         
         # Extract metric values

@@ -60,7 +60,7 @@ def normalize_value(value):
     return value if value else None
 
 
-def load_predictions(predictions_file='multi_label/models/multilabel_focal_contrastive/test_predictions_detailed.csv',
+def load_predictions(predictions_file='multi_label/models/multilabel_focal/test_predictions_detailed.csv',
                      test_file='multi_label/data/test_multilabel.csv'):
     """
     Load predictions từ CSV và convert sang long format for analysis
@@ -707,7 +707,7 @@ def main():
     
     # Load predictions
     df = load_predictions(
-        predictions_file='multi_label/models/multilabel_focal_contrastive/test_predictions_detailed.csv',
+        predictions_file='multi_label/models/multilabel_focal/test_predictions_detailed.csv',
         test_file='multi_label/data/test_multilabel.csv'
     )
     

@@ -1,0 +1,4 @@
+2025-11-05 07:07:25,189 - INFO - Training started at 2025-11-05 07:07:25.189488
+2025-11-05 07:07:25,189 - INFO - Log file: D:\BERT\dual-task-learning\models\dual_task_learning\training_log_20251105_070725.txt
+2025-11-05 07:07:28,728 - INFO - Starting training loop
+2025-11-05 07:07:28,728 - INFO - Epoch 1/10

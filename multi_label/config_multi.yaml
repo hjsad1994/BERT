@@ -4,27 +4,26 @@
 # Output: 33 binary predictions (11 aspects × 3 sentiments)
 # Each aspect-sentiment pair is predicted independently
 # 
-# Base Model: 5CD-AI/Vietnamese-Sentiment-visobert
-# - Pre-trained on 120K Vietnamese sentiment analysis datasets
-# - Fine-tuned from visobert-14gb-corpus
-# - Labels: 0=Negative, 1=Positive, 2=Neutral
-# - We further fine-tune this model for multi-label ABSA task
+# Base Model: 5CD-AI/visobert-14gb-corpus
+# - General Vietnamese language model (pretrained on ~14GB corpus)
+# - Not sentiment-specific; we fine-tune it for multi-label ABSA
+# - Our task uses 33 binary outputs (11 aspects × 3 sentiments)
+# - Sentiment indices in this project: 0=Positive, 1=Negative, 2=Neutral
 # ========================================================================
 
 paths:
   data_dir: "multi_label/data"
-  # train_file: "multi_label/data/train_multilabel_balanced.csv"  # Balanced data (15,921 samples)
-  train_file: "multi_label/data/train_multilabel.csv"
+  train_file: "multi_label/data/train_multilabel_balanced.csv"  # Balanced data (15,921 samples)
+  # train_file: "multi_label/data/train_multilabel.csv"
   validation_file: "multi_label/data/validation_multilabel.csv"
   test_file: "multi_label/data/test_multilabel.csv"
-  output_dir: "multi_label/models/multilabel_focal_contrastive"
+  output_dir: "multi_label/models/multilabel_focal"
   evaluation_report: "multi_label/results/evaluation_report_multi.txt"
   predictions_file: "multi_label/results/test_predictions_multi.csv"
 
 model:
-  name: "5CD-AI/Vietnamese-Sentiment-visobert"  # Pre-trained sentiment model (fine-tuned on 120K Vietnamese sentiment data)
-  # Note: This model is pre-trained for sentiment analysis (Negative/Positive/Neutral)
-  # We will fine-tune it further for multi-label ABSA task (11 aspects × 3 sentiments)
+  name: "5CD-AI/visobert-14gb-corpus"  # General Vietnamese model; we fine-tune for multi-label ABSA
+  # Note: This base model is not sentiment-specific; fine-tuning handles aspect+sentiment outputs
   num_labels: 33  # 11 aspects × 3 sentiments = 33 binary outputs
   num_aspects: 11
   num_sentiments: 3
@@ -74,7 +73,7 @@ training:
   warmup_ratio: 0.06
   
   # Training duration
-  num_train_epochs: 10  # More epochs for contrastive learning
+  num_train_epochs: 10  # Training epochs
   
   # Mixed precision (RTX 3070 Ampere)
   fp16: true
@@ -130,13 +129,14 @@ general:
 # ========================================================================
 reproducibility:
   # Data preprocessing seeds
-  data_split_seed: 99              # Seed for train/val/test split
-  oversampling_seed: 99            # Seed for aspect-wise oversampling
-  shuffle_seed: 99               # Seed for data shuffling
+  data_split_seed: 200              # Seed for train/val/test split
+  oversampling_seed: 200            # Seed for aspect-wise oversampling
+  shuffle_seed: 200               # Seed for data shuffling
   
   # Model training seeds
-  training_seed: 99                # Seed for PyTorch/Transformers training
-  dataloader_seed: 99             # Seed for DataLoader worker initialization
+  training_seed: 108                # Seed for PyTorch/Transformers training
+  dataloader_seed: 108            # Seed for DataLoader worker initialization 
+  # best is 100 100
   
   # Notes:
   # - All seeds set to 42 by default for reproducibility
@@ -147,7 +147,7 @@ reproducibility:
 multi_label:
   # Focal Loss settings
   use_focal_loss: true      # Enable Focal Loss
-  focal_gamma: 2.1          # Focusing parameter (higher = more focus on hard examples)
+  focal_gamma: 2.0         # Focusing parameter (higher = more focus on hard examples)
   focal_alpha: "auto"       # Auto class weights from data
   
   # Data settings

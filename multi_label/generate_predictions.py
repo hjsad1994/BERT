@@ -118,7 +118,7 @@ def main(args):
             default_dir,
             'multi_label/models/single_task_focal',
             'multi_label/models/dual_task_focal',
-            'multi_label/models/multilabel_focal_contrastive'
+            'multi_label/models/multilabel_focal'
         ]
         
         model_dir = None

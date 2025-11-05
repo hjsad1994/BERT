@@ -27,7 +27,7 @@ model:
   
   # Model architecture
   hidden_size: 512      # Dense layer
-  dropout: 0.4          # Increased dropout to reduce overfitting (was 0.3)
+  dropout: 0.3
 
 valid_aspects:
   - Battery
@@ -157,7 +157,6 @@ aspect_detection:
   # Inference settings
   batch_prediction: true    # Predict all 11 aspects in one pass
   use_class_weights: true   # Apply class weights in loss (for imbalanced data)
-  max_class_weight: 5.0     # Cap for class weights to prevent overfitting (default: None = no cap)
   prediction_threshold: 0.5 # Default threshold for binary prediction
   
   # Per-aspect thresholds (auto-loaded from optimal_thresholds.json if exists)

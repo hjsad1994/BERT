@@ -1,0 +1,11 @@
+digraph {
+	graph [size="12,12"]
+	node [align=left fontname=monospace fontsize=10 height=0.2 ranksep=0.1 shape=box style=filled]
+	2844138797680 [label="
+ (1, 11)" fillcolor=darkolivegreen1]
+	2844138797392 [label="
+ (1, 11, 3)" fillcolor=darkolivegreen1]
+	2844138797008 [label="
+ (1, 33)" fillcolor=darkolivegreen3]
+	2844138797008 -> 2844138797392 [style=dotted]
+}

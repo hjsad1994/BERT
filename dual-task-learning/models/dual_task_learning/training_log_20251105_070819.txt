@@ -1,0 +1,20 @@
+2025-11-05 07:08:19,470 - INFO - Training started at 2025-11-05 07:08:19.470270
+2025-11-05 07:08:19,470 - INFO - Log file: D:\BERT\dual-task-learning\models\dual_task_learning\training_log_20251105_070819.txt
+2025-11-05 07:08:23,039 - INFO - Starting training loop
+2025-11-05 07:08:23,039 - INFO - Epoch 1/10
+2025-11-05 07:11:51,079 - INFO - Train Loss: 0.2179 (AD: 0.1629, SC: 0.2546)
+2025-11-05 07:12:15,896 - INFO - Validation - AD F1: 49.02%, SC F1: 93.75%
+2025-11-05 07:12:15,897 - INFO - New best combined F1: 75.86%
+2025-11-05 07:12:18,573 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 07:12:18,574 - INFO - Epoch 2/10
+2025-11-05 07:15:46,548 - INFO - Train Loss: 0.1021 (AD: 0.1032, SC: 0.1014)
+2025-11-05 07:16:11,261 - INFO - Validation - AD F1: 71.77%, SC F1: 95.65%
+2025-11-05 07:16:11,262 - INFO - New best combined F1: 86.10%
+2025-11-05 07:16:14,743 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 07:16:14,743 - INFO - Epoch 3/10
+2025-11-05 07:19:40,132 - INFO - Train Loss: 0.0705 (AD: 0.0728, SC: 0.0690)
+2025-11-05 07:20:04,616 - INFO - Validation - AD F1: 80.21%, SC F1: 96.38%
+2025-11-05 07:20:04,616 - INFO - New best combined F1: 89.91%
+2025-11-05 07:20:07,590 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 07:20:07,590 - INFO - Epoch 4/10
+2025-11-05 07:23:32,160 - INFO - Train Loss: 0.0490 (AD: 0.0573, SC: 0.0435)
