@@ -1,0 +1,29 @@
+{
+  "created_at": "2025-11-05T18:09:39.436227",
+  "total_samples": 14189,
+  "train_samples": 11351,
+  "val_samples": 1419,
+  "test_samples": 1419,
+  "split_ratio": {
+    "train": 0.7999859045739658,
+    "val": 0.10000704771301712,
+    "test": 0.10000704771301712
+  },
+  "aspects": [
+    "Battery",
+    "Camera",
+    "Performance",
+    "Display",
+    "Design",
+    "Software",
+    "Packaging",
+    "Price",
+    "Audio",
+    "Shop_Service",
+    "Shipping",
+    "General",
+    "Others"
+  ],
+  "format": "multi-label",
+  "seed": 42
+}

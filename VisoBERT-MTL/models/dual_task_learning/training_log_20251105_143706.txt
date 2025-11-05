@@ -1,0 +1,57 @@
+2025-11-05 14:37:06,743 - INFO - Training started at 2025-11-05 14:37:06.743595
+2025-11-05 14:37:06,744 - INFO - Log file: D:\BERT\dual-task-learning\models\dual_task_learning\training_log_20251105_143706.txt
+2025-11-05 14:37:13,695 - INFO - Starting training loop
+2025-11-05 14:37:13,696 - INFO - Epoch 1/10
+2025-11-05 14:45:16,976 - INFO - Train Loss: 0.1451 (AD: 0.1274, SC: 0.1569)
+2025-11-05 14:45:40,879 - INFO - Validation - AD F1: 69.66%, SC F1: 95.30%
+2025-11-05 14:45:40,880 - INFO - New best combined F1: 85.05%
+2025-11-05 14:45:43,904 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 14:45:43,905 - INFO - Epoch 2/10
+2025-11-05 14:53:53,663 - INFO - Train Loss: 0.0320 (AD: 0.0456, SC: 0.0230)
+2025-11-05 14:54:18,170 - INFO - Validation - AD F1: 85.20%, SC F1: 96.44%
+2025-11-05 14:54:18,170 - INFO - New best combined F1: 91.94%
+2025-11-05 14:54:21,226 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 14:54:21,227 - INFO - Epoch 3/10
+2025-11-05 15:02:34,883 - INFO - Train Loss: 0.0155 (AD: 0.0268, SC: 0.0079)
+2025-11-05 15:02:59,118 - INFO - Validation - AD F1: 85.79%, SC F1: 96.38%
+2025-11-05 15:02:59,118 - INFO - New best combined F1: 92.14%
+2025-11-05 15:03:02,091 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 15:03:02,091 - INFO - Epoch 4/10
+2025-11-05 15:11:14,302 - INFO - Train Loss: 0.0096 (AD: 0.0183, SC: 0.0038)
+2025-11-05 15:11:38,836 - INFO - Validation - AD F1: 86.52%, SC F1: 96.43%
+2025-11-05 15:11:38,836 - INFO - New best combined F1: 92.47%
+2025-11-05 15:11:41,793 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 15:11:41,793 - INFO - Epoch 5/10
+2025-11-05 15:19:46,431 - INFO - Train Loss: 0.0063 (AD: 0.0130, SC: 0.0018)
+2025-11-05 15:20:10,853 - INFO - Validation - AD F1: 86.03%, SC F1: 96.47%
+2025-11-05 15:20:11,934 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 15:20:11,935 - INFO - Epoch 6/10
+2025-11-05 15:28:27,914 - INFO - Train Loss: 0.0046 (AD: 0.0095, SC: 0.0013)
+2025-11-05 15:28:52,398 - INFO - Validation - AD F1: 87.05%, SC F1: 96.51%
+2025-11-05 15:28:52,399 - INFO - New best combined F1: 92.72%
+2025-11-05 15:28:55,560 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 15:28:55,560 - INFO - Epoch 7/10
+2025-11-05 15:36:41,736 - INFO - Train Loss: 0.0032 (AD: 0.0068, SC: 0.0008)
+2025-11-05 15:37:06,109 - INFO - Validation - AD F1: 87.80%, SC F1: 96.56%
+2025-11-05 15:37:06,109 - INFO - New best combined F1: 93.06%
+2025-11-05 15:37:08,467 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 15:37:08,468 - INFO - Epoch 8/10
+2025-11-05 15:44:54,745 - INFO - Train Loss: 0.0023 (AD: 0.0049, SC: 0.0005)
+2025-11-05 15:45:20,944 - INFO - Validation - AD F1: 88.07%, SC F1: 96.64%
+2025-11-05 15:45:20,944 - INFO - New best combined F1: 93.21%
+2025-11-05 15:45:23,752 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 15:45:23,753 - INFO - Epoch 9/10
+2025-11-05 15:53:52,766 - INFO - Train Loss: 0.0018 (AD: 0.0039, SC: 0.0004)
+2025-11-05 15:54:15,591 - INFO - Validation - AD F1: 88.22%, SC F1: 96.70%
+2025-11-05 15:54:15,591 - INFO - New best combined F1: 93.31%
+2025-11-05 15:54:18,955 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 15:54:18,955 - INFO - Epoch 10/10
+2025-11-05 16:02:04,249 - INFO - Train Loss: 0.0016 (AD: 0.0035, SC: 0.0003)
+2025-11-05 16:02:27,730 - INFO - Validation - AD F1: 88.34%, SC F1: 96.72%
+2025-11-05 16:02:27,730 - INFO - New best combined F1: 93.37%
+2025-11-05 16:02:30,118 - INFO - Training history saved to: D:\BERT\dual-task-learning\models\dual_task_learning\training_history.csv and D:\BERT\dual-task-learning\models\dual_task_learning\training_history.json
+2025-11-05 16:02:54,016 - INFO - Test Results - AD F1: 88.42%, SC F1: 96.52%
+2025-11-05 16:02:54,018 - INFO - Results saved to: D:\BERT\dual-task-learning\models\dual_task_learning\test_results.json
+2025-11-05 16:02:54,019 - INFO - Training completed successfully
+2025-11-05 16:02:54,019 - INFO - Final Test Results - AD Accuracy: 96.17%, AD F1: 88.42%
+2025-11-05 16:02:54,019 - INFO - Final Test Results - SC Accuracy: 96.30%, SC F1: 96.52%

@@ -1,0 +1,9 @@
+2025-11-06 02:55:31,713 - INFO - Training started at 2025-11-06 02:55:31.713977
+2025-11-06 02:55:31,713 - INFO - Log file: multi_label/results/multi_seed_experiments\seed_100\training_log_20251106_025531.txt
+2025-11-06 02:55:35,816 - INFO - Starting training loop
+2025-11-06 02:55:35,817 - INFO - Epoch 1/12
+2025-11-06 03:00:05,946 - INFO - Train Loss: 0.1968
+2025-11-06 03:00:31,914 - INFO - Validation - Acc: 96.29%, F1: 96.21%, Precision: 96.38%, Recall: 96.19%
+2025-11-06 03:00:31,914 - INFO - New best F1: 96.21%
+2025-11-06 03:00:35,441 - INFO - Training history saved to: multi_label/results/multi_seed_experiments\seed_100\training_history.csv and multi_label/results/multi_seed_experiments\seed_100\training_history.json
+2025-11-06 03:00:35,442 - INFO - Epoch 2/12

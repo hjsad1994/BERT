@@ -1,0 +1,4 @@
+2025-11-05 16:17:37,558 - INFO - Training started at 2025-11-05 16:17:37.558268
+2025-11-05 16:17:37,558 - INFO - Log file: aspect-detection/models/aspect_detection\training_log_20251105_161737.txt
+2025-11-05 16:17:41,609 - INFO - Starting training loop
+2025-11-05 16:17:41,609 - INFO - Epoch 1/10

@@ -1,0 +1,4 @@
+2025-11-06 02:33:08,301 - INFO - Training started at 2025-11-06 02:33:08.301972
+2025-11-06 02:33:08,302 - INFO - Log file: multi_label/models/multilabel_focal\training_log_20251106_023308.txt
+2025-11-06 02:33:12,739 - INFO - Starting training loop
+2025-11-06 02:33:12,739 - INFO - Epoch 1/12

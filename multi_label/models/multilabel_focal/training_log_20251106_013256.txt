@@ -1,0 +1,64 @@
+2025-11-06 01:32:56,419 - INFO - Training started at 2025-11-06 01:32:56.419210
+2025-11-06 01:32:56,419 - INFO - Log file: multi_label/models/multilabel_focal\training_log_20251106_013256.txt
+2025-11-06 01:33:00,706 - INFO - Starting training loop
+2025-11-06 01:33:00,706 - INFO - Epoch 1/12
+2025-11-06 01:37:31,875 - INFO - Train Loss: 0.2222
+2025-11-06 01:37:56,196 - INFO - Validation - Acc: 92.68%, F1: 93.61%, Precision: 94.26%, Recall: 93.39%
+2025-11-06 01:37:56,196 - INFO - New best F1: 93.61%
+2025-11-06 01:37:59,156 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 01:37:59,156 - INFO - Epoch 2/12
+2025-11-06 01:42:14,943 - INFO - Train Loss: 0.0393
+2025-11-06 01:42:38,506 - INFO - Validation - Acc: 95.07%, F1: 95.48%, Precision: 95.61%, Recall: 95.46%
+2025-11-06 01:42:38,506 - INFO - New best F1: 95.48%
+2025-11-06 01:42:41,459 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 01:42:41,459 - INFO - Epoch 3/12
+2025-11-06 01:46:57,379 - INFO - Train Loss: 0.0175
+2025-11-06 01:47:21,969 - INFO - Validation - Acc: 95.81%, F1: 96.01%, Precision: 96.08%, Recall: 96.03%
+2025-11-06 01:47:21,969 - INFO - New best F1: 96.01%
+2025-11-06 01:47:24,817 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 01:47:24,818 - INFO - Epoch 4/12
+2025-11-06 01:51:41,386 - INFO - Train Loss: 0.0111
+2025-11-06 01:52:06,096 - INFO - Validation - Acc: 95.93%, F1: 96.11%, Precision: 96.17%, Recall: 96.15%
+2025-11-06 01:52:06,096 - INFO - New best F1: 96.11%
+2025-11-06 01:52:08,920 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 01:52:08,921 - INFO - Epoch 5/12
+2025-11-06 01:56:19,130 - INFO - Train Loss: 0.0085
+2025-11-06 01:56:45,099 - INFO - Validation - Acc: 96.05%, F1: 96.24%, Precision: 96.28%, Recall: 96.29%
+2025-11-06 01:56:45,099 - INFO - New best F1: 96.24%
+2025-11-06 01:56:47,836 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 01:56:47,837 - INFO - Epoch 6/12
+2025-11-06 02:00:54,761 - INFO - Train Loss: 0.0073
+2025-11-06 02:01:18,822 - INFO - Validation - Acc: 95.81%, F1: 95.97%, Precision: 96.06%, Recall: 95.99%
+2025-11-06 02:01:20,293 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 02:01:20,293 - INFO - Epoch 7/12
+2025-11-06 02:05:33,787 - INFO - Train Loss: 0.0049
+2025-11-06 02:05:59,205 - INFO - Validation - Acc: 96.09%, F1: 96.34%, Precision: 96.39%, Recall: 96.38%
+2025-11-06 02:05:59,205 - INFO - New best F1: 96.34%
+2025-11-06 02:06:01,913 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 02:06:01,913 - INFO - Epoch 8/12
+2025-11-06 02:10:17,833 - INFO - Train Loss: 0.0044
+2025-11-06 02:10:42,760 - INFO - Validation - Acc: 96.26%, F1: 96.49%, Precision: 96.56%, Recall: 96.52%
+2025-11-06 02:10:42,760 - INFO - New best F1: 96.49%
+2025-11-06 02:10:45,609 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 02:10:45,609 - INFO - Epoch 9/12
+2025-11-06 02:14:58,543 - INFO - Train Loss: 0.0036
+2025-11-06 02:15:22,804 - INFO - Validation - Acc: 96.22%, F1: 96.42%, Precision: 96.49%, Recall: 96.46%
+2025-11-06 02:15:24,233 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 02:15:24,233 - INFO - Epoch 10/12
+2025-11-06 02:19:38,859 - INFO - Train Loss: 0.0029
+2025-11-06 02:20:05,176 - INFO - Validation - Acc: 96.22%, F1: 96.42%, Precision: 96.48%, Recall: 96.46%
+2025-11-06 02:20:06,500 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 02:20:06,500 - INFO - Epoch 11/12
+2025-11-06 02:24:31,274 - INFO - Train Loss: 0.0029
+2025-11-06 02:24:55,291 - INFO - Validation - Acc: 96.18%, F1: 96.38%, Precision: 96.45%, Recall: 96.42%
+2025-11-06 02:24:56,616 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 02:24:56,617 - INFO - Epoch 12/12
+2025-11-06 02:29:15,101 - INFO - Train Loss: 0.0031
+2025-11-06 02:29:39,222 - INFO - Validation - Acc: 96.18%, F1: 96.38%, Precision: 96.45%, Recall: 96.42%
+2025-11-06 02:29:40,518 - INFO - Training history saved to: multi_label/models/multilabel_focal\training_history.csv and multi_label/models/multilabel_focal\training_history.json
+2025-11-06 02:30:06,152 - INFO - Test Results - Acc: 96.00%, F1: 96.35%
+2025-11-06 02:30:06,436 - INFO - Evaluation results saved to: multi_label/models/multilabel_focal\test_predictions_detailed.csv and multi_label/models/multilabel_focal\test_evaluation_summary.txt
+2025-11-06 02:30:06,438 - INFO - Results saved to: multi_label/models/multilabel_focal\test_results.json
+2025-11-06 02:30:06,438 - INFO - Training completed successfully
+2025-11-06 02:30:06,438 - INFO - Final Test Accuracy: 96.00%
+2025-11-06 02:30:06,439 - INFO - Final Test F1: 96.35%

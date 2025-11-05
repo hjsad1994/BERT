@@ -1,0 +1,4 @@
+2025-11-06 03:02:24,036 - INFO - Training started at 2025-11-06 03:02:24.036579
+2025-11-06 03:02:24,037 - INFO - Log file: multi_label/results/multi_seed_experiments\seed_100\training_log_20251106_030224.txt
+2025-11-06 03:02:27,466 - INFO - Starting training loop
+2025-11-06 03:02:27,466 - INFO - Epoch 1/10

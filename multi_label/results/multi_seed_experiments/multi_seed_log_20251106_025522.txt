@@ -1,0 +1,10 @@
+2025-11-06 02:55:22,217 - INFO - Multi-seed experiment log: multi_label/results/multi_seed_experiments\multi_seed_log_20251106_025522.txt
+2025-11-06 02:55:22,218 - INFO - Backed up config to: multi_label/config_multi.yaml.backup
+2025-11-06 02:55:22,219 - INFO - 
+================================================================================
+2025-11-06 02:55:22,219 - INFO - Starting training with seed: 100
+2025-11-06 02:55:22,219 - INFO - Output directory: multi_label/results/multi_seed_experiments\seed_100
+2025-11-06 02:55:22,220 - INFO - ================================================================================
+
+2025-11-06 02:55:22,231 - INFO - Updated config with seed: 100
+2025-11-06 03:01:21,123 - INFO - Restored original config from: multi_label/config_multi.yaml.backup
