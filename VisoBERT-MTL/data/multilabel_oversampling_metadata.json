@@ -1,9 +1,9 @@
 {
   "oversampling_seed": 324,
-  "original_samples": 11722,
-  "augmented_samples": 28022,
-  "increase": 16300,
-  "increase_percentage": 139.05476881078314,
+  "original_samples": 11719,
+  "augmented_samples": 28202,
+  "increase": 16483,
+  "increase_percentage": 140.65193275876783,
   "strategy": "per-aspect-balanced",
   "aspects": [
     "Battery",
@@ -18,5 +18,5 @@
     "General",
     "Others"
   ],
-  "created_at": "2025-11-08T20:43:41.307264"
+  "created_at": "2025-11-08T22:09:54.044830"
 }

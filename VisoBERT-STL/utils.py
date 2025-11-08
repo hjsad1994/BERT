@@ -327,11 +327,11 @@ def compute_metrics(eval_preds):
     # Tính accuracy
     accuracy = accuracy_score(labels, preds)
     
-    # Tính precision, recall, f1 với weighted average
+    # Tính precision, recall, f1 với macro average (unweighted average across classes)
     precision, recall, f1, _ = precision_recall_fscore_support(
         labels, 
         preds, 
-        average='weighted',
+        average='macro',
         zero_division=0
     )
     

@@ -1,0 +1,2 @@
+2025-11-08 22:13:04,639 - INFO - Starting Sentiment Classification training
+2025-11-08 22:13:06,203 - INFO - SC Epoch 1/8

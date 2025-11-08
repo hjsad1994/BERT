@@ -3,7 +3,7 @@ SEQUENTIAL SINGLE-TASK LEARNING FOR VIETNAMESE ABSA
 Two-Stage Training Results
 ================================================================================
 
-Training Date: 2025-11-08 21:08:55
+Training Date: 2025-11-08 21:54:37
 Model: 5CD-AI/visobert-14gb-corpus
 
 ================================================================================
@@ -12,24 +12,24 @@ STAGE 1: ASPECT DETECTION (Binary Classification)
 
 Note: AD stage includes all 11 aspects (including 'Others')
 
-Test Accuracy:  81.71%
-Test F1 Score:  55.82%
-Test Precision: 43.37%
-Test Recall:    80.83%
+Test Accuracy:  80.65%
+Test F1 Score:  55.10%
+Test Precision: 42.18%
+Test Recall:    81.74%
 
 Per-Aspect Results (AD):
 --------------------------------------------------------------------------------
-Battery         Accuracy:  92.09%  F1 Score:  80.79%  Precision:  68.93%  Recall:  97.60%
-Camera          Accuracy:  88.88%  F1 Score:  62.87%  Precision:  48.94%  Recall:  87.90%
-Performance     Accuracy:  75.38%  F1 Score:  48.35%  Precision:  36.98%  Recall:  69.83%
-Display         Accuracy:  89.29%  F1 Score:  59.64%  Precision:  44.11%  Recall:  92.06%
-Design          Accuracy:  68.83%  F1 Score:  50.49%  Precision:  34.88%  Recall:  91.37%
-Packaging       Accuracy:  85.88%  F1 Score:  65.09%  Precision:  52.45%  Recall:  85.78%
-Price           Accuracy:  78.92%  F1 Score:  64.85%  Precision:  50.09%  Recall:  91.94%
-Shop_Service    Accuracy:  76.60%  F1 Score:  53.46%  Precision:  38.03%  Recall:  89.95%
-Shipping        Accuracy:  88.27%  F1 Score:  77.37%  Precision:  67.28%  Recall:  91.02%
-General         Accuracy:  57.03%  F1 Score:  51.09%  Precision:  35.41%  Recall:  91.64%
-Others          Accuracy:  97.61%  F1 Score:   0.00%  Precision:   0.00%  Recall:   0.00%
+Battery         Accuracy:  88.34%  F1 Score:  73.87%  Precision:  60.20%  Recall:  95.55%
+Camera          Accuracy:  86.80%  F1 Score:  61.82%  Precision:  46.93%  Recall:  90.53%
+Performance     Accuracy:  74.65%  F1 Score:  53.52%  Precision:  39.36%  Recall:  83.60%
+Display         Accuracy:  86.10%  F1 Score:  54.46%  Precision:  38.89%  Recall:  90.84%
+Design          Accuracy:  67.18%  F1 Score:  46.47%  Precision:  31.92%  Recall:  85.36%
+Packaging       Accuracy:  88.41%  F1 Score:  72.15%  Precision:  59.72%  Recall:  91.10%
+Price           Accuracy:  75.49%  F1 Score:  57.04%  Precision:  41.83%  Recall:  89.62%
+Shop_Service    Accuracy:  75.98%  F1 Score:  55.32%  Precision:  39.96%  Recall:  89.87%
+Shipping        Accuracy:  87.99%  F1 Score:  77.55%  Precision:  66.59%  Recall:  92.81%
+General         Accuracy:  58.73%  F1 Score:  53.94%  Precision:  38.53%  Recall:  89.87%
+Others          Accuracy:  97.49%  F1 Score:   0.00%  Precision:   0.00%  Recall:   0.00%
 
 ================================================================================
 STAGE 2: SENTIMENT CLASSIFICATION (3-Class per Aspect)
@@ -37,23 +37,23 @@ STAGE 2: SENTIMENT CLASSIFICATION (3-Class per Aspect)
 
 Note: SC stage excludes 'Others' aspect (10 aspects only, no sentiment labels for Others)
 
-Test Accuracy:  93.92%
-Test F1 Score:  91.34%
-Test Precision: 92.79%
-Test Recall:    90.29%
+Test Accuracy:  94.97%
+Test F1 Score:  92.17%
+Test Precision: 93.75%
+Test Recall:    91.06%
 
 Per-Aspect Results (SC):
 --------------------------------------------------------------------------------
-Battery         Accuracy:  94.80%  F1 Score:  91.19%  Precision:  93.43%  Recall:  89.30%
-Camera          Accuracy:  86.62%  F1 Score:  86.42%  Precision:  88.11%  Recall:  85.07%
-Performance     Accuracy:  91.74%  F1 Score:  89.63%  Precision:  89.62%  Recall:  89.65%
-Display         Accuracy:  92.06%  F1 Score:  90.57%  Precision:  89.46%  Recall:  91.90%
-Design          Accuracy:  95.29%  F1 Score:  91.95%  Precision:  94.46%  Recall:  90.63%
-Packaging       Accuracy:  97.33%  F1 Score:  94.45%  Precision:  94.90%  Recall:  94.05%
-Price           Accuracy:  93.55%  F1 Score:  84.88%  Precision:  88.38%  Recall:  82.15%
-Shop_Service    Accuracy:  95.89%  F1 Score:  93.94%  Precision:  97.00%  Recall:  91.71%
-Shipping        Accuracy:  97.21%  F1 Score:  96.62%  Precision:  97.86%  Recall:  95.47%
-General         Accuracy:  94.71%  F1 Score:  93.69%  Precision:  94.71%  Recall:  93.00%
+Battery         Accuracy:  93.12%  F1 Score:  91.18%  Precision:  93.34%  Recall:  89.41%
+Camera          Accuracy:  89.94%  F1 Score:  86.05%  Precision:  86.15%  Recall:  85.96%
+Performance     Accuracy:  93.60%  F1 Score:  91.61%  Precision:  89.88%  Recall:  93.75%
+Display         Accuracy:  94.66%  F1 Score:  94.05%  Precision:  94.08%  Recall:  94.05%
+Design          Accuracy:  95.40%  F1 Score:  91.11%  Precision:  92.44%  Recall:  90.13%
+Packaging       Accuracy:  97.46%  F1 Score:  97.73%  Precision:  97.73%  Recall:  97.73%
+Price           Accuracy:  95.38%  F1 Score:  86.62%  Precision:  94.12%  Recall:  81.33%
+Shop_Service    Accuracy:  97.05%  F1 Score:  95.32%  Precision:  97.78%  Recall:  93.47%
+Shipping        Accuracy:  97.50%  F1 Score:  94.91%  Precision:  98.34%  Recall:  92.14%
+General         Accuracy:  95.58%  F1 Score:  93.08%  Precision:  93.60%  Recall:  92.59%
 
 ================================================================================
 OUTPUT FILES
