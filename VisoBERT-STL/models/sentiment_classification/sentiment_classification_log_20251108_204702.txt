@@ -24,3 +24,11 @@
 2025-11-08 21:01:40,534 - INFO - SC Val - Acc: 95.51%, F1: 93.26%
 2025-11-08 21:01:42,996 - INFO - New best SC F1: 93.26%
 2025-11-08 21:01:42,996 - INFO - SC Epoch 7/8
+2025-11-08 21:03:43,971 - INFO - SC Train Loss: 0.0606
+2025-11-08 21:04:10,906 - INFO - SC Val - Acc: 95.38%, F1: 92.95%
+2025-11-08 21:04:10,906 - INFO - SC Epoch 8/8
+2025-11-08 21:06:10,496 - INFO - SC Train Loss: 0.0599
+2025-11-08 21:06:37,384 - INFO - SC Val - Acc: 95.41%, F1: 93.07%
+2025-11-08 21:07:04,134 - INFO - SC Test - Acc: 93.92%, F1: 91.34%
+2025-11-08 21:08:55,982 - INFO - [SC] Training completed successfully
+2025-11-08 21:08:55,990 - ERROR - Error analysis failed: No module named 'error_analysis'
