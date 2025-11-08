@@ -1,2 +1,0 @@
-2025-11-05 21:52:54,536 - INFO - Training started at 2025-11-05 21:52:54.536366
-2025-11-05 21:52:54,536 - INFO - Log file: multi_label/models/multilabel_focal\training_log_20251105_215254.txt

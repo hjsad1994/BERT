@@ -1,9 +1,0 @@
-2025-11-02 18:11:30,554 - INFO - Training started at 2025-11-02 18:11:30.554210
-2025-11-02 18:11:30,554 - INFO - Log file: aspect-detection/models/aspect_detection\training_log_20251102_181130.txt
-2025-11-02 18:11:35,253 - INFO - Starting training loop
-2025-11-02 18:11:35,253 - INFO - Epoch 1/10
-2025-11-02 18:14:53,850 - INFO - Train Loss: 0.5703
-2025-11-02 18:15:16,959 - INFO - Validation - Acc: 95.73%, F1: 87.36%, Precision: 84.14%, Recall: 91.65%
-2025-11-02 18:15:16,960 - INFO - New best F1: 87.36%
-2025-11-02 18:15:20,332 - INFO - Training history saved to: aspect-detection/models/aspect_detection\training_history.csv and aspect-detection/models/aspect_detection\training_history.json
-2025-11-02 18:15:20,340 - INFO - Epoch 2/10

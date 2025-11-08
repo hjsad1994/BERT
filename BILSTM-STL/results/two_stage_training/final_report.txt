@@ -1,0 +1,75 @@
+================================================================================
+SEQUENTIAL SINGLE-TASK LEARNING FOR VIETNAMESE ABSA (BiLSTM + CNN)
+Two-Stage Training Results
+================================================================================
+
+Training Date: 2025-11-07 00:27:10
+Model: BiLSTM + CNN (Trainable Embeddings)
+
+================================================================================
+STAGE 1: ASPECT DETECTION (Binary Classification)
+================================================================================
+
+Test Accuracy:  94.22%
+Test F1 Score:  82.93%
+Test Precision: 78.09%
+Test Recall:    88.41%
+
+Per-Aspect Results (AD):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  97.77%  F1 Score:  93.89%  Precision:  92.48%  Recall:  95.35%
+Camera          Accuracy:  98.18%  F1 Score:  93.26%  Precision:  90.91%  Recall:  95.74%
+Performance     Accuracy:  92.81%  F1 Score:  80.96%  Precision:  74.74%  Recall:  88.31%
+Display         Accuracy:  97.70%  F1 Score:  87.82%  Precision:  82.07%  Recall:  94.44%
+Design          Accuracy:  90.15%  F1 Score:  73.14%  Precision:  66.90%  Recall:  80.67%
+Packaging       Accuracy:  95.88%  F1 Score:  87.31%  Precision:  84.58%  Recall:  90.22%
+Price           Accuracy:  94.90%  F1 Score:  86.89%  Precision:  83.74%  Recall:  90.30%
+Shop_Service    Accuracy:  96.37%  F1 Score:  89.12%  Precision:  88.02%  Recall:  90.25%
+Shipping        Accuracy:  95.11%  F1 Score:  88.75%  Precision:  85.45%  Recall:  92.31%
+General         Accuracy:  80.87%  F1 Score:  68.51%  Precision:  60.82%  Recall:  78.42%
+Others          Accuracy:  96.65%  F1 Score:  51.02%  Precision:  40.98%  Recall:  67.57%
+
+================================================================================
+STAGE 2: SENTIMENT CLASSIFICATION (3-Class per Aspect)
+================================================================================
+
+Test Accuracy:  58.67%
+Test F1 Score:  65.81%
+Test Precision: 83.64%
+Test Recall:    58.67%
+
+Per-Aspect Results (SC):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  57.33%  F1 Score:  64.46%  Precision:  88.06%  Recall:  57.33%
+Camera          Accuracy:  51.96%  F1 Score:  61.57%  Precision:  90.96%  Recall:  51.96%
+Performance     Accuracy:  62.43%  F1 Score:  70.64%  Precision:  90.46%  Recall:  62.43%
+Display         Accuracy:  52.93%  F1 Score:  64.75%  Precision:  93.52%  Recall:  52.93%
+Design          Accuracy:  66.55%  F1 Score:  77.01%  Precision:  94.95%  Recall:  66.55%
+Packaging       Accuracy:  65.78%  F1 Score:  75.25%  Precision:  93.74%  Recall:  65.78%
+Price           Accuracy:  96.37%  F1 Score:  96.30%  Precision:  96.23%  Recall:  96.37%
+Shop_Service    Accuracy:  61.38%  F1 Score:  69.98%  Precision:  91.77%  Recall:  61.38%
+Shipping        Accuracy:  58.17%  F1 Score:  68.67%  Precision:  93.23%  Recall:  58.17%
+General         Accuracy:  69.90%  F1 Score:  75.12%  Precision:  87.02%  Recall:  69.90%
+Others          Accuracy:   2.58%  F1 Score:   0.13%  Precision:   0.07%  Recall:   2.58%
+
+================================================================================
+OUTPUT FILES
+================================================================================
+
+Aspect Detection:
+  - Model: BILSTM-STL/models/aspect_detection/best_model.pt
+  - Training history: BILSTM-STL/models/aspect_detection/training_history.csv
+  - Test results: BILSTM-STL/models/aspect_detection/test_results.json
+  - Confusion matrix: BILSTM-STL/models/aspect_detection/confusion_matrix_overall.png
+
+Sentiment Classification:
+  - Model: BILSTM-STL/models/sentiment_classification/best_model.pt
+  - Training history: BILSTM-STL/models/sentiment_classification/training_history.csv
+  - Test results: BILSTM-STL/models/sentiment_classification/test_results.json
+  - Predictions: BILSTM-STL/models/sentiment_classification/test_predictions_detailed.csv
+  - Confusion matrix (overall): BILSTM-STL/models/sentiment_classification/confusion_matrix_overall.png
+  - Confusion matrices (per-aspect): BILSTM-STL/models/sentiment_classification/confusion_matrices_per_aspect.png
+
+================================================================================
+TRAINING COMPLETE
+================================================================================

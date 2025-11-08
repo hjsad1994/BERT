@@ -1,0 +1,80 @@
+================================================================================
+SEQUENTIAL SINGLE-TASK LEARNING FOR VIETNAMESE ABSA
+Two-Stage Training Results
+================================================================================
+
+Training Date: 2025-11-07 21:41:54
+Model: 5CD-AI/visobert-14gb-corpus
+
+================================================================================
+STAGE 1: ASPECT DETECTION (Binary Classification)
+================================================================================
+
+Test Accuracy:  95.77%
+Test F1 Score:  87.43%
+Test Precision: 82.93%
+Test Recall:    92.82%
+
+Per-Aspect Results (AD):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  98.31%  F1 Score:  95.47%  Precision:  93.36%  Recall:  97.68%
+Camera          Accuracy:  99.08%  F1 Score:  96.10%  Precision:  93.57%  Recall:  98.77%
+Performance     Accuracy:  93.66%  F1 Score:  82.82%  Precision:  73.31%  Recall:  95.18%
+Display         Accuracy:  97.74%  F1 Score:  89.68%  Precision:  84.24%  Recall:  95.86%
+Design          Accuracy:  93.31%  F1 Score:  82.70%  Precision:  74.18%  Recall:  93.42%
+Packaging       Accuracy:  95.84%  F1 Score:  87.03%  Precision:  84.62%  Recall:  89.59%
+Price           Accuracy:  97.39%  F1 Score:  93.54%  Precision:  88.74%  Recall:  98.89%
+Shop_Service    Accuracy:  96.69%  F1 Score:  90.23%  Precision:  87.50%  Recall:  93.13%
+Shipping        Accuracy:  97.82%  F1 Score:  95.32%  Precision:  92.67%  Recall:  98.14%
+General         Accuracy:  84.64%  F1 Score:  72.12%  Precision:  63.37%  Recall:  83.68%
+Others          Accuracy:  99.01%  F1 Score:  76.67%  Precision:  76.67%  Recall:  76.67%
+
+================================================================================
+STAGE 2: SENTIMENT CLASSIFICATION (3-Class per Aspect)
+================================================================================
+
+Test Accuracy:  95.92%
+Test F1 Score:  94.16%
+Test Precision: 96.03%
+Test Recall:    92.65%
+
+Per-Aspect Results (SC):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  94.59%  F1 Score:  92.37%  Precision:  94.68%  Recall:  90.45%
+Camera          Accuracy:  93.83%  F1 Score:  93.75%  Precision:  95.51%  Recall:  92.26%
+Performance     Accuracy:  95.18%  F1 Score:  94.12%  Precision:  94.85%  Recall:  93.48%
+Display         Accuracy:  95.86%  F1 Score:  95.66%  Precision:  96.87%  Recall:  94.66%
+Design          Accuracy:  95.47%  F1 Score:  94.03%  Precision:  96.69%  Recall:  91.74%
+Packaging       Accuracy:  98.64%  F1 Score:  98.82%  Precision:  98.65%  Recall:  98.99%
+Price           Accuracy:  95.94%  F1 Score:  87.72%  Precision:  92.07%  Recall:  84.07%
+Shop_Service    Accuracy:  95.71%  F1 Score:  94.03%  Precision:  95.60%  Recall:  92.83%
+Shipping        Accuracy:  96.58%  F1 Score:  91.73%  Precision:  94.31%  Recall:  89.61%
+General         Accuracy:  96.14%  F1 Score:  93.57%  Precision:  97.15%  Recall:  91.06%
+Others          Accuracy: 100.00%  F1 Score: 100.00%  Precision: 100.00%  Recall: 100.00%
+
+================================================================================
+OUTPUT FILES
+================================================================================
+
+Aspect Detection:
+  - Model: VisoBERT-STL/models/aspect_detection/best_model.pt
+  - Training history: VisoBERT-STL/models/aspect_detection/training_history.csv
+  - Test results: VisoBERT-STL/models/aspect_detection/test_results.json
+  - Confusion matrix: VisoBERT-STL/models/aspect_detection/confusion_matrix_overall.png
+
+Sentiment Classification:
+  - Model: VisoBERT-STL/models/sentiment_classification/best_model.pt
+  - Training history: VisoBERT-STL/models/sentiment_classification/training_history.csv
+  - Test results: VisoBERT-STL/models/sentiment_classification/test_results.json
+  - Predictions: VisoBERT-STL/models/sentiment_classification/test_predictions_detailed.csv
+  - Confusion matrix (overall): VisoBERT-STL/models/sentiment_classification/confusion_matrix_overall.png
+  - Confusion matrices (per-aspect): VisoBERT-STL/models/sentiment_classification/confusion_matrices_per_aspect.png
+
+Error Analysis:
+  - Report: multi_label/error_analysis_results/error_analysis_report.txt
+  - Confusion matrix: multi_label/error_analysis_results/confusion_matrix.png
+  - All errors: multi_label/error_analysis_results/all_errors_detailed.csv
+
+================================================================================
+TRAINING COMPLETE
+================================================================================

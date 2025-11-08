@@ -1,0 +1,76 @@
+================================================================================
+VISOBERT MULTI-TASK LEARNING FOR VIETNAMESE ABSA
+Joint Training Results (AD + SC)
+================================================================================
+
+Training Date: 2025-11-07 07:32:26
+Model: ViSoBERT (Pretrained BERT) with 2 Task Heads
+Loss: Combined Focal Loss (AD=Binary Focal, SC=Multi-label Focal)
+Loss Weights: AD=0.3, SC=0.7
+
+================================================================================
+TASK 1: ASPECT DETECTION (Binary Classification)
+================================================================================
+
+Test Accuracy:  95.51%
+Test F1 Score:  86.63%
+Test Precision: 81.34%
+Test Recall:    92.66%
+
+Per-Aspect Results (AD):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  98.38%  F1 Score:  95.65%  Precision:  93.70%  Recall:  97.68%
+Camera          Accuracy:  98.80%  F1 Score:  94.93%  Precision:  91.91%  Recall:  98.15%
+Performance     Accuracy:  92.46%  F1 Score:  79.77%  Precision:  70.10%  Recall:  92.54%
+Display         Accuracy:  97.39%  F1 Score:  87.71%  Precision:  84.62%  Recall:  91.03%
+Design          Accuracy:  92.95%  F1 Score:  82.14%  Precision:  72.56%  Recall:  94.65%
+Packaging       Accuracy:  96.12%  F1 Score:  87.64%  Precision:  87.05%  Recall:  88.24%
+Price           Accuracy:  97.60%  F1 Score:  93.95%  Precision:  90.72%  Recall:  97.42%
+Shop_Service    Accuracy:  96.62%  F1 Score:  90.04%  Precision:  87.15%  Recall:  93.13%
+Shipping        Accuracy:  97.46%  F1 Score:  94.55%  Precision:  92.31%  Recall:  96.89%
+General         Accuracy:  83.65%  F1 Score:  70.26%  Precision:  61.85%  Recall:  81.31%
+Others          Accuracy:  99.15%  F1 Score:  80.00%  Precision:  80.00%  Recall:  80.00%
+
+================================================================================
+TASK 2: SENTIMENT CLASSIFICATION (3-Class per Aspect)
+================================================================================
+
+Test Accuracy:  96.16%
+Test F1 Score:  96.14%
+Test Precision: 96.16%
+Test Recall:    96.16%
+
+Per-Aspect Results (SC):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  94.98%  F1 Score:  94.89%  Precision:  95.08%  Recall:  94.98%
+Camera          Accuracy:  94.44%  F1 Score:  94.45%  Precision:  94.61%  Recall:  94.44%
+Performance     Accuracy:  97.37%  F1 Score:  97.37%  Precision:  97.39%  Recall:  97.37%
+Display         Accuracy:  95.86%  F1 Score:  95.86%  Precision:  95.95%  Recall:  95.86%
+Design          Accuracy:  97.12%  F1 Score:  97.08%  Precision:  97.15%  Recall:  97.12%
+Packaging       Accuracy:  98.19%  F1 Score:  98.20%  Precision:  98.23%  Recall:  98.19%
+Price           Accuracy:  96.68%  F1 Score:  96.57%  Precision:  96.78%  Recall:  96.68%
+Shop_Service    Accuracy:  94.85%  F1 Score:  94.85%  Precision:  95.14%  Recall:  94.85%
+Shipping        Accuracy:  96.27%  F1 Score:  96.22%  Precision:  96.30%  Recall:  96.27%
+General         Accuracy:  95.25%  F1 Score:  95.22%  Precision:  95.20%  Recall:  95.25%
+Others          Accuracy: 100.00%  F1 Score: 100.00%  Precision: 100.00%  Recall: 100.00%
+
+================================================================================
+OUTPUT FILES
+================================================================================
+
+Model:
+  - Best model: VisoBERT-MTL/models/mtl/best_model.pt
+  - Training history: VisoBERT-MTL/models/mtl/training_history.csv
+
+Results:
+  - Test results: VisoBERT-MTL/models/mtl/test_results.json
+  - Predictions: VisoBERT-MTL/models/mtl/test_predictions_detailed.csv
+
+Confusion Matrices:
+  - AD confusion matrix: VisoBERT-MTL/models/mtl/confusion_matrix_ad.png
+  - SC overall confusion matrix: VisoBERT-MTL/models/mtl/confusion_matrix_sc_overall.png
+  - SC per-aspect confusion matrices: VisoBERT-MTL/models/mtl/confusion_matrix_sc_per_aspect.png
+
+================================================================================
+TRAINING COMPLETE
+================================================================================

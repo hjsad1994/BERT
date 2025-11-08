@@ -6,32 +6,32 @@ ALL LABELED ASPECTS (Positive/Negative/Neutral)
 
  OVERALL STATISTICS
 ----------------------------------------------------------------------
-Total labeled aspects:     2,528
-  - Positive: 1,405
-  - Negative: 880
-  - Neutral: 243
-Correct:           2,409 (95.29%)
-Errors:            119 (4.71%)
+Total labeled aspects:     2,504
+  - Positive: 1,432
+  - Negative: 848
+  - Neutral: 224
+Correct:           2,402 (95.93%)
+Errors:            102 (4.07%)
 
 WARNING:  NOTE: Includes all labeled aspects (positive/negative/neutral)
    (Only unlabeled aspects are excluded)
 
  ERRORS BY ASPECT
 ----------------------------------------------------------------------
-Battery         Accuracy: 93.86%  Errors: 17/277
-Camera          Accuracy: 94.08%  Errors: 9/152
-Design          Accuracy: 95.08%  Errors: 13/264
-Display         Accuracy: 99.24%  Errors: 1/131
-General         Accuracy: 93.75%  Errors: 22/352
-Others          Accuracy: 100.00%  Errors: 0/24
-Packaging       Accuracy: 97.25%  Errors: 6/218
-Performance     Accuracy: 95.13%  Errors: 13/267
-Price           Accuracy: 94.16%  Errors: 16/274
-Shipping        Accuracy: 98.07%  Errors: 6/311
-Shop_Service    Accuracy: 93.80%  Errors: 16/258
+Battery         Accuracy: 94.88%  Errors: 13/254
+Camera          Accuracy: 91.91%  Errors: 14/173
+Design          Accuracy: 93.61%  Errors: 17/266
+Display         Accuracy: 96.50%  Errors: 5/143
+General         Accuracy: 95.83%  Errors: 15/360
+Others          Accuracy: 100.00%  Errors: 0/28
+Packaging       Accuracy: 98.68%  Errors: 3/227
+Performance     Accuracy: 96.36%  Errors: 9/247
+Price           Accuracy: 97.16%  Errors: 8/282
+Shipping        Accuracy: 96.80%  Errors: 9/281
+Shop_Service    Accuracy: 96.30%  Errors: 9/243
 
  ERRORS BY SENTIMENT
 ----------------------------------------------------------------------
-positive     Accuracy: 96.58%  Errors: 48/1405
-negative     Accuracy: 95.91%  Errors: 36/880
-neutral      Accuracy: 85.60%  Errors: 35/243
+positive     Accuracy: 97.84%  Errors: 31/1432
+negative     Accuracy: 95.05%  Errors: 42/848
+neutral      Accuracy: 87.05%  Errors: 29/224

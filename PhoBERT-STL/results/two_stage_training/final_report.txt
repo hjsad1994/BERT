@@ -1,0 +1,81 @@
+================================================================================
+SEQUENTIAL SINGLE-TASK LEARNING FOR VIETNAMESE ABSA
+Two-Stage Training Results
+================================================================================
+
+Training Date: 2025-11-08 15:07:30
+Model: vinai/phobert-base
+
+================================================================================
+STAGE 1: ASPECT DETECTION (Binary Classification)
+================================================================================
+
+Test Accuracy:  75.30%
+Test F1 Score:  48.58%
+Test Precision: 35.59%
+Test Recall:    78.33%
+
+Per-Aspect Results (AD):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  83.24%  F1 Score:  65.74%  Precision:  50.00%  Recall:  95.93%
+Camera          Accuracy:  86.38%  F1 Score:  58.16%  Precision:  44.27%  Recall:  84.76%
+Performance     Accuracy:  72.28%  F1 Score:  48.15%  Precision:  34.43%  Recall:  80.08%
+Display         Accuracy:  86.38%  F1 Score:  45.65%  Precision:  35.29%  Recall:  64.62%
+Design          Accuracy:  56.54%  F1 Score:  41.68%  Precision:  27.67%  Recall:  84.44%
+Packaging       Accuracy:  79.29%  F1 Score:  55.56%  Precision:  41.58%  Recall:  83.70%
+Price           Accuracy:  61.17%  F1 Score:  50.43%  Precision:  34.40%  Recall:  94.46%
+Shop_Service    Accuracy:  74.39%  F1 Score:  52.53%  Precision:  37.01%  Recall:  90.43%
+Shipping        Accuracy:  80.99%  F1 Score:  66.67%  Precision:  52.64%  Recall:  90.88%
+General         Accuracy:  50.27%  F1 Score:  49.86%  Precision:  34.15%  Recall:  92.37%
+Others          Accuracy:  97.41%  F1 Score:   0.00%  Precision:   0.00%  Recall:   0.00%
+
+================================================================================
+STAGE 2: SENTIMENT CLASSIFICATION (3-Class per Aspect)
+================================================================================
+
+Note: 'Others' aspect is excluded from sentiment evaluation (no sentiment labels)
+
+Test Accuracy:  94.13%
+Test F1 Score:  91.09%
+Test Precision: 91.44%
+Test Recall:    90.92%
+
+Per-Aspect Results (SC):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  91.46%  F1 Score:  85.14%  Precision:  86.15%  Recall:  84.26%
+Camera          Accuracy:  93.90%  F1 Score:  94.47%  Precision:  94.51%  Recall:  94.71%
+Performance     Accuracy:  95.34%  F1 Score:  92.29%  Precision:  92.33%  Recall:  92.27%
+Display         Accuracy:  92.31%  F1 Score:  93.26%  Precision:  94.33%  Recall:  92.32%
+Design          Accuracy:  92.96%  F1 Score:  88.42%  Precision:  91.86%  Recall:  85.54%
+Packaging       Accuracy:  96.92%  F1 Score:  93.80%  Precision:  94.65%  Recall:  93.01%
+Price           Accuracy:  95.11%  F1 Score:  88.72%  Precision:  87.38%  Recall:  90.30%
+Shop_Service    Accuracy:  94.78%  F1 Score:  93.10%  Precision:  91.63%  Recall:  94.88%
+Shipping        Accuracy:  95.11%  F1 Score:  90.94%  Precision:  90.75%  Recall:  91.13%
+General         Accuracy:  93.38%  F1 Score:  90.78%  Precision:  90.78%  Recall:  90.78%
+
+================================================================================
+OUTPUT FILES
+================================================================================
+
+Aspect Detection:
+  - Model: PhoBERT-STL/models/aspect_detection/best_model.pt
+  - Training history: PhoBERT-STL/models/aspect_detection/training_history.csv
+  - Test results: PhoBERT-STL/models/aspect_detection/test_results.json
+  - Confusion matrix: PhoBERT-STL/models/aspect_detection/confusion_matrix_overall.png
+
+Sentiment Classification:
+  - Model: PhoBERT-STL/models/sentiment_classification/best_model.pt
+  - Training history: PhoBERT-STL/models/sentiment_classification/training_history.csv
+  - Test results: PhoBERT-STL/models/sentiment_classification/test_results.json
+  - Predictions: PhoBERT-STL/models/sentiment_classification/test_predictions_detailed.csv
+  - Confusion matrix (overall): PhoBERT-STL/models/sentiment_classification/confusion_matrix_overall.png
+  - Confusion matrices (per-aspect): PhoBERT-STL/models/sentiment_classification/confusion_matrices_per_aspect.png
+
+Error Analysis:
+  - Report: multi_label/error_analysis_results/error_analysis_report.txt
+  - Confusion matrix: multi_label/error_analysis_results/confusion_matrix.png
+  - All errors: multi_label/error_analysis_results/all_errors_detailed.csv
+
+================================================================================
+TRAINING COMPLETE
+================================================================================

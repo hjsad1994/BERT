@@ -1,0 +1,1525 @@
+================================================================================
+TAT CA CAC SAMPLES BI LOI RECALL - SENTIMENT CLASSIFICATION
+================================================================================
+
+Tong so samples bi loi: 129
+Ngay tao: 2025-11-08 20:14:36
+
+
+================================================================================
+ASPECT: Battery
+Recall Score: 91.56%
+So luong loi: 16
+Total samples co label: 270
+True Positive (TP): 254
+False Negative (FN): 16
+================================================================================
+
+Thong ke loai loi:
+  - Predict Negative but True is Positive: 7 samples
+  - Predict Positive but True is Neutral: 2 samples
+  - Predict Positive but True is Negative: 2 samples
+  - Predict Negative but True is Neutral: 2 samples
+  - Predict Neutral but True is Negative: 2 samples
+  - Predict Neutral but True is Positive: 1 samples
+
+
+--- Sample 1/16 ---
+Sample ID: 111
+Aspect: Battery
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+￼Điện thoại HONOR X9c 5G 12GB + 256GB | Màn hình 6.78" |Pin 6600mAh, Camera 108MP | Bảo hành 24 Tháng
+--------------------------------------------------------------------------------
+
+--- Sample 2/16 ---
+Sample ID: 175
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Đối với mình thì màu màn hơi nhạt nên đã chỉnh lên saturated nhìn mới sướng con mắt 🥲 không quan tâm mấy đến chụp hình, quay video các thứ thì mình thấy chụp quay đẹp, ổn, cũng rõ nét. Mình thích loa của máy. Pin mình nghĩ nếu không chơi game có thể trụ được 1 ngày 🤔? Dùng tác vụ bình thường ctct ổn áp, rất mượt, hầu như không có lag. Có điều thông báo messenger chậm ói?? Ít thì 30p nhận, nhiều thì hơn tận 3 tiếng, thông báo zalo, gmail, tiktok.. còn lại bình thường. Mấy ngày đầu sạc hơn 1 tiếng mới đầy và sạc đã bật speed boost lên rồi nhưng coi review hơn 30p tí là đầy nhưng mình sạc ≈45p mới đầy 🤔 Coi như tạm được đi. Mình không chơi game nặng nhưng đôi khi fps vẫn tụt. Overall sản phẩm ổn áp! Mình thích lắm.
+--------------------------------------------------------------------------------
+
+--- Sample 3/16 ---
+Sample ID: 189
+Aspect: Battery
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Hiệu năng rất mạnh rất ngon trong tầm giá Màn hình đẹp pin chưa test nhưng rất xứng đáng Lần đầu mua điện thoại trên sọp pe mà cứ sợ sợ, nhưng mở hàng thì biết là sốp siêu uy tín
+--------------------------------------------------------------------------------
+
+--- Sample 4/16 ---
+Sample ID: 439
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Sử dụng tạm thời được 3 ngày, khá ngon, pin trâu. Note ngày 4: xuất hiện lỗi mất định vị, đang sử dụng gg map bình thường thì không load được gps nữa, phải reset máy mới bật lại được
+--------------------------------------------------------------------------------
+
+--- Sample 5/16 ---
+Sample ID: 490
+Aspect: Battery
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Giao hàng nhanh, điện thoại sạc nhanh cỡ 30 phút là đầy, chơi game nhanh hết pin, lướt Facebook yt thì được cả ngày, hộp được đóng gói tốt
+--------------------------------------------------------------------------------
+
+--- Sample 6/16 ---
+Sample ID: 591
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Đúng với mô tả: đúng 
+Chất lượng sản phẩm: tốt 
+Tính năng nổi bật: pin máy quá trâu, sạc nhanh 33w. Hiệu năng chơi game quá ổn. Máy này chụp hình không đẹp lắm đâu nha
+--------------------------------------------------------------------------------
+
+--- Sample 7/16 ---
+Sample ID: 608
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Máy dùng mượt, không nóng máy, sạc nhanh. Ốp lựng đi kèm quá tệ, chưa có cách nào tra bảo hành qua internet được hết
+--------------------------------------------------------------------------------
+
+--- Sample 8/16 ---
+Sample ID: 616
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+shipping lâu hơn hứa. giao hàng muộn 2 ngày. vận chuyển chậm. đã trả tiền ship nhanh mà vẫn giao chậm, làm lỡ việc của mình. pin dùng tốt nhưng hiệu năng thỉnh thoảng lag
+--------------------------------------------------------------------------------
+
+--- Sample 9/16 ---
+Sample ID: 665
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Đóng gói không có phụ kiện. Thiếu củ sạc. Thiếu đồ. Trong hộp chỉ có dây cáp, không có củ sạc đi kèm. Chăm sóc khách hàng bảo phải mua riêng. Pin sử dụng được
+--------------------------------------------------------------------------------
+
+--- Sample 10/16 ---
+Sample ID: 706
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+chăm sóc khách hàng trả lời rất thiếu tôn trọng khách hàng. pin sạc đầy dùng lướt web được 3 tiếng. đóng gói không đúng quy cách, thiếu tem niêm phong.
+--------------------------------------------------------------------------------
+
+--- Sample 11/16 ---
+Sample ID: 793
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+1.mình thấy nhiều người rw hệ điều hành này không được tối ưu hoá cho mấy 2.không biết do máy hay gì nhưng chơi tốc chiến bật được 120fps nhưng mà toàn bị drop xuống 60-75( mặc dù máy rất mát) và 8/256 cũng thi thoảng bị văng game tốc chiến 3. 5g của máy cảm giác cũng không được mượt mà nên mình chỉ sử dụng 4g 4.máy thì viền nhựa cầm không được sướng tay và dễ bị xước, mặt lưng của máy thì không biết nói sao nhưng cũng tàm tạm 5. pin của máy là 6000 nhưng cảm giác không được trâu cho lắm 6. còn mấy thứ còn lại thì tạm ổn( trừ cam nha =))) đây là những gì sau 1 tháng rưỡi mình trải nghiệm con poco x7 pro này
+--------------------------------------------------------------------------------
+
+--- Sample 12/16 ---
+Sample ID: 983
+Aspect: Battery
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Tình trạng: 96% 
+Nhóm màu: vàng cửa hàng giao hàng nhanh sản phẩm có pin giá ổn cửa hàng bảo 96% theo mình nghỉ không tới mặt sau trầy sướt nhiều giửa thân còn móp.
+--------------------------------------------------------------------------------
+
+--- Sample 13/16 ---
+Sample ID: 1226
+Aspect: Battery
+Predicted: Neutral (2)
+True Label: Negative (1)
+Error Type: Predict Neutral but True is Negative
+Text:
+để sử dụng tuần lễ 10 ngày mới biệt có bền hay không? về pin thì không cầm cho lắm.
+--------------------------------------------------------------------------------
+
+--- Sample 14/16 ---
+Sample ID: 1342
+Aspect: Battery
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Thời gian sạc máy nhanh trong tầm một giờ.
+--------------------------------------------------------------------------------
+
+--- Sample 15/16 ---
+Sample ID: 1366
+Aspect: Battery
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+pin xài lâu ghê, nghe nhạc ở tiệm cả ngày vẫn ổn 
+--------------------------------------------------------------------------------
+
+--- Sample 16/16 ---
+Sample ID: 1399
+Aspect: Battery
+Predicted: Neutral (2)
+True Label: Negative (1)
+Error Type: Predict Neutral but True is Negative
+Text:
+Nhóm màu: màu đen đậm 
+Dung lượng lưu trữ: 64gb pin 4000 thực tế 3000 điện thoại chỉ tạm sử dụng ngắn hạn
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: Camera
+Recall Score: 91.05%
+So luong loi: 14
+Total samples co label: 186
+True Positive (TP): 172
+False Negative (FN): 14
+================================================================================
+
+Thong ke loai loi:
+  - Predict Positive but True is Negative: 6 samples
+  - Predict Negative but True is Positive: 4 samples
+  - Predict Positive but True is Neutral: 2 samples
+  - Predict Negative but True is Neutral: 1 samples
+  - Predict Neutral but True is Negative: 1 samples
+
+
+--- Sample 1/14 ---
+Sample ID: 74
+Aspect: Camera
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Lần đầu mua 1 sản phẩm giá trị cao trên Shopee nhưng mà thấy khá hài lòng Sau 1 tháng sử dụng thì thấy ưu điểm nổi trội là Camera đẹp (rất đẹp nếu chụp đủ sáng), thao tác vuốt chạm MƯỢT, siêu ĐÃ Tuy nhiên KHÔNG tra được thời hạn bảo hành trên web của Honor (có nhắn cho cửa hàng thì cửa hàng cũng bảo là không kiểm tra được) Thứ hai là chê cái MÀN HÌNH vì nó chỉ có 10 biết màu nên hiển thị màu sắc KHÔNG được chính xác, đẹp và RỰC RỠ so với các điện thoại khác cùng phân khúc có màn hình 12 biết màu (cảm giác màu ở trên điện thoại này nó cứ nhạt nhạt nhìn rất thiếu sức sống) Bù lại thì viên pin 5200 nhưng mà khá trâu xài khoảng 1 2 ngày mới phải sạc (không gaming). Sạc nhanh 100W mà sạc từ 3% lên 100% mất khoảng 52p mới đầy Vân tay và khuôn mặt nhạy, nhanh nhưng mà vị trí đặt vân tay thấp, phải với xuống mới mở khóa được Tóm lại thì với mức giá này thì gọi là đủ dùng, tạm hài lòng thôi chứ thật sự nó không ngon như quảng cáo đâu nhất là cái màn hình 1 tỷ màu nhìn nó thiếu sức sống dã man 😅
+--------------------------------------------------------------------------------
+
+--- Sample 2/14 ---
+Sample ID: 111
+Aspect: Camera
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+￼Điện thoại HONOR X9c 5G 12GB + 256GB | Màn hình 6.78" |Pin 6600mAh, Camera 108MP | Bảo hành 24 Tháng
+--------------------------------------------------------------------------------
+
+--- Sample 3/14 ---
+Sample ID: 175
+Aspect: Camera
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Đối với mình thì màu màn hơi nhạt nên đã chỉnh lên saturated nhìn mới sướng con mắt 🥲 không quan tâm mấy đến chụp hình, quay video các thứ thì mình thấy chụp quay đẹp, ổn, cũng rõ nét. Mình thích loa của máy. Pin mình nghĩ nếu không chơi game có thể trụ được 1 ngày 🤔? Dùng tác vụ bình thường ctct ổn áp, rất mượt, hầu như không có lag. Có điều thông báo messenger chậm ói?? Ít thì 30p nhận, nhiều thì hơn tận 3 tiếng, thông báo zalo, gmail, tiktok.. còn lại bình thường. Mấy ngày đầu sạc hơn 1 tiếng mới đầy và sạc đã bật speed boost lên rồi nhưng coi review hơn 30p tí là đầy nhưng mình sạc ≈45p mới đầy 🤔 Coi như tạm được đi. Mình không chơi game nặng nhưng đôi khi fps vẫn tụt. Overall sản phẩm ổn áp! Mình thích lắm.
+--------------------------------------------------------------------------------
+
+--- Sample 4/14 ---
+Sample ID: 193
+Aspect: Camera
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+variation3: mỹ 2 sim 99% 128gb cám ơn cửa hàng đã nhiệt tình tư vấn và ship cho máy màu hồng đờn ông rất đẹp. máy 99% cửa hàng cam kết không trầy xước nhưng vẫn xước gần cụm camera và nắp lưng kha khá, máy vẫn còn silk thân máy, chân sạc còn mới. phụ kiện có sạc cáp lởm. test thử pin tốt, không nóng máy, mọi thứ ổn. sử dụng app bank ổn chứ không giống máy hàn trước mình mua bị root. trước có mua tablet của cửa hàng cũng phân loại 99% mà hông máy bị gai đường keo và xước mặt kính + lưng nhiều nên hông vui lắm nhưng sử dụng thời gian thấy máy hoạt động mượt mà theo năm tháng nên bỏ qua hết. tầm giá tiền này máy sử dụng mượt với pin trâu là được. dựng hay không cũng được sử dụng cũng được 2-3 năm là ổn rồi. :))) cửa hàng nhiệt tình. đóng gói và quay video cẩn thận. mọi thứ cảm quan tốt tạm cho cửa hàng 5 sao. sử dụng time nữa nếu vẫn thấy tốt sẽ ủng hộ thêm. cám ơn cửa hàng.
+--------------------------------------------------------------------------------
+
+--- Sample 5/14 ---
+Sample ID: 211
+Aspect: Camera
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+[Các hình ảnh và video trên được chụp và quay bằng em a36] Sau 1 tuần trải nghiệm thì mình có thể chấm em này với số điểm 8,5/10 *Các ưu điểm nổi trội theo cá nhân mình: + Sử dụng mượt + Giá rẻ + Ngoại hình đẹp *Các nhược điểm: + Máy khá dễ nóng, mình quay tiktok một lúc là sẽ bị nóng ngay + Cam 0.5x không sử dụng được trên các app phụ (như tiktok, locket...) + Zoom cận sẽ không nét như các dòng s => Giá rẻ mà được các chức năng cận cao cấp như vậy thì quá là ok luôn áa
+--------------------------------------------------------------------------------
+
+--- Sample 6/14 ---
+Sample ID: 308
+Aspect: Camera
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Điện thoại nhìn gần như mới mọi thứ ổn định.mượt thì không thể so sánh với iPhone.camera nét hơn chiếc iphon 11pro của mình về ban ngày nhưng ban đêm thì ngược lại.trước khi mua mình nhờ cửa hàng tess kỹ cho mình nhưng có lẽ cửa hàng quên tess vân tay,máy mình mua về cài được vvân tay nhưng khi mở khóa lại không được.dù sao cũng cho cửa hàng 5 sao
+--------------------------------------------------------------------------------
+
+--- Sample 7/14 ---
+Sample ID: 387
+Aspect: Camera
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Nhóm màu: đen 👜tính di động:tốt 🔌tính tương thích:tốt 📸chất lượng hình ảnh:chưa biết
+--------------------------------------------------------------------------------
+
+--- Sample 8/14 ---
+Sample ID: 458
+Aspect: Camera
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Nhóm màu: màu tím than nói chung là tốt chỉ camera sau đã bị mờ máy cũ đã qua sử dụng phải chấp nhận thôi, sẽ tiếp tục ủng hộ lần sau nếu có nhu cầu cảm ơn cửa hàng tặng 5 sao
+--------------------------------------------------------------------------------
+
+--- Sample 9/14 ---
+Sample ID: 662
+Aspect: Camera
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Anh chị cân nhắc khi mua tuỳ nhu cầu của cá nhân sử dụng ngoại quan máy ổn camera có bụi trước & sau. Pin chấp nhận được
+--------------------------------------------------------------------------------
+
+--- Sample 10/14 ---
+Sample ID: 671
+Aspect: Camera
+Predicted: Neutral (2)
+True Label: Negative (1)
+Error Type: Predict Neutral but True is Negative
+Text:
+Camera macro không lấy nét được. Ảnh cận cảnh bị rung mờ. Tính năng không nổi bật. Camera phụ chỉ để cho có. Pin và hiệu năng bình thường
+--------------------------------------------------------------------------------
+
+--- Sample 11/14 ---
+Sample ID: 1032
+Aspect: Camera
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+ban đầu thấy bảo không có dán cường lực sẵn làm đi mua hết mấy cái. ốp trong của điện thoại khá mềm và mỏng, điện thoại sử dụng tốt, pin trâu, chụp hình hơi ẹ nhưng cày game nhẹ nhẹ thì ổn. mình sử dụng được 10 ngày rồi và không thấy có dấu hiệu giật lag gì, có cài apk này nọ crack máy vẫn tốt.
+--------------------------------------------------------------------------------
+
+--- Sample 12/14 ---
+Sample ID: 1235
+Aspect: Camera
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+camera màu xám shipping giao muộn đóng hàng thiếu sách hướng dẫn
+--------------------------------------------------------------------------------
+
+--- Sample 13/14 ---
+Sample ID: 1402
+Aspect: Camera
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Lần đầu tiên mua điện thoại trên mạng với đơn hàng đắt nhất trên shopee mà mình từng mua, (mình hạng vàng, bình thường toàn mua quần áo và đồ linh tinh ) , săn live của võ hoàng yến còn 3tr330. Cảm nhận sau khi mở :máy đẹp, lướt nhanh... Còn camera thì theo mình không đẹp bằng oppo mình đang sử dụng. Cửa hàng giao hàng nhanh nhưng bên vận chuyển thì hơi lâu. Sử dụng thêm 1 tuần nữa mình sẽ đánh giá lại.
+--------------------------------------------------------------------------------
+
+--- Sample 14/14 ---
+Sample ID: 1420
+Aspect: Camera
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Chất lượng sản phẩm: máy nguyên seal sài tốt 
+Đúng với mô tả: đúng với mô tả thực tế 
+Tính năng nổi bật: nfc, camera, vân tay đáng tiền để mua, giao hàng hơi chậm một tí.
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: Performance
+Recall Score: 93.36%
+So luong loi: 11
+Total samples co label: 255
+True Positive (TP): 244
+False Negative (FN): 11
+================================================================================
+
+Thong ke loai loi:
+  - Predict Negative but True is Positive: 4 samples
+  - Predict Negative but True is Neutral: 3 samples
+  - Predict Positive but True is Negative: 3 samples
+  - Predict Neutral but True is Positive: 1 samples
+
+
+--- Sample 1/11 ---
+Sample ID: 513
+Aspect: Performance
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Máy xử lý các công việc văn phòng ở mức tạm ổn, pin 3200 dùng trong 1 ngày.
+--------------------------------------------------------------------------------
+
+--- Sample 2/11 ---
+Sample ID: 537
+Aspect: Performance
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Nói thật đem về xài cũng được, cho mẹ lượt mxh hay coi ytb ok, cho em gái đi học cấp 2 ok, hay xài tác vụ cơ bản tạm được, chơi game liên quân trong game không lag nhưng tác vụ ngoài game rất chậm. Hợp tầm giá, còn như ram 20gb thì như là ảo, camera không đẹp. Nói chung với tầm giá mua trải nghiệm cho vui thì ok
+--------------------------------------------------------------------------------
+
+--- Sample 3/11 ---
+Sample ID: 695
+Aspect: Performance
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Màu sắc: hồng ram/bộ nhớ: ram 8g/128g máy ngon, chơi game mượt, xem phim net, hông có mẫy chỗ chê trừ việc pin hơi hẹo. Do ngày xưa mình sử dụng con c3, pin 5k với ít chức năng nên quen rồi, qua máy này chưa quen lắm, cơ mà 1 cục sạc dự phòng là giải quyết được hết cả.
+--------------------------------------------------------------------------------
+
+--- Sample 4/11 ---
+Sample ID: 750
+Aspect: Performance
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+sản phẩm chính hãng nhé...đã check choác các kiểu.. anh em nên cài ít ứng dụng không xài rất đơ... nhất là lúc bật cam... lúc đầu còn tưởng hàng fake cơ.. cảm ơn cửa hàng... hỗ trợ nhiệt tình.. giá rẻ... kick hoạt trước tầm 15-20 ngày nên có giá tốt.. chúc cửa hàng ngày càng phát triển
+--------------------------------------------------------------------------------
+
+--- Sample 5/11 ---
+Sample ID: 1062
+Aspect: Performance
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+camera kém, ảnh tối và noise nhiều. khác với mô tả, màu sắc không giống quảng cáo. tính năng chụp chân dung bị lỗi. hiệu năng mượt tạm nhưng pin xuống nhanh, đóng gói có vết hỏng, ship mất 1 tuần
+--------------------------------------------------------------------------------
+
+--- Sample 6/11 ---
+Sample ID: 1131
+Aspect: Performance
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+đã nhận được hàng, máy sử dụng mượt, nhưng bị lỗi mở khoá màn chạm 2 lần, pin để qua đêm tụt 14% pin, sạc tầm 4 tiếng mới đầy pin
+--------------------------------------------------------------------------------
+
+--- Sample 7/11 ---
+Sample ID: 1174
+Aspect: Performance
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Chất lượng sản phẩm: ổn 
+Đúng với mô tả: đúng 
+Tính năng nổi bật: có vân tay trong màn hình điện thoại ổn trong tầm giá, chụp bầu trời lúc trời xanh mây trắng đẹp. Sử dụng được mấy hôm thấy khá mượt. Pin hơi yếu dù có viên pin 5500mah. Với nhu cầu cơ bản chỉ nghe gọi, lướt mạng xã hội thì điện thoại này sử dụng tốt. Không biết chơi game nên không thử được hiệu năng lúc chơi game. Rất đề cử cho ai kinh tế eo hẹp.
+--------------------------------------------------------------------------------
+
+--- Sample 8/11 ---
+Sample ID: 1191
+Aspect: Performance
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+hiệu năng chỉ đủ dùng các tác vụ nhẹ. màu sắc sản phẩm thật không đẹp như ảnh. pin sạc đầy rất lâu. chăm sóc khách hàng không thực hiện lời hứa. shipping không cung cấp được mã theo dõi
+--------------------------------------------------------------------------------
+
+--- Sample 9/11 ---
+Sample ID: 1374
+Aspect: Performance
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Đóng gói siêu tệ, hộp mỏng dính, không có chống sốc. Ship tới muộn, làm lỡ việc. Hiệu năng chỉ đủ sử dụng cơ bản. Chăm sóc khách hàng gọi không bắt máy.
+--------------------------------------------------------------------------------
+
+--- Sample 10/11 ---
+Sample ID: 1416
+Aspect: Performance
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+giá rẻ giao hàng nhanh , chất lượng máy phù hợp giá tiền, mình mua máy được nửa ngày thấy có chút lag nên bán lại luôn
+--------------------------------------------------------------------------------
+
+--- Sample 11/11 ---
+Sample ID: 1418
+Aspect: Performance
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Phù hợp sử dụng làm máy phụ. Os sạch, ít app rác, đáp ứng tốt nhu cầu cơ bản (zalo, Facebook, youtube, web), màn hình ổn và pin tốt. Máy to hơn kì vọng nhưng ưu tiên pin nên chấp nhận, cầm cũng nhẹ nhàng. Ngoài ra thì cũng không nên kì vọng nhiều, chip hơi yếu, bật cam thôi cũng lag mà chụp hình thì chỉ là cho đủ tính năng.
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: Display
+Recall Score: 92.47%
+So luong loi: 5
+Total samples co label: 117
+True Positive (TP): 112
+False Negative (FN): 5
+================================================================================
+
+Thong ke loai loi:
+  - Predict Positive but True is Negative: 2 samples
+  - Predict Positive but True is Neutral: 1 samples
+  - Predict Negative but True is Neutral: 1 samples
+  - Predict Negative but True is Positive: 1 samples
+
+
+--- Sample 1/5 ---
+Sample ID: 111
+Aspect: Display
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+￼Điện thoại HONOR X9c 5G 12GB + 256GB | Màn hình 6.78" |Pin 6600mAh, Camera 108MP | Bảo hành 24 Tháng
+--------------------------------------------------------------------------------
+
+--- Sample 2/5 ---
+Sample ID: 175
+Aspect: Display
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Đối với mình thì màu màn hơi nhạt nên đã chỉnh lên saturated nhìn mới sướng con mắt 🥲 không quan tâm mấy đến chụp hình, quay video các thứ thì mình thấy chụp quay đẹp, ổn, cũng rõ nét. Mình thích loa của máy. Pin mình nghĩ nếu không chơi game có thể trụ được 1 ngày 🤔? Dùng tác vụ bình thường ctct ổn áp, rất mượt, hầu như không có lag. Có điều thông báo messenger chậm ói?? Ít thì 30p nhận, nhiều thì hơn tận 3 tiếng, thông báo zalo, gmail, tiktok.. còn lại bình thường. Mấy ngày đầu sạc hơn 1 tiếng mới đầy và sạc đã bật speed boost lên rồi nhưng coi review hơn 30p tí là đầy nhưng mình sạc ≈45p mới đầy 🤔 Coi như tạm được đi. Mình không chơi game nặng nhưng đôi khi fps vẫn tụt. Overall sản phẩm ổn áp! Mình thích lắm.
+--------------------------------------------------------------------------------
+
+--- Sample 3/5 ---
+Sample ID: 830
+Aspect: Display
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+cửa hàng nhiệt tình, giao rất nhanh, máy rất đẹp, có điều màn hình máy thi thấy bị bóng mờ đằng sau, nhưng vậy là quá tốt
+--------------------------------------------------------------------------------
+
+--- Sample 4/5 ---
+Sample ID: 848
+Aspect: Display
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Máy đep, nhưng với màn hình to như này mà thiết kế mặt sau quá phẳng và vuông canh thì cầm hơi khó chịu.
+--------------------------------------------------------------------------------
+
+--- Sample 5/5 ---
+Sample ID: 850
+Aspect: Display
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Đúng như mô tả 👍 Mình chỉ khuyên các bạn mua bản 4G (KHÔNG có 5G!) này nếu các bạn muốn một con máy phụ với giá vô cùng rẻ và không phiền màn ám (đã chụp ảnh như trên).
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: Design
+Recall Score: 87.97%
+So luong loi: 12
+Total samples co label: 264
+True Positive (TP): 252
+False Negative (FN): 12
+================================================================================
+
+Thong ke loai loi:
+  - Predict Positive but True is Negative: 7 samples
+  - Predict Positive but True is Neutral: 2 samples
+  - Predict Negative but True is Positive: 1 samples
+  - Predict Neutral but True is Negative: 1 samples
+  - Predict Neutral but True is Positive: 1 samples
+
+
+--- Sample 1/12 ---
+Sample ID: 1
+Aspect: Design
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Ngoại hình ổn, full chức năng, có nfc cửa hàng gửi nhầm cáp sạc usb to type c, củ sạc type c to type c nên không để sạc được nhưng liên hệ cửa hàng hỗ trợ nhiệt tình
+--------------------------------------------------------------------------------
+
+--- Sample 2/12 ---
+Sample ID: 24
+Aspect: Design
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Tính năng nổi bật: sai lầm khi mua máy sản phẩm với vẻ ngoài thì không thể chê được, pin tuột nhanh hơn tuột quần
+--------------------------------------------------------------------------------
+
+--- Sample 3/12 ---
+Sample ID: 193
+Aspect: Design
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+variation3: mỹ 2 sim 99% 128gb cám ơn cửa hàng đã nhiệt tình tư vấn và ship cho máy màu hồng đờn ông rất đẹp. máy 99% cửa hàng cam kết không trầy xước nhưng vẫn xước gần cụm camera và nắp lưng kha khá, máy vẫn còn silk thân máy, chân sạc còn mới. phụ kiện có sạc cáp lởm. test thử pin tốt, không nóng máy, mọi thứ ổn. sử dụng app bank ổn chứ không giống máy hàn trước mình mua bị root. trước có mua tablet của cửa hàng cũng phân loại 99% mà hông máy bị gai đường keo và xước mặt kính + lưng nhiều nên hông vui lắm nhưng sử dụng thời gian thấy máy hoạt động mượt mà theo năm tháng nên bỏ qua hết. tầm giá tiền này máy sử dụng mượt với pin trâu là được. dựng hay không cũng được sử dụng cũng được 2-3 năm là ổn rồi. :))) cửa hàng nhiệt tình. đóng gói và quay video cẩn thận. mọi thứ cảm quan tốt tạm cho cửa hàng 5 sao. sử dụng time nữa nếu vẫn thấy tốt sẽ ủng hộ thêm. cám ơn cửa hàng.
+--------------------------------------------------------------------------------
+
+--- Sample 4/12 ---
+Sample ID: 400
+Aspect: Design
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Nói chung máy 95 ổn vs giá tiền ngoại hình xước xát cũng nhiều bác nào kỹ tính ưa ngoại hình thì lên lấy máy 99 nhé cho đẹp.10 * cho cửa hàng
+--------------------------------------------------------------------------------
+
+--- Sample 5/12 ---
+Sample ID: 625
+Aspect: Design
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Ngoại hình: máy cũ trầy xước nhẹ tốt so voi tầm giá
+--------------------------------------------------------------------------------
+
+--- Sample 6/12 ---
+Sample ID: 983
+Aspect: Design
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Tình trạng: 96% 
+Nhóm màu: vàng cửa hàng giao hàng nhanh sản phẩm có pin giá ổn cửa hàng bảo 96% theo mình nghỉ không tới mặt sau trầy sướt nhiều giửa thân còn móp.
+--------------------------------------------------------------------------------
+
+--- Sample 7/12 ---
+Sample ID: 1112
+Aspect: Design
+Predicted: Neutral (2)
+True Label: Negative (1)
+Error Type: Predict Neutral but True is Negative
+Text:
+Máy dễ bám vân tay. Không được như ảnh quảng cáo. Chất liệu dễ bám bẩn. Mặt lưng máy bám vân tay kinh khủng, nhìn rất dơ. Pin và hiệu năng bình thường
+--------------------------------------------------------------------------------
+
+--- Sample 8/12 ---
+Sample ID: 1121
+Aspect: Design
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+sài được thời gian thì, máy sài tốt ổn kể cả game, nhưng mà ngoại hình hơi xâú xước khá nhiều với cấn, nhưng máy hoạt động ổn, nói chung mất này bú kia nên kh quan tâm lắm , với kh ngờ chiếc gaming phone này cam nó nét với đẹp vãi=)) thế thôi
+--------------------------------------------------------------------------------
+
+--- Sample 9/12 ---
+Sample ID: 1198
+Aspect: Design
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Ok nha có tặng kèm củ sạc 20w vs tai nghe AKG Máy không một vết xước nhưng mà mất áp ( nghi là thay kính trước) sửa chữa hay gì chưa thì không bt cái đó chỉ cửa hàng biết thôi
+--------------------------------------------------------------------------------
+
+--- Sample 10/12 ---
+Sample ID: 1286
+Aspect: Design
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+đóng gói hàng rất cẩn thận, có bịch chống sốc và hộp carton quá lớn so với điện thoại. điện thoại nhìn mới, đẹp nhưng không phải là chính hãng. sử dụng các chức năng bình thường nhưng khi vào mạng yếu, phải chờ một lúc mới được.
+--------------------------------------------------------------------------------
+
+--- Sample 11/12 ---
+Sample ID: 1292
+Aspect: Design
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+sản phẩm như mô tả, bản nhà mạng mỹ chất lượng đánh giá sau. hình thức bên ngoài mới 98-99%
+--------------------------------------------------------------------------------
+
+--- Sample 12/12 ---
+Sample ID: 1426
+Aspect: Design
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Chất lượng sản phẩm: ổn
+nhận xét sau 2 tuần sửa dụng máy ,cấu hình mạnh , máy mượt , cam đẹp trong tầm giá. ,máy đã thay vỏ nhưng mình vẫn chấp nhận được vì máy đã ra mắt khá lâu rồi h mà đào ra máy nguyên zin trong tầm giá rẻ như này thì không thể, đáng lẻ mình sẽ đánh giá 5 sao nhưng hàng dựng lại rất sơ sài nắp lưng không thấy 1 tý keo nào bị bung ra hết khá là buồn😞 mong cửa hàng nên kiểm tra cẩn thận và kĩ càng hơn khi giao hàng tới tay người sử dụng
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: Packaging
+Recall Score: 94.90%
+So luong loi: 5
+Total samples co label: 215
+True Positive (TP): 210
+False Negative (FN): 5
+================================================================================
+
+Thong ke loai loi:
+  - Predict Negative but True is Positive: 2 samples
+  - Predict Neutral but True is Negative: 1 samples
+  - Predict Positive but True is Negative: 1 samples
+  - Predict Positive but True is Neutral: 1 samples
+
+
+--- Sample 1/5 ---
+Sample ID: 566
+Aspect: Packaging
+Predicted: Neutral (2)
+True Label: Negative (1)
+Error Type: Predict Neutral but True is Negative
+Text:
+sản phẩm bị trầy xước từ bên trong. đóng gói không có lớp chống sốc. máy dễ bị cấn. hộp hàng mỏng manh không bảo vệ được sản phẩm. pin và hiệu năng bình thường
+--------------------------------------------------------------------------------
+
+--- Sample 2/5 ---
+Sample ID: 991
+Aspect: Packaging
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Đúng với mô tả: không hẳn sau 1 tg nhận máy thì mình thấy máy khá ổn nhưng máy chỉ có 64gb thôi nhé không ph 128gb đâu ạ. có trao đổi với cửa hàng và cửa hàng nch rất điện thoại, nhưng nên cân nhắc nhé ạ 64gb không ph 128gb
+--------------------------------------------------------------------------------
+
+--- Sample 3/5 ---
+Sample ID: 1020
+Aspect: Packaging
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+hiệu năng giảm mạnh khi pin thấp. không ổn định. bị bóp hiệu năng. máy chạy rất chậm khi pin dưới 30%, cảm giác rất khó chịu. đóng gói chắc chắn. chăm sóc khách hàng không có giải pháp
+--------------------------------------------------------------------------------
+
+--- Sample 4/5 ---
+Sample ID: 1093
+Aspect: Packaging
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Giao hàng tạm ổn sản phẩm giống mô tả đóng gói bình thường...!!!!!🙂
+--------------------------------------------------------------------------------
+
+--- Sample 5/5 ---
+Sample ID: 1390
+Aspect: Packaging
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Sản phẩm mới, không kèm phụ kiện đóng gói cẩn thận, chuẩn bị hàng lâu,giao hàng nhanh, máy chạy không mượt
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: Price
+Recall Score: 89.79%
+So luong loi: 15
+Total samples co label: 295
+True Positive (TP): 280
+False Negative (FN): 15
+================================================================================
+
+Thong ke loai loi:
+  - Predict Negative but True is Positive: 6 samples
+  - Predict Neutral but True is Positive: 3 samples
+  - Predict Positive but True is Negative: 3 samples
+  - Predict Positive but True is Neutral: 2 samples
+  - Predict Negative but True is Neutral: 1 samples
+
+
+--- Sample 1/15 ---
+Sample ID: 60
+Aspect: Price
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Màu sắc: đen giao khác màu, sản phẩm bị lỗi không sử dụng được giá cả:phù hợp 
+Thời lượng pin:bình thường độ bền:chưa rõ
+--------------------------------------------------------------------------------
+
+--- Sample 2/15 ---
+Sample ID: 85
+Aspect: Price
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+điện thoại luot ban đầu thì mượt mà lướt được 5 10' !nó giật lag lắm. giá 1tr ban đầu mình cũng không mong đợi gì nhiều nhưng cũng đáng thất vọng. vì mình đắn đo rất nhiều moi mua. và đọc feedback của khách nữa. thất vọng tràn trề. nhưng vì cửa hàng nc cũng dễ thuong nên mình cho cửa hàng 3 sao chứ chất lượng thì không hài lòng mấy
+--------------------------------------------------------------------------------
+
+--- Sample 3/15 ---
+Sample ID: 201
+Aspect: Price
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Được tặng 2 cục bin. Với giá tiền này mua về sử dụng tạm cũng được
+--------------------------------------------------------------------------------
+
+--- Sample 4/15 ---
+Sample ID: 259
+Aspect: Price
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Giá bán của sản phẩm tương xứng với cấu hình được trang bị. Chính sách bảo hành ổn.
+--------------------------------------------------------------------------------
+
+--- Sample 5/15 ---
+Sample ID: 309
+Aspect: Price
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+nhìn thấy người ta đánh giá 5 sao chưa,thấy rồi thì mua đi,với 2tr này thì làm gì được cho đời,mua con này về ngắm nghịch cho vui vui sự đời nhể!
+--------------------------------------------------------------------------------
+
+--- Sample 6/15 ---
+Sample ID: 631
+Aspect: Price
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Chất lượng sản phẩm: cực kì tệ mình biết với giá này minh sẽ không mua được máy tốt, nhưng ít ra cũng phải sử dụng được hãy bán cho khách hàng.mua về call zalo thì chập dật không call được, tok tok thì bị đơ. Còn trong 15 ngày bảo hành mình hoàn đơn thì không chấp nhận vì lí do cảm nhận mõi người khác nhau.vậy 15 ngày đổi trả có ý nghĩa gì khi đăng kèm sản phẩm bán? thôi như trả tiền ngu vậy
+--------------------------------------------------------------------------------
+
+--- Sample 7/15 ---
+Sample ID: 798
+Aspect: Price
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Chất lượng sản phẩm: tạm 
+Đúng với mô tả: chưa đúng 
+Tính năng nổi bật: giá rẻ nói 256gb nhưng về máy chỉ 128gb thôi, ram cũng 4gb thôi mà dám để láo, được cái giá cũng rẻ thôi, chứ làm ăn láo quá
+--------------------------------------------------------------------------------
+
+--- Sample 8/15 ---
+Sample ID: 872
+Aspect: Price
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Điện thoại ITEL RS4 12G/256G mua giá 2tr875k. Điện thoại mới tinh, hộp nguyên seal. Đã dùng được gần tuần thấy hoạt động hoàn hảo. Phần mềm có nhiều tiện ích hay. Ram 12G, ROM 256GB. cửa hàng có tặng thêm 1 sạc 45W, vậy là có 2 chiếc. Cảm ơn cửa hàng!
+--------------------------------------------------------------------------------
+
+--- Sample 9/15 ---
+Sample ID: 915
+Aspect: Price
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Phiên bản: hàn quốc 1 sim 
+Dung lượng lưu trữ: 256gb mua được lúc giảm giá tuy nhiên điện thoại trầy khá nhiều màng hình xướt nhẹ không phải 99% mở khóa khuôn mặt hơi chậm vân tay tạm thôi các chức năng hoạt động bình thường
+--------------------------------------------------------------------------------
+
+--- Sample 10/15 ---
+Sample ID: 1065
+Aspect: Price
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Tính năng nổi bật: ngon rẻ tốt nhưng mà không đúng
+--------------------------------------------------------------------------------
+
+--- Sample 11/15 ---
+Sample ID: 1080
+Aspect: Price
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Đúng với mô tả: không đúng 
+Chất lượng sản phẩm: kém sản phẩm: hàng lỗi hoặc bị hư hỏng, sản phẩm chất lượng kém các bạn lưu ý: apple không chấp nhận đổi trả với các hình thức bị trầy xước liên quan đến thẩm mỹ nên quay video liền mạch quay chi tiết unbox và cận cảnh sản phẩm. trường hợp của mình là bị đánh bass che vết trầy nên lúc quay video không thấy. lúc lau sơ để dán màn hình thì thấy vết trầy rất sâu nếu quay video đầy đủ bằng chứng thì có thể được back lại vài trăm đền bù hahaaha. ai muốn mua máy chuẩn không trầy xước thì nên ra offline mua nhé. mua onl được cái rẻ nhưng trầy hay lọt bụi vào cam thì chịu. chất lượng sản phẩm có thể đến từ nhà máy hoặc các npp lấm liếm lỗi bằng cách che ngoại quan và bán online
+--------------------------------------------------------------------------------
+
+--- Sample 12/15 ---
+Sample ID: 1300
+Aspect: Price
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Chất lượng sản phẩm: kém 
+Đúng với mô tả: không 
+Tính năng nổi bật: không lên với giá tiền này thì mình không đòi hỏi nhiều 😗😆😆 mua rẻ thì cũng hên sui xác định bật được 15 phút xong khỏi lên luôn xạc pin không lên nguồn luôn cửa hàng nên làm ăn lại mình cũng không yêu cầu hoàn trả nhưng làm ăn không có tâm hihi mọi người cân nhắc trước khi mua
+--------------------------------------------------------------------------------
+
+--- Sample 13/15 ---
+Sample ID: 1331
+Aspect: Price
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+9tr9 thật sự là tiền lớn rồi mình mong đợi nhiều hơn
+--------------------------------------------------------------------------------
+
+--- Sample 14/15 ---
+Sample ID: 1351
+Aspect: Price
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Màu sắc: bạc 
+Phân loại: nguyên seal cũng may biết đến cửa hàng này bán hàng chất lượng giá còn tốt nữa chứ, mấy cửa hàng kia thì mình không biết sao nhưng giá lại vô cùng cao nên cũng khá quan ngại
+--------------------------------------------------------------------------------
+
+--- Sample 15/15 ---
+Sample ID: 1430
+Aspect: Price
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Tính năng nổi bật: hàng kém chất lượng 
+Chất lượng sản phẩm: máy như dựng 
+Đúng với mô tả: không cửa hàng bán máy giá rẻ, dù chưa có ai mua thử để kiểm chứng nhưng mình vẫn mua. cửa hàng có tặng phụ kiện đầy đủ nhưng khi máy về ngoại hình thì như máy dựng, pin phồng kênh cả nắp lưng lên, khung thì như hàng tân trang nhưng vẫn cam kết zin (?) hỗ trợ đổi trả không tới nơi tới chốn. hàng không tốt mà chăm sóc khách hàng cũng tệ thì em cho 1 sao nhé. bán hàng thế này thì cửa hàng dẹp luôn đi.
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: Shop_Service
+Recall Score: 95.11%
+So luong loi: 9
+Total samples co label: 212
+True Positive (TP): 203
+False Negative (FN): 9
+================================================================================
+
+Thong ke loai loi:
+  - Predict Positive but True is Negative: 4 samples
+  - Predict Negative but True is Positive: 3 samples
+  - Predict Positive but True is Neutral: 1 samples
+  - Predict Neutral but True is Negative: 1 samples
+
+
+--- Sample 1/9 ---
+Sample ID: 74
+Aspect: Shop_Service
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Lần đầu mua 1 sản phẩm giá trị cao trên Shopee nhưng mà thấy khá hài lòng Sau 1 tháng sử dụng thì thấy ưu điểm nổi trội là Camera đẹp (rất đẹp nếu chụp đủ sáng), thao tác vuốt chạm MƯỢT, siêu ĐÃ Tuy nhiên KHÔNG tra được thời hạn bảo hành trên web của Honor (có nhắn cho cửa hàng thì cửa hàng cũng bảo là không kiểm tra được) Thứ hai là chê cái MÀN HÌNH vì nó chỉ có 10 biết màu nên hiển thị màu sắc KHÔNG được chính xác, đẹp và RỰC RỠ so với các điện thoại khác cùng phân khúc có màn hình 12 biết màu (cảm giác màu ở trên điện thoại này nó cứ nhạt nhạt nhìn rất thiếu sức sống) Bù lại thì viên pin 5200 nhưng mà khá trâu xài khoảng 1 2 ngày mới phải sạc (không gaming). Sạc nhanh 100W mà sạc từ 3% lên 100% mất khoảng 52p mới đầy Vân tay và khuôn mặt nhạy, nhanh nhưng mà vị trí đặt vân tay thấp, phải với xuống mới mở khóa được Tóm lại thì với mức giá này thì gọi là đủ dùng, tạm hài lòng thôi chứ thật sự nó không ngon như quảng cáo đâu nhất là cái màn hình 1 tỷ màu nhìn nó thiếu sức sống dã man 😅
+--------------------------------------------------------------------------------
+
+--- Sample 2/9 ---
+Sample ID: 85
+Aspect: Shop_Service
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+điện thoại luot ban đầu thì mượt mà lướt được 5 10' !nó giật lag lắm. giá 1tr ban đầu mình cũng không mong đợi gì nhiều nhưng cũng đáng thất vọng. vì mình đắn đo rất nhiều moi mua. và đọc feedback của khách nữa. thất vọng tràn trề. nhưng vì cửa hàng nc cũng dễ thuong nên mình cho cửa hàng 3 sao chứ chất lượng thì không hài lòng mấy
+--------------------------------------------------------------------------------
+
+--- Sample 3/9 ---
+Sample ID: 111
+Aspect: Shop_Service
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+￼Điện thoại HONOR X9c 5G 12GB + 256GB | Màn hình 6.78" |Pin 6600mAh, Camera 108MP | Bảo hành 24 Tháng
+--------------------------------------------------------------------------------
+
+--- Sample 4/9 ---
+Sample ID: 145
+Aspect: Shop_Service
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Giao hàng hơi lâu, nhưng cửa hàng vẫn tặng combo đồng hồ tai nghe như quảng cáo dù 2 sản phẩm đó không có trên đơn, hy vọng xài bền
+--------------------------------------------------------------------------------
+
+--- Sample 5/9 ---
+Sample ID: 410
+Aspect: Shop_Service
+Predicted: Neutral (2)
+True Label: Negative (1)
+Error Type: Predict Neutral but True is Negative
+Text:
+đã nhận được hàng. đúng mô tả. sản phẩm mới chưa được kích bảo hành điện tử luôn
+--------------------------------------------------------------------------------
+
+--- Sample 6/9 ---
+Sample ID: 608
+Aspect: Shop_Service
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Máy dùng mượt, không nóng máy, sạc nhanh. Ốp lựng đi kèm quá tệ, chưa có cách nào tra bảo hành qua internet được hết
+--------------------------------------------------------------------------------
+
+--- Sample 7/9 ---
+Sample ID: 703
+Aspect: Shop_Service
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Đúng với mô tả: tốt 
+Chất lượng sản phẩm: tốt 
+Tính năng nổi bật: tốt
+3 ngày mới nhận được hàng nha nôn quá trời, ngày 11/9 mới nhận hàng mà kích hoạt hạn bảo hành trước 1ngày ah nhận hàng ưng đóng gói cẩn thận sử dụng máy rất thích
+--------------------------------------------------------------------------------
+
+--- Sample 8/9 ---
+Sample ID: 991
+Aspect: Shop_Service
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Đúng với mô tả: không hẳn sau 1 tg nhận máy thì mình thấy máy khá ổn nhưng máy chỉ có 64gb thôi nhé không ph 128gb đâu ạ. có trao đổi với cửa hàng và cửa hàng nch rất điện thoại, nhưng nên cân nhắc nhé ạ 64gb không ph 128gb
+--------------------------------------------------------------------------------
+
+--- Sample 9/9 ---
+Sample ID: 1305
+Aspect: Shop_Service
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Giao hàng nhanh, đang trong quá trình sử dụng thử. Nhưng tìm không thấy phiếu bảo hành hay phí bảo hiểm đã mua!
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: Shipping
+Recall Score: 98.26%
+So luong loi: 8
+Total samples co label: 297
+True Positive (TP): 289
+False Negative (FN): 8
+================================================================================
+
+Thong ke loai loi:
+  - Predict Negative but True is Positive: 6 samples
+  - Predict Positive but True is Negative: 2 samples
+
+
+--- Sample 1/8 ---
+Sample ID: 44
+Aspect: Shipping
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+giá cả oke, màn to, sử dụng tới hiện tại rất tốt, tuy nhiên mua màu tím mà cửa hàng giao màu đen không báo trước :v
+--------------------------------------------------------------------------------
+
+--- Sample 2/8 ---
+Sample ID: 180
+Aspect: Shipping
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Đúng với mô tả: bình thường giao hàng nhanh, có vết hằn nhẹ trên thân máy. mong cửa hàng kiểm hàng kĩ hơn
+--------------------------------------------------------------------------------
+
+--- Sample 3/8 ---
+Sample ID: 261
+Aspect: Shipping
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Nhóm màu: white 
+Dung lượng lưu trữ: 256gb nhận được hàng đúng hẹn, năm nay lazada làm việc quá chất. canh mãi mua được mỗi con màu trắng, màu vàng không mua được
+--------------------------------------------------------------------------------
+
+--- Sample 4/8 ---
+Sample ID: 699
+Aspect: Shipping
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+giao hàng nhanh chóng hôm sau đã có hàng, đóng gói chắc chắn, có kèm đầy đủ phụ kiện. Màn hiển thị khá đẹp, có lưu ám nhẹ đúng mô tả. Tuy nhiên góc màn có 1 mảng màu lạ, kính cam có trầy xướt, viền hơi xấu, pin còn được 7x % thôi. Chất lượng máy phù hợp giá. Hơi thất vọng camera trước của dòng x1 ii này.
+--------------------------------------------------------------------------------
+
+--- Sample 5/8 ---
+Sample ID: 736
+Aspect: Shipping
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+giao hàng nhanh, đóng gói cẩn thận, tuy nhiên vẫn không chịu sử dụng đúng số điện thoại khách hàng khi xuất hoá đơn, mặc dù đã nhắn số điện thoại riêng rồi, nhân viên nói là xuất hoá đơn dựa vào thông tin lucd yêu cầu hoá đơn khi mua trên shopee, nhưng mục đó làm gì có ô nào để điền số điện thoại đâu, nhắn riêng để được xuất đúng số cũng không xuất đúng, hỏi thì nhân viên trả lời không thuyết phục.
+--------------------------------------------------------------------------------
+
+--- Sample 6/8 ---
+Sample ID: 877
+Aspect: Shipping
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Nhóm màu: natural 
+Dung lượng lưu trữ: 256gb mặc dù có chút vấn đề liên quan giao hàng, trải nghiệm giao hàng thực sự tệhiệu suất máy ảnh ấn tượng, ⚡ 
+Hiệu suất:mạnh 📸 
+Chất lượng camera: tốt 🔋 
+Thời lượng pin: tốt
+--------------------------------------------------------------------------------
+
+--- Sample 7/8 ---
+Sample ID: 1369
+Aspect: Shipping
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Đóng gói sản phẩm tạm, hơi sơ sài, giao tới khá nhanh, săn sale giá ổn áp
+--------------------------------------------------------------------------------
+
+--- Sample 8/8 ---
+Sample ID: 1390
+Aspect: Shipping
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Sản phẩm mới, không kèm phụ kiện đóng gói cẩn thận, chuẩn bị hàng lâu,giao hàng nhanh, máy chạy không mượt
+--------------------------------------------------------------------------------
+
+================================================================================
+ASPECT: General
+Recall Score: 88.27%
+So luong loi: 34
+Total samples co label: 380
+True Positive (TP): 346
+False Negative (FN): 34
+================================================================================
+
+Thong ke loai loi:
+  - Predict Negative but True is Positive: 11 samples
+  - Predict Positive but True is Neutral: 7 samples
+  - Predict Neutral but True is Positive: 7 samples
+  - Predict Negative but True is Neutral: 6 samples
+  - Predict Positive but True is Negative: 2 samples
+  - Predict Neutral but True is Negative: 1 samples
+
+
+--- Sample 1/34 ---
+Sample ID: 26
+Aspect: General
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Thấy chơi liên quân hơi chậm xíu á. Còn lại cũng ok, xài 1 time mới biết nè. 
+--------------------------------------------------------------------------------
+
+--- Sample 2/34 ---
+Sample ID: 94
+Aspect: General
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Máy còn nguyên seal và đầy đủ phụ kiện, sẽ test máy 1 thời gian xem ổn định không.
+--------------------------------------------------------------------------------
+
+--- Sample 3/34 ---
+Sample ID: 103
+Aspect: General
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Đầu năm mua s24u, 2 tháng sau mua s25u. Mình không rành công nghệ nhưng sử dụng rồi thì thấy khác
+--------------------------------------------------------------------------------
+
+--- Sample 4/34 ---
+Sample ID: 127
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Nên mua điện thoại này sài với dung lượng lớn mà không coá baoe hành thâu
+--------------------------------------------------------------------------------
+
+--- Sample 5/34 ---
+Sample ID: 179
+Aspect: General
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+ngoại hình là f11 nhưng check imei ra oppo a9. dù sao đã chuẩn bị tâm lý khi mua hàng shoppe nên cũng không bất ngờ
+--------------------------------------------------------------------------------
+
+--- Sample 6/34 ---
+Sample ID: 198
+Aspect: General
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+variation3: mỹ 2 sim 99% 128gb máy 99% đẹp, độ bền đánh giá sau
+--------------------------------------------------------------------------------
+
+--- Sample 7/34 ---
+Sample ID: 237
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Mọi thứ ổn, nhưng pin không được trâu lắm, không được 2 ngày tác vụ cơ bản
+--------------------------------------------------------------------------------
+
+--- Sample 8/34 ---
+Sample ID: 324
+Aspect: General
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Máy fullbox đầy đủ phụ kiện, đã có miếng dán sẵn của hãng, máy likenew, máy chưa kích hoạt luôn, mình mở máy là kích hoạt
+--------------------------------------------------------------------------------
+
+--- Sample 9/34 ---
+Sample ID: 395
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Tất cả các tính nay đều ok nhưng sài nhanh quá sẽ hơi giật
+--------------------------------------------------------------------------------
+
+--- Sample 10/34 ---
+Sample ID: 418
+Aspect: General
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+variation3: đen xanh vàng 
+Dung lượng lưu trữ: 32gb 
+Phân loại sản phẩm: tạm được
+--------------------------------------------------------------------------------
+
+--- Sample 11/34 ---
+Sample ID: 479
+Aspect: General
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Chưa Sài nhìn cũng ổn dùng lâu mới biết
+--------------------------------------------------------------------------------
+
+--- Sample 12/34 ---
+Sample ID: 555
+Aspect: General
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Em không sử dụng được tính năng tẩy Al trên camon 30s, em mong cửa hàng hỗ trợ ạ
+--------------------------------------------------------------------------------
+
+--- Sample 13/34 ---
+Sample ID: 577
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Nhóm màu: xanh 
+Phân loại sản phẩm: 12/512gb hàng ngon.đã mua ở cửa hàng từ note 10, 20 ultra giờ tới 22 ultra. sài hơn 2 tuần chưa thấy gì cả. tuy nhiên mình mua máy xanh green nhưng lại giao máy màu đen nên cho 1 điểm trừ
+--------------------------------------------------------------------------------
+
+--- Sample 14/34 ---
+Sample ID: 620
+Aspect: General
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Đúng với mô tả: sai 
+Chất lượng sản phẩm: bình thường 
+Tính năng nổi bật: kh mua vivo y20s nhưng check gmail lại ra vivo y12s,máy có dấu hiệu kích ram,rom+mất vân còn lại sử dụng tạm được. mọi người nên cân nhắc trước khi mua nha!
+--------------------------------------------------------------------------------
+
+--- Sample 15/34 ---
+Sample ID: 638
+Aspect: General
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Chất lượng sản phẩm: 5 🫶
+--------------------------------------------------------------------------------
+
+--- Sample 16/34 ---
+Sample ID: 693
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+phím điều hướng hơi nhỏ. người già sử dụng không quen. khuyên mọi người mua cho bố mẹ nên lựa chọn loại khác. còn lại mọi thứ đều tuyệt vời
+--------------------------------------------------------------------------------
+
+--- Sample 17/34 ---
+Sample ID: 774
+Aspect: General
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+mới nhận được hàng chưa biết chất lượng ra sao chưa test..thấy mẫu mã đẹp.. giá cũng tốt...kakaka
+--------------------------------------------------------------------------------
+
+--- Sample 18/34 ---
+Sample ID: 828
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Khối lượng vừa phải không quá nhẹ cũng không quá nặng, khung viền nhựa dễ bị cấn. Đa nhiệm cực kỳ kém mở app khác quay sang bị load lại luôn.
+--------------------------------------------------------------------------------
+
+--- Sample 19/34 ---
+Sample ID: 910
+Aspect: General
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+Chất lượng sản phẩm: bình thường 
+Tính năng nổi bật: không 
+Đúng với mô tả: đúng sử dụng cũng tạm
+--------------------------------------------------------------------------------
+
+--- Sample 20/34 ---
+Sample ID: 927
+Aspect: General
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Đây là đơn thứ 2 để phổ cập smartphone cho người nhà. cảm ơn cửa hàng
+--------------------------------------------------------------------------------
+
+--- Sample 21/34 ---
+Sample ID: 930
+Aspect: General
+Predicted: Neutral (2)
+True Label: Negative (1)
+Error Type: Predict Neutral but True is Negative
+Text:
+Nếu có thể thì tôi muốn đổi lại máy khác...
+--------------------------------------------------------------------------------
+
+--- Sample 22/34 ---
+Sample ID: 978
+Aspect: General
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Máy lần trước thì sử dụng tốt còn mua lần này máy lại có phim sex.chứng tỏ đã có ai đó sử dụng trước khi giao đến tay tôi ,
+--------------------------------------------------------------------------------
+
+--- Sample 23/34 ---
+Sample ID: 1030
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Nhóm màu: màu xanh đậm 
+Dung lượng lưu trữ: 128gb mình lấy mầu xanh đậm nhưng cửa hàng đưa mầu trắng.nhưng không sao mầu này cũng được
+--------------------------------------------------------------------------------
+
+--- Sample 24/34 ---
+Sample ID: 1152
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+chất lượng khá tốt chỉ có truy cập internet và bắt wifi còn kém
+--------------------------------------------------------------------------------
+
+--- Sample 25/34 ---
+Sample ID: 1211
+Aspect: General
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Dùng 1 thời gian mày không có vấn đề gì cả đúng mô tả máy
+--------------------------------------------------------------------------------
+
+--- Sample 26/34 ---
+Sample ID: 1258
+Aspect: General
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Đúng với mô tả: đúng 
+Chất lượng sản phẩm: để thời gian kiểm định
+--------------------------------------------------------------------------------
+
+--- Sample 27/34 ---
+Sample ID: 1291
+Aspect: General
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Chất lượng sản phẩm: mới sử dụng nên chưa có nhiều trải nghiệm nhưng chưa có đánh giá nhiều 
+Tính năng nổi bật: bàn phím và màn hình to 
+Đúng với mô tả: đúng với mô tả
+--------------------------------------------------------------------------------
+
+--- Sample 28/34 ---
+Sample ID: 1298
+Aspect: General
+Predicted: Neutral (2)
+True Label: Positive (0)
+Error Type: Predict Neutral but True is Positive
+Text:
+Hành chính hãnh
+--------------------------------------------------------------------------------
+
+--- Sample 29/34 ---
+Sample ID: 1351
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Màu sắc: bạc 
+Phân loại: nguyên seal cũng may biết đến cửa hàng này bán hàng chất lượng giá còn tốt nữa chứ, mấy cửa hàng kia thì mình không biết sao nhưng giá lại vô cùng cao nên cũng khá quan ngại
+--------------------------------------------------------------------------------
+
+--- Sample 30/34 ---
+Sample ID: 1366
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+pin xài lâu ghê, nghe nhạc ở tiệm cả ngày vẫn ổn 
+--------------------------------------------------------------------------------
+
+--- Sample 31/34 ---
+Sample ID: 1408
+Aspect: General
+Predicted: Positive (0)
+True Label: Negative (1)
+Error Type: Predict Positive but True is Negative
+Text:
+Tính năng nổi bật: điện thoại chơi game 
+Chất lượng sản phẩm: với giá đã mua không có gì để nói săn sale mua được với giá 3 triệu 3, điện thoại giống mô tả, phù hợp với giá tiền. Có nfc. Mỗi cái khi đang trong ứng dụng thì vuốt phím ảo lên hơi khó khăn. Bấm 3 nhát mới thấy hiện phím ảo lên được.
+--------------------------------------------------------------------------------
+
+--- Sample 32/34 ---
+Sample ID: 1411
+Aspect: General
+Predicted: Positive (0)
+True Label: Neutral (2)
+Error Type: Predict Positive but True is Neutral
+Text:
+Tôi đã đặt mua của cửa hàng 3 chiếc một lúc, nhận hàng đúng chất lượng như quảng cáo...
+--------------------------------------------------------------------------------
+
+--- Sample 33/34 ---
+Sample ID: 1413
+Aspect: General
+Predicted: Negative (1)
+True Label: Positive (0)
+Error Type: Predict Negative but True is Positive
+Text:
+Nhóm màu: xanh máy tốt sao phụ kiện chỉ có sạc và máy không mình lúc đặt báo có đủ phụ kiện mà
+--------------------------------------------------------------------------------
+
+--- Sample 34/34 ---
+Sample ID: 1415
+Aspect: General
+Predicted: Negative (1)
+True Label: Neutral (2)
+Error Type: Predict Negative but True is Neutral
+Text:
+điện thoại có 1 sim thôi
+--------------------------------------------------------------------------------
+
+
+================================================================================
+TONG KET
+================================================================================
+
+So luong loi va Recall theo aspect:
+Aspect          Recall       So loi     Total samples  
+--------------------------------------------------------------------------------
+Design          87.97%       12         264            
+General         88.27%       34         380            
+Price           89.79%       15         295            
+Camera          91.05%       14         186            
+Battery         91.56%       16         270            
+Display         92.47%       5          117            
+Performance     93.36%       11         255            
+Packaging       94.90%       5          215            
+Shop_Service    95.11%       9          212            
+Shipping        98.26%       8          297            
+
+Aspect co recall thap nhat: Design (87.97%)
+Aspect co recall cao nhat: Shipping (98.26%)

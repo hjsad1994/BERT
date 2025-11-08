@@ -1,0 +1,173 @@
+# Sequential Single-Task Learning Configuration for ABSA
+# ========================================================================
+# Two-stage training approach:
+#   Stage 1 (AD): Aspect Detection - Binary classification for 11 aspects
+#   Stage 2 (SC): Sentiment Classification - 3-class for 11 aspects
+# 
+# Base Model: vinai/phobert-base
+# - Vietnamese BERT model pretrained on large Vietnamese corpus
+# - Stage 1: 11 binary outputs (aspect mentioned or not)
+# - Stage 2: 11 × 3 multi-class outputs (positive/negative/neutral per aspect)
+# ========================================================================
+
+paths:
+  data_dir: "PhoBERT-STL/data"
+  train_file: "PhoBERT-STL/data/train_multilabel.csv"  # For AD stage
+  # train_file_sc: "PhoBERT-STL/data/train_multilabel_balanced.csv"  # For SC stage (oversampled)
+  train_file_sc: "PhoBERT-STL/data/train_multilabel.csv"
+  validation_file: "PhoBERT-STL/data/validation_multilabel.csv"
+  test_file: "PhoBERT-STL/data/test_multilabel.csv"
+  
+  # Stage 1: Aspect Detection output
+  ad_output_dir: "PhoBERT-STL/models/aspect_detection"
+  
+  # Stage 2: Sentiment Classification output
+  sc_output_dir: "PhoBERT-STL/models/sentiment_classification"
+  
+  # Final results
+  final_results_dir: "PhoBERT-STL/results/two_stage_training"
+
+model:
+  name: "vinai/phobert-base"  # PhoBERT base model; we fine-tune for multi-label ABSA
+  # Note: This base model is not sentiment-specific; fine-tuning handles aspect+sentiment outputs
+  num_labels: 33  # 11 aspects × 3 sentiments = 33 binary outputs
+  num_aspects: 11
+  num_sentiments: 3
+  max_length: 256
+  
+  # Model architecture
+  hidden_size: 512      # Dense layer
+  dropout: 0.3
+
+valid_aspects:
+  - Battery
+  - Camera
+  - Performance
+  - Display
+  - Design
+  - Packaging
+  - Price
+  - Shop_Service
+  - Shipping
+  - General
+  - Others
+
+sentiment_labels:
+  positive: 0
+  negative: 1
+  neutral: 2
+
+training:
+  # Batch size for multi-label (larger samples)
+  # per_device_train_batch_size: 32
+  # per_device_eval_batch_size: 64
+  # gradient_accumulation_steps: 2  # Effective batch = 64
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 32
+  gradient_accumulation_steps: 4  
+  # Optimizer settings
+  optim: "adamw_bnb_8bit"
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_epsilon: 1.0e-8
+  max_grad_norm: 1.0
+  
+  # Learning rate scheduler
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.06
+  
+  # Training duration
+  num_train_epochs: 1  # Training epochs
+  
+  # Mixed precision (RTX 3070 Ampere)
+  fp16: true
+  fp16_opt_level: "O2"
+  fp16_full_eval: false
+  tf32: true
+  
+  # DataLoader settings
+  dataloader_num_workers: 2  # Reduced for larger batches
+  dataloader_pin_memory: true
+  dataloader_prefetch_factor: 4
+  dataloader_persistent_workers: true
+  
+  # Memory optimization
+  gradient_checkpointing: false
+  auto_find_batch_size: false
+  group_by_length: false
+  
+  # Evaluation & checkpointing
+  evaluation_strategy: "epoch"
+  save_strategy: "epoch"
+  save_total_limit: 4
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_f1"
+  greater_is_better: true
+  
+  # Early stopping
+  early_stopping_patience: 5
+  early_stopping_threshold: 0.001
+  
+  # Logging
+  logging_strategy: "steps"
+  logging_steps: 50
+  logging_first_step: true
+  report_to: []
+  
+  # Misc
+  disable_tqdm: false
+  prediction_loss_only: false
+  remove_unused_columns: true
+  label_names: ["labels"]
+  include_inputs_for_metrics: false
+
+general:
+  device: "auto"
+  log_level: "info"
+
+# ========================================================================
+# REPRODUCIBILITY: Master Seed Configuration
+# ========================================================================
+# All random operations use seeds derived from master_seed for consistency
+# Change master_seed to run different experiments (e.g., 42, 123, 456, 789, 2024)
+# ========================================================================
+reproducibility:
+  # Data preprocessing seeds
+  data_split_seed: 42              # Seed for train/val/test split
+  oversampling_seed: 42            # Seed for aspect-wise oversampling
+  shuffle_seed: 42               # Seed for data shuffling
+  
+  # Model training seeds
+  training_seed: 100                # Seed for PyTorch/Transformers training
+  # Note: dataloader_seed removed - only training_seed is used for reproducibility
+  
+  # Notes:
+  # - All seeds set to 42 by default for reproducibility
+  # - For multiple runs, change master_seed: [42, 123, 456, 789, 2024]
+  # - Recommended: Keep all seeds = master_seed unless specific reason
+
+# Sequential training settings
+two_stage:
+  # Training order
+  train_ad_first: true      # Train Aspect Detection before Sentiment Classification
+  train_sc_after: true      # Train Sentiment Classification after AD
+  
+  # Stage 1: Aspect Detection
+  aspect_detection:
+    use_focal_loss: true
+    focal_gamma: 2.0
+    focal_alpha: "auto"     # Auto-calculate from data (inverse frequency)
+    epochs: 1               # AD training epochs
+  
+  # Stage 2: Sentiment Classification
+  sentiment_classification:
+    use_focal_loss: true
+    focal_gamma: 2.0
+    focal_alpha: "auto"     # Auto-calculate from data
+    epochs: 10             # SC training epochs
+  
+  # Error analysis
+  run_error_analysis: true  # Automatically run error analysis after training
+

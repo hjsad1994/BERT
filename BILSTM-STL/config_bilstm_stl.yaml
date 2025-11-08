@@ -1,0 +1,134 @@
+# BiLSTM Sequential Single-Task Learning Configuration
+# ========================================================================
+# Two-stage training approach:
+#   Stage 1 (AD): Aspect Detection - Binary classification for 11 aspects
+#   Stage 2 (SC): Sentiment Classification - 3-class for 11 aspects
+# 
+# Model: BiLSTM + CNN (NO pretrained embeddings, trainable embeddings only)
+# ========================================================================
+
+paths:
+  data_dir: "BILSTM-STL/data"
+  train_file: "BILSTM-STL/data/train_multilabel.csv"
+  validation_file: "BILSTM-STL/data/validation_multilabel.csv"
+  test_file: "BILSTM-STL/data/test_multilabel.csv"
+  
+  # Stage 1: Aspect Detection output
+  ad_output_dir: "BILSTM-STL/models/aspect_detection"
+  
+  # Stage 2: Sentiment Classification output
+  sc_output_dir: "BILSTM-STL/models/sentiment_classification"
+  
+  # Final results
+  final_results_dir: "BILSTM-STL/results/two_stage_training"
+
+model:
+  # Tokenizer (for text → token IDs only, NOT for embeddings)
+  tokenizer_name: "5CD-AI/visobert-14gb-corpus"
+  
+  # Trainable embeddings (NO pretrained model)
+  vocab_size: 30000         # Will be set from tokenizer
+  embedding_dim: 300        # Trainable embedding dimension
+  padding_idx: 0
+  
+  # BiLSTM architecture
+  lstm_hidden_size: 256
+  lstm_num_layers: 2
+  lstm_dropout: 0.3
+  
+  # Spatial Dropout
+  spatial_dropout: 0.2
+  
+  # Conv1D layer
+  conv_filters: 128
+  conv_kernel_size: 3
+  
+  # Dense layers
+  dense_hidden_size: 256
+  dense_dropout: 0.3
+  
+  # Task settings
+  num_aspects: 11
+  num_sentiments: 3
+  max_length: 256
+
+aspect_names:
+  - Battery
+  - Camera
+  - Performance
+  - Display
+  - Design
+  - Packaging
+  - Price
+  - Shop_Service
+  - Shipping
+  - General
+  - Others
+
+sentiment_labels:
+  positive: 0
+  negative: 1
+  neutral: 2
+
+training:
+  # Batch sizes
+  per_device_train_batch_size: 32
+  per_device_eval_batch_size: 64
+  gradient_accumulation_steps: 2
+  
+  # Optimizer settings
+  learning_rate: 3.0e-4     # Higher LR for trainable embeddings
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  
+  # Learning rate scheduler
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.1
+  
+  # Mixed precision
+  fp16: true
+  
+  # DataLoader settings
+  dataloader_num_workers: 2
+  dataloader_pin_memory: true
+  
+  # Evaluation & checkpointing
+  evaluation_strategy: "epoch"
+  save_strategy: "epoch"
+  save_total_limit: 3
+  
+  # Logging
+  logging_steps: 50
+  
+  # Device
+  device: "cuda"
+
+# Reproducibility
+reproducibility:
+  seed: 42
+  deterministic: true
+
+# Sequential training settings
+two_stage:
+  # Training order
+  train_ad_first: true
+  train_sc_after: true
+  
+  # Stage 1: Aspect Detection
+  aspect_detection:
+    epochs: 70              # AD training epochs (BiLSTM needs more)
+    metric_for_best_model: "eval_f1_macro"
+    early_stopping_patience: 5
+    use_pos_weight: true    # Use pos_weight for class imbalance
+    pos_weight_auto: true   # Auto-calculate from data
+  
+  # Stage 2: Sentiment Classification
+  sentiment_classification:
+    epochs: 70             # SC training epochs
+    metric_for_best_model: "eval_f1_macro"  # Changed to F1 Macro (ABSA standard)
+    early_stopping_patience: 7
+    use_class_weight: true  # Use class weights for imbalance
+    class_weight_auto: true # Auto-calculate from data
+  
+  # Error analysis
+  run_error_analysis: false  # Disable for now (can use multi_label error analysis)

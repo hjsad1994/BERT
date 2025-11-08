@@ -1,2 +1,0 @@
-2025-11-06 03:01:32,347 - INFO - Training started at 2025-11-06 03:01:32.346805
-2025-11-06 03:01:32,347 - INFO - Log file: multi_label/results/multi_seed_experiments\seed_100\training_log_20251106_030132.txt
