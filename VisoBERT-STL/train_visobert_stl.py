@@ -123,6 +123,7 @@ def evaluate_ad(
     dataloader: DataLoader,
     device: torch.device,
     aspect_names: list,
+    focal_loss_fn: Optional[BinaryFocalLoss] = None,
     threshold: float = 0.5
 ) -> Dict[str, Any]:
     """Evaluate Aspect Detection model"""
@@ -131,6 +132,7 @@ def evaluate_ad(
     all_preds = []
     all_labels = []
     all_probs = []
+    total_loss = 0.0
     
     with torch.no_grad():
         for batch in tqdm(dataloader, desc="[AD] Evaluating"):
@@ -142,6 +144,11 @@ def evaluate_ad(
             probs = torch.sigmoid(logits)
             preds = (probs >= threshold).float()
             
+            # Calculate loss if focal_loss_fn is provided
+            if focal_loss_fn is not None:
+                loss = focal_loss_fn(logits, labels)
+                total_loss += loss.item()
+            
             all_preds.append(preds.cpu())
             all_labels.append(labels.cpu())
             all_probs.append(probs.cpu())
@@ -149,6 +156,9 @@ def evaluate_ad(
     all_preds = torch.cat(all_preds, dim=0).numpy()
     all_labels = torch.cat(all_labels, dim=0).numpy()
     all_probs = torch.cat(all_probs, dim=0).numpy()
+    
+    # Calculate average loss
+    avg_loss = total_loss / len(dataloader) if focal_loss_fn is not None else None
     
     # Per-aspect metrics (AD stage includes all 11 aspects, including "Others")
     aspect_metrics = {}
@@ -171,7 +181,7 @@ def evaluate_ad(
     overall_r = np.mean([m['recall'] for m in aspect_metrics.values()])
     overall_f1 = np.mean([m['f1'] for m in aspect_metrics.values()])
     
-    return {
+    result = {
         'overall_accuracy': overall_acc,
         'overall_precision': overall_p,
         'overall_recall': overall_r,
@@ -181,6 +191,11 @@ def evaluate_ad(
         'labels': all_labels,
         'probabilities': all_probs
     }
+    
+    if avg_loss is not None:
+        result['val_loss'] = avg_loss
+    
+    return result
 
 
 def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
@@ -318,24 +333,31 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
         
         # Validate
         print("\nValidating...")
-        val_metrics = evaluate_ad(model, val_loader, device, train_dataset.aspects)
+        val_metrics = evaluate_ad(model, val_loader, device, train_dataset.aspects, focal_loss)
+        print(f"   Train Loss: {train_loss:.4f}")
+        print(f"   Val Loss: {val_metrics.get('val_loss', 'N/A'):.4f}" if val_metrics.get('val_loss') is not None else "   Val Loss: N/A")
         print(f"   Accuracy: {val_metrics['overall_accuracy']*100:.2f}%")
         print(f"   F1 Score: {val_metrics['overall_f1']*100:.2f}%")
         print(f"   Precision: {val_metrics['overall_precision']*100:.2f}%")
         print(f"   Recall: {val_metrics['overall_recall']*100:.2f}%")
         
-        logging.info(f"AD Val - Acc: {val_metrics['overall_accuracy']*100:.2f}%, "
+        val_loss = val_metrics.get('val_loss', None)
+        logging.info(f"AD Val - Loss: {val_loss:.4f}, " if val_loss is not None else "AD Val - Loss: N/A, " +
+                    f"Acc: {val_metrics['overall_accuracy']*100:.2f}%, "
                     f"F1: {val_metrics['overall_f1']*100:.2f}%")
         
         # Save history
-        history.append({
+        history_entry = {
             'epoch': epoch,
             'train_loss': train_loss,
             'val_accuracy': val_metrics['overall_accuracy'],
             'val_f1': val_metrics['overall_f1'],
             'val_precision': val_metrics['overall_precision'],
             'val_recall': val_metrics['overall_recall']
-        })
+        }
+        if val_loss is not None:
+            history_entry['val_loss'] = val_loss
+        history.append(history_entry)
         
         # Save best model
         if val_metrics['overall_f1'] > best_f1:
@@ -362,7 +384,7 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
     best_checkpoint = torch.load(os.path.join(output_dir, 'best_model.pt'), map_location=device)
     model.load_state_dict(best_checkpoint['model_state_dict'])
     
-    test_metrics = evaluate_ad(model, test_loader, device, train_dataset.aspects)
+    test_metrics = evaluate_ad(model, test_loader, device, train_dataset.aspects, focal_loss)
     print(f"\nTest Results:")
     print(f"   Accuracy: {test_metrics['overall_accuracy']*100:.2f}%")
     print(f"   F1 Score: {test_metrics['overall_f1']*100:.2f}%")
@@ -496,6 +518,7 @@ def evaluate_sc(
     dataloader: DataLoader,
     device: torch.device,
     aspect_names: list,
+    focal_loss_fn: Optional[MultilabelFocalLoss] = None,
     raw_data_file: Optional[str] = None
 ) -> Dict[str, Any]:
     """Evaluate Sentiment Classification model"""
@@ -503,21 +526,48 @@ def evaluate_sc(
     
     all_preds = []
     all_labels = []
+    total_loss = 0.0
     
     with torch.no_grad():
         for batch in tqdm(dataloader, desc="[SC] Evaluating"):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
             labels = batch['labels'].to(device)
+            loss_mask = batch['loss_mask'].to(device)
             
             logits = model(input_ids, attention_mask)
             preds = torch.argmax(logits, dim=-1)
+            
+            # Calculate loss if focal_loss_fn is provided or if we need to track loss
+            if focal_loss_fn is not None:
+                loss_per_aspect = focal_loss_fn(logits, labels)
+            else:
+                bsz, num_aspects, num_classes = logits.shape
+                ce = F.cross_entropy(
+                    logits.view(bsz * num_aspects, num_classes),
+                    labels.view(bsz * num_aspects),
+                    reduction='none'
+                )
+                loss_per_aspect = ce.view(bsz, num_aspects)
+            
+            masked_loss = loss_per_aspect * loss_mask
+            num_labeled = loss_mask.sum()
+            
+            if num_labeled > 0:
+                loss = masked_loss.sum() / num_labeled
+            else:
+                loss = masked_loss.sum()
+            
+            total_loss += loss.item()
             
             all_preds.append(preds.cpu())
             all_labels.append(labels.cpu())
     
     all_preds = torch.cat(all_preds, dim=0)
     all_labels = torch.cat(all_labels, dim=0)
+    
+    # Calculate average loss
+    avg_loss = total_loss / len(dataloader)
     
     # Load raw data for NaN masking
     labeled_mask = None
@@ -577,6 +627,7 @@ def evaluate_sc(
         'overall_f1': overall_f1,
         'overall_precision': overall_precision,
         'overall_recall': overall_recall,
+        'val_loss': avg_loss,
         'per_aspect': aspect_metrics,
         'predictions': all_preds,
         'labels': all_labels
@@ -668,8 +719,10 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
     sentiment_to_idx = config['sentiment_labels']
     
     if sc_config.get('focal_alpha') == 'auto':
+        # IMPORTANT: Calculate alpha from the SAME data used for training
+        # If using balanced data for training, use it for alpha calculation too!
         alpha = calculate_global_alpha(
-            config['paths']['train_file'],
+            train_file_sc,  # Use the actual training file (balanced or original)
             train_dataset.aspects,
             sentiment_to_idx
         )
@@ -728,19 +781,24 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
         # Validate
         print("\nValidating...")
         val_metrics = evaluate_sc(model, val_loader, device, train_dataset.aspects,
+                                 focal_loss,
                                  raw_data_file=config['paths']['validation_file'])
+        print(f"   Train Loss: {train_loss:.4f}")
+        print(f"   Val Loss: {val_metrics['val_loss']:.4f}")
         print(f"   Accuracy: {val_metrics['overall_accuracy']*100:.2f}%")
         print(f"   F1 Score: {val_metrics['overall_f1']*100:.2f}%")
         print(f"   Precision: {val_metrics['overall_precision']*100:.2f}%")
         print(f"   Recall: {val_metrics['overall_recall']*100:.2f}%")
         
-        logging.info(f"SC Val - Acc: {val_metrics['overall_accuracy']*100:.2f}%, "
+        logging.info(f"SC Val - Loss: {val_metrics['val_loss']:.4f}, "
+                    f"Acc: {val_metrics['overall_accuracy']*100:.2f}%, "
                     f"F1: {val_metrics['overall_f1']*100:.2f}%")
         
         # Save history
         history.append({
             'epoch': epoch,
             'train_loss': train_loss,
+            'val_loss': val_metrics['val_loss'],
             'val_accuracy': val_metrics['overall_accuracy'],
             'val_f1': val_metrics['overall_f1'],
             'val_precision': val_metrics['overall_precision'],
@@ -777,6 +835,7 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
         test_loader,
         device,
         train_dataset.aspects,
+        focal_loss,
         raw_data_file=config['paths']['test_file']
     )
     print(f"\nTest Results:")
@@ -813,6 +872,7 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
         val_loader,
         device,
         train_dataset.aspects,
+        focal_loss,
         raw_data_file=config['paths']['validation_file']
     )
     save_sc_confusion_matrix(val_metrics, train_dataset.aspects, output_dir, prefix='validation')
@@ -822,6 +882,7 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
         train_loader,
         device,
         train_dataset.aspects,
+        focal_loss,
         raw_data_file=config['paths']['train_file']
     )
     save_sc_confusion_matrix(train_metrics, train_dataset.aspects, output_dir, prefix='train')
@@ -833,20 +894,59 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
 
 
 def save_sc_predictions(metrics: dict, aspect_names: list, dataset, output_dir: str):
-    """Save detailed SC predictions"""
+    """Save detailed SC predictions
+    
+    IMPORTANT: Save true labels from RAW data (with NaN for unlabeled),
+    NOT from tensor (which has placeholder 0 for unlabeled aspects)
+    """
     print("\n[SC] Saving predictions...")
     
     preds = metrics['predictions']
     labels = metrics['labels']
     
+    # Load raw test data to get TRUE labels (with NaN for unlabeled)
+    raw_df = dataset.df  # Access raw DataFrame from dataset
+    
+    # Sentiment mapping (inverse)
+    sentiment_map_inv = {0: 'Positive', 1: 'Negative', 2: 'Neutral'}
+    
     # Save predictions
     pred_data = []
     for i in range(len(preds)):
         row = {'sample_id': i}
+        
+        # Get raw row from DataFrame
+        raw_row = raw_df.iloc[i]
+        
         for j, aspect in enumerate(aspect_names):
+            # Prediction: Always save as int (0/1/2)
             row[f'{aspect}_pred'] = int(preds[i, j].item())
-            row[f'{aspect}_true'] = int(labels[i, j].item())
-            row[f'{aspect}_correct'] = int(preds[i, j].item() == labels[i, j].item())
+            
+            # True label: Get from RAW data (may be NaN for unlabeled aspects)
+            true_sentiment = raw_row[aspect]
+            
+            if pd.isna(true_sentiment):
+                # Unlabeled aspect: Save as NaN (NOT 0!)
+                row[f'{aspect}_true'] = np.nan
+                row[f'{aspect}_correct'] = np.nan  # Can't evaluate unlabeled
+            else:
+                # Labeled aspect: Convert sentiment string to ID
+                sentiment_str = str(true_sentiment).strip()
+                if sentiment_str == 'Positive':
+                    row[f'{aspect}_true'] = 0
+                elif sentiment_str == 'Negative':
+                    row[f'{aspect}_true'] = 1
+                elif sentiment_str == 'Neutral':
+                    row[f'{aspect}_true'] = 2
+                else:
+                    # Invalid label: Treat as unlabeled
+                    row[f'{aspect}_true'] = np.nan
+                    row[f'{aspect}_correct'] = np.nan
+                    continue
+                
+                # Check if correct
+                row[f'{aspect}_correct'] = int(preds[i, j].item() == row[f'{aspect}_true'])
+        
         pred_data.append(row)
     
     df_preds = pd.DataFrame(pred_data)
@@ -854,6 +954,7 @@ def save_sc_predictions(metrics: dict, aspect_names: list, dataset, output_dir: 
     df_preds.to_csv(pred_file, index=False, encoding='utf-8-sig')
     
     print(f"   Saved: {pred_file}")
+    print(f"   Note: Unlabeled aspects saved as NaN in '{aspect}_true' columns")
 
 
 def save_sc_confusion_matrix(metrics: dict, aspect_names: list, output_dir: str, prefix: str = ''):

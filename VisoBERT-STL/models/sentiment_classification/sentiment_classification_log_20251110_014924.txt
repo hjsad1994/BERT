@@ -1,0 +1,25 @@
+2025-11-10 01:49:24,923 - INFO - Starting Sentiment Classification training
+2025-11-10 01:49:26,422 - INFO - SC Epoch 1/6
+2025-11-10 01:53:00,913 - INFO - SC Train Loss: 0.2780
+2025-11-10 01:53:24,995 - INFO - SC Val - Loss: 0.1201, Acc: 92.24%, F1: 89.35%
+2025-11-10 01:53:26,738 - INFO - New best SC F1: 89.35%
+2025-11-10 01:53:26,739 - INFO - SC Epoch 2/6
+2025-11-10 01:57:02,889 - INFO - SC Train Loss: 0.0791
+2025-11-10 01:57:27,815 - INFO - SC Val - Loss: 0.1113, Acc: 94.25%, F1: 92.02%
+2025-11-10 01:57:29,549 - INFO - New best SC F1: 92.02%
+2025-11-10 01:57:29,550 - INFO - SC Epoch 3/6
+2025-11-10 02:01:05,143 - INFO - SC Train Loss: 0.0478
+2025-11-10 02:01:29,259 - INFO - SC Val - Loss: 0.1313, Acc: 94.25%, F1: 91.94%
+2025-11-10 02:01:29,259 - INFO - SC Epoch 4/6
+2025-11-10 02:05:03,975 - INFO - SC Train Loss: 0.0342
+2025-11-10 02:05:27,934 - INFO - SC Val - Loss: 0.1438, Acc: 94.30%, F1: 91.95%
+2025-11-10 02:05:27,935 - INFO - SC Epoch 5/6
+2025-11-10 02:09:02,507 - INFO - SC Train Loss: 0.0298
+2025-11-10 02:09:26,869 - INFO - SC Val - Loss: 0.1474, Acc: 94.32%, F1: 91.93%
+2025-11-10 02:09:26,869 - INFO - SC Epoch 6/6
+2025-11-10 02:13:02,518 - INFO - SC Train Loss: 0.0278
+2025-11-10 02:13:27,561 - INFO - SC Val - Loss: 0.1496, Acc: 94.46%, F1: 92.21%
+2025-11-10 02:13:29,308 - INFO - New best SC F1: 92.21%
+2025-11-10 02:13:54,298 - INFO - SC Test - Acc: 95.83%, F1: 93.96%
+2025-11-10 02:16:42,641 - INFO - [SC] Training completed successfully
+2025-11-10 02:16:42,649 - ERROR - Error analysis failed: cannot import name 'ErrorAnalyzer' from 'error_analysis' (unknown location)

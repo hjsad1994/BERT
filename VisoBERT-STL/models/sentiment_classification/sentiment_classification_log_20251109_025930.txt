@@ -1,0 +1,40 @@
+2025-11-09 02:59:30,636 - INFO - Starting Sentiment Classification training
+2025-11-09 02:59:41,234 - WARNING - '(ReadTimeoutError("HTTPSConnectionPool(host='huggingface.co', port=443): Read timed out. (read timeout=10)"), '(Request ID: 36fb9216-4b23-4e3e-ad0c-497094c5c61d)')' thrown while requesting HEAD https://huggingface.co/api/resolve-cache/models/5CD-AI/visobert-14gb-corpus/7d5ed039a28744157117d8907b31ac66fff09b13/tokenizer_config.json
+2025-11-09 02:59:41,234 - WARNING - Retrying in 1s [Retry 1/5].
+2025-11-09 02:59:43,633 - INFO - SC Epoch 1/10
+2025-11-09 03:03:45,025 - INFO - SC Train Loss: 0.2959
+2025-11-09 03:04:10,507 - INFO - SC Val - Acc: 92.59%, F1: 89.02%
+2025-11-09 03:04:12,957 - INFO - New best SC F1: 89.02%
+2025-11-09 03:04:12,957 - INFO - SC Epoch 2/10
+2025-11-09 03:08:17,011 - INFO - SC Train Loss: 0.0546
+2025-11-09 03:08:41,775 - INFO - SC Val - Acc: 95.09%, F1: 92.83%
+2025-11-09 03:08:44,095 - INFO - New best SC F1: 92.83%
+2025-11-09 03:08:44,095 - INFO - SC Epoch 3/10
+2025-11-09 03:12:47,913 - INFO - SC Train Loss: 0.0250
+2025-11-09 03:13:13,276 - INFO - SC Val - Acc: 95.71%, F1: 94.27%
+2025-11-09 03:13:15,749 - INFO - New best SC F1: 94.27%
+2025-11-09 03:13:15,749 - INFO - SC Epoch 4/10
+2025-11-09 03:17:27,649 - INFO - SC Train Loss: 0.0168
+2025-11-09 03:17:53,257 - INFO - SC Val - Acc: 95.60%, F1: 94.15%
+2025-11-09 03:17:53,258 - INFO - SC Epoch 5/10
+2025-11-09 03:22:14,134 - INFO - SC Train Loss: 0.0126
+2025-11-09 03:22:40,105 - INFO - SC Val - Acc: 95.80%, F1: 94.20%
+2025-11-09 03:22:40,106 - INFO - SC Epoch 6/10
+2025-11-09 03:27:07,602 - INFO - SC Train Loss: 0.0100
+2025-11-09 03:27:33,794 - INFO - SC Val - Acc: 95.66%, F1: 94.24%
+2025-11-09 03:27:33,794 - INFO - SC Epoch 7/10
+2025-11-09 03:31:59,234 - INFO - SC Train Loss: 0.0066
+2025-11-09 03:32:25,828 - INFO - SC Val - Acc: 95.95%, F1: 94.53%
+2025-11-09 03:32:27,731 - INFO - New best SC F1: 94.53%
+2025-11-09 03:32:27,731 - INFO - SC Epoch 8/10
+2025-11-09 03:36:31,194 - INFO - SC Train Loss: 0.0053
+2025-11-09 03:36:55,765 - INFO - SC Val - Acc: 95.80%, F1: 94.35%
+2025-11-09 03:36:55,765 - INFO - SC Epoch 9/10
+2025-11-09 03:40:58,380 - INFO - SC Train Loss: 0.0040
+2025-11-09 03:41:23,617 - INFO - SC Val - Acc: 95.85%, F1: 94.33%
+2025-11-09 03:41:23,618 - INFO - SC Epoch 10/10
+2025-11-09 03:45:25,607 - INFO - SC Train Loss: 0.0034
+2025-11-09 03:45:49,947 - INFO - SC Val - Acc: 95.91%, F1: 94.38%
+2025-11-09 03:46:15,162 - INFO - SC Test - Acc: 95.08%, F1: 92.40%
+2025-11-09 03:49:17,601 - INFO - [SC] Training completed successfully
+2025-11-09 03:49:17,609 - ERROR - Error analysis failed: No module named 'error_analysis'

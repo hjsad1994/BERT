@@ -1,10 +1,12 @@
 {
   "oversampling_seed": 324,
-  "original_samples": 11719,
-  "augmented_samples": 28202,
-  "increase": 16483,
-  "increase_percentage": 140.65193275876783,
-  "strategy": "per-aspect-balanced",
+  "strategy": "capped",
+  "max_oversampling_ratio": 7.0,
+  "target_ratio": null,
+  "original_samples": 11792,
+  "augmented_samples": 25264,
+  "increase": 13472,
+  "increase_percentage": 114.24694708276797,
   "aspects": [
     "Battery",
     "Camera",
@@ -18,5 +20,5 @@
     "General",
     "Others"
   ],
-  "created_at": "2025-11-08T22:09:54.044830"
+  "created_at": "2025-11-10T02:57:28.463422"
 }

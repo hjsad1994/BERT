@@ -14,8 +14,8 @@
 paths:
   data_dir: "VisoBERT-STL/data"
   train_file: "VisoBERT-STL/data/train_multilabel.csv"  # For AD stage
-  # train_file_sc: "VisoBERT-STL/data/train_multilabel_balanced.csv"  # For SC stage (oversampled)
-  train_file_sc: "VisoBERT-STL/data/train_multilabel.csv"
+  train_file_sc: "VisoBERT-STL/data/train_multilabel_balanced.csv"  # Oversampling causes overfitting (Val 94.94% vs Test 91.32%)
+  # train_file_sc: "VisoBERT-STL/data/train_multilabel.csv"  # NO OVERSAMPLING - better generalization (Test 92.81%)
   validation_file: "VisoBERT-STL/data/validation_multilabel.csv"
   test_file: "VisoBERT-STL/data/test_multilabel.csv"
   
@@ -41,7 +41,7 @@ model:
   
   # Model architecture
   hidden_size: 512      # Dense layer
-  dropout: 0.3
+  dropout: 0.3          # Standard dropout
 
 valid_aspects:
   - Battery
@@ -72,7 +72,7 @@ training:
   # Optimizer settings
   optim: "adamw_bnb_8bit"
   learning_rate: 2.0e-5
-  weight_decay: 0.01
+  weight_decay: 0.01    # Standard weight decay
   adam_beta1: 0.9
   adam_beta2: 0.999
   adam_epsilon: 1.0e-8
@@ -111,7 +111,7 @@ training:
   greater_is_better: true
   
   # Early stopping
-  early_stopping_patience: 5
+  early_stopping_patience: 3  # Standard patience
   early_stopping_threshold: 0.001
   
   # Logging
@@ -168,9 +168,9 @@ two_stage:
   # Stage 2: Sentiment Classification
   sentiment_classification:
     use_focal_loss: true
-    focal_gamma: 2.0
+    focal_gamma: 1.5        # Increased from 2.0 → 3.0 to focus on hard samples
     focal_alpha: "auto"     # Auto-calculate from data
-    epochs: 8              # SC training epochs
+    epochs: 6              # Standard epochs for non-oversampled data
   
   # Error analysis
   run_error_analysis: true  # Automatically run error analysis after training

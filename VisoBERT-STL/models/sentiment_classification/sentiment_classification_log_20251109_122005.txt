@@ -1,0 +1,24 @@
+2025-11-09 12:20:05,185 - INFO - Starting Sentiment Classification training
+2025-11-09 12:20:06,842 - INFO - SC Epoch 1/6
+2025-11-09 12:23:47,183 - INFO - SC Train Loss: 0.1314
+2025-11-09 12:24:11,909 - INFO - SC Val - Acc: 93.59%, F1: 91.65%
+2025-11-09 12:24:13,705 - INFO - New best SC F1: 91.65%
+2025-11-09 12:24:13,705 - INFO - SC Epoch 2/6
+2025-11-09 12:28:00,185 - INFO - SC Train Loss: 0.0332
+2025-11-09 12:28:25,426 - INFO - SC Val - Acc: 94.82%, F1: 92.92%
+2025-11-09 12:28:27,239 - INFO - New best SC F1: 92.92%
+2025-11-09 12:28:27,239 - INFO - SC Epoch 3/6
+2025-11-09 12:32:16,665 - INFO - SC Train Loss: 0.0152
+2025-11-09 12:32:43,280 - INFO - SC Val - Acc: 94.93%, F1: 92.89%
+2025-11-09 12:32:43,280 - INFO - SC Epoch 4/6
+2025-11-09 12:36:34,347 - INFO - SC Train Loss: 0.0094
+2025-11-09 12:36:59,928 - INFO - SC Val - Acc: 94.89%, F1: 92.90%
+2025-11-09 12:36:59,928 - INFO - SC Epoch 5/6
+2025-11-09 12:40:50,449 - INFO - SC Train Loss: 0.0072
+2025-11-09 12:41:15,384 - INFO - SC Val - Acc: 95.03%, F1: 92.87%
+2025-11-09 12:41:15,384 - INFO - SC Epoch 6/6
+2025-11-09 12:44:47,920 - INFO - SC Train Loss: 0.0070
+2025-11-09 12:45:13,183 - INFO - SC Val - Acc: 94.93%, F1: 92.85%
+2025-11-09 12:45:39,682 - INFO - SC Test - Acc: 95.84%, F1: 93.70%
+2025-11-09 12:48:32,106 - INFO - [SC] Training completed successfully
+2025-11-09 12:48:32,114 - ERROR - Error analysis failed: No module named 'error_analysis'

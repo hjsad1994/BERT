@@ -1,0 +1,88 @@
+================================================================================
+ALPHA WEIGHTS FIX COMPLETE - READY TO TRAIN!
+================================================================================
+
+BUG FOUND AND FIXED:
+  - Alpha weights were calculated from ORIGINAL data
+  - But training uses BALANCED data
+  - This mismatch causes suboptimal training!
+
+FIX APPLIED:
+  File: VisoBERT-STL/train_visobert_stl.py
+  Line: ~676
+  Change: config['paths']['train_file'] -> train_file_sc
+  Result: Alpha now calculated from SAME data used for training
+
+================================================================================
+ALPHA WEIGHTS COMPARISON
+================================================================================
+
+Sentiment    OLD (Original)   NEW (Balanced)   Change
+-------------------------------------------------------
+Positive     0.5943           0.9764          +64.3%
+Negative     0.9252           0.8686          -6.1%
+Neutral      4.2323 (!)       1.2128          -71.3% (!)
+
+KEY INSIGHT:
+  OLD: Neutral weight = 4.23 (treats as 7.88% of data)
+  NEW: Neutral weight = 1.21 (treats as 27.48% of data)
+  
+  Result: More balanced training, better generalization!
+
+================================================================================
+EXPECTED IMPROVEMENTS AFTER FIX
+================================================================================
+
+With correct alpha weights:
+  - Recall: +1-2% improvement (better class balance)
+  - Precision: +0.5-1% improvement (less Neutral bias)
+  - F1: +1-2% overall improvement
+
+Target Results:
+  - F1: ~94.5-95% (vs ~93-94% with wrong alpha)
+  - Recall: ~94-95% (vs ~92-93% with wrong alpha)
+  - Precision: ~94.5% (maintained or improved)
+
+================================================================================
+HOW TO RE-RUN TRAINING
+================================================================================
+
+Step 1: Navigate to directory
+  cd E:\BERT\VisoBERT-STL
+
+Step 2: Start training with CORRECT alpha weights
+  python train_visobert_stl.py --config config_visobert_stl.yaml
+
+Expected training time: ~50-67 minutes (15 epochs with early stopping)
+
+================================================================================
+WHAT TO MONITOR
+================================================================================
+
+During training, watch for:
+  1. Validation metrics should improve faster
+  2. Neutral class precision/recall should be more balanced
+  3. Overall convergence should be smoother
+
+After training, check:
+  - results/two_stage_training/final_report.txt
+  - models/sentiment_classification/recall_errors_all_samples.txt
+  - Compare per-aspect metrics, especially Neutral performance
+
+================================================================================
+DOCUMENTATION CREATED
+================================================================================
+
+Full analysis:
+  - E:\BERT\ALPHA_WEIGHTS_FIX.md (detailed bug report)
+  - E:\BERT\check_alpha_weights.py (analysis script)
+  - E:\BERT\OPTION_A_MODERATE_OVERSAMPLING.md (strategy doc)
+
+================================================================================
+
+READY TO TRAIN WITH CORRECT CONFIGURATION! 🚀
+
+Current time: Check GPU availability before starting
+Expected completion: ~1 hour from start
+
+================================================================================

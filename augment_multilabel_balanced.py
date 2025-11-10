@@ -135,14 +135,98 @@ def oversample_aspect_balanced(df, aspect_cols, seed=324):
     
     return augmented_df
 
-def oversample_simple_per_aspect(df, aspect_cols, seed=324):
+def oversample_moderate_per_aspect(df, aspect_cols, seed=324, target_ratio=0.6):
+    """
+    Moderate oversampling: Balance towards a target ratio instead of perfect balance
+    
+    Args:
+        df: Input DataFrame
+        aspect_cols: List of aspect columns
+        seed: Random seed for reproducibility
+        target_ratio: Target minimum/maximum ratio (e.g., 0.6 means minority should be at least 60% of majority)
+                     Default: 0.6 (gentle balancing)
+    
+    Gentler approach - reduces overfitting risk
+    """
+    print("\n" + "=" * 80)
+    print(f"Moderate Per-Aspect Oversampling (Target Ratio: {target_ratio:.1%})")
+    print("=" * 80)
+    
+    set_all_seeds(seed)
+    
+    # Analyze imbalance
+    imbalance_info = analyze_imbalance(df, aspect_cols)
+    
+    # For each aspect, oversample minority classes moderately
+    all_augmented = [df.copy()]  # Start with original
+    
+    for aspect in aspect_cols:
+        info = imbalance_info[aspect]
+        max_count = info['max_count']
+        
+        print(f"\nProcessing {aspect}...")
+        
+        for sentiment in ['Positive', 'Negative', 'Neutral']:
+            current_count = info.get(sentiment, 0)
+            
+            if current_count == 0 or current_count >= max_count:
+                continue
+            
+            # Get rows with this sentiment for this aspect
+            mask = df[aspect] == sentiment
+            sentiment_rows = df[mask]
+            
+            if len(sentiment_rows) == 0:
+                continue
+            
+            # Calculate target count with target_ratio
+            # Example: If max_count=1000, target_ratio=0.6
+            #          target = 1000 * 0.6 = 600 (instead of matching 1000)
+            # This gives gentler oversampling
+            target_count = int(max_count * target_ratio)
+            
+            # Don't undersample - only oversample
+            if target_count < current_count:
+                target_count = current_count
+            
+            # Calculate how many to add
+            to_add = target_count - current_count
+            
+            if to_add <= 0:
+                continue
+            
+            # Calculate actual ratio for reporting
+            actual_ratio = target_count / current_count if current_count > 0 else 1.0
+            
+            # Sample with replacement
+            sampled = sentiment_rows.sample(n=to_add, replace=True, random_state=seed)
+            
+            all_augmented.append(sampled)
+            
+            print(f"   {sentiment}: {current_count} -> {target_count} (+{to_add}) [{actual_ratio:.2f}x]")
+    
+    # Combine all
+    augmented_df = pd.concat(all_augmented, ignore_index=True)
+    
+    print(f"\nTotal samples: {len(df)} -> {len(augmented_df)} (+{len(augmented_df) - len(df)})")
+    
+    return augmented_df
+
+def oversample_simple_per_aspect(df, aspect_cols, seed=324, max_ratio=7.0):
     """
     Simple oversampling: For each aspect, duplicate rows to match max count
+    
+    Args:
+        df: Input DataFrame
+        aspect_cols: List of aspect columns
+        seed: Random seed for reproducibility
+        max_ratio: Maximum oversampling ratio (e.g., 7.0 means max 7x duplication)
+                   Default: 7.0 to prevent extreme overfitting
     
     More aggressive approach - better for severe imbalance
     """
     print("\n" + "=" * 80)
-    print("Simple Per-Aspect Oversampling")
+    print(f"Simple Per-Aspect Oversampling (Max Ratio: {max_ratio}x)")
     print("=" * 80)
     
     set_all_seeds(seed)
@@ -172,15 +256,32 @@ def oversample_simple_per_aspect(df, aspect_cols, seed=324):
             if len(sentiment_rows) == 0:
                 continue
             
+            # Calculate target count with max_ratio cap
+            # Example: If max_count=1000 and current_count=100 (10x ratio)
+            #          Cap at 7x: target = 100 * 7 = 700 instead of 1000
+            ratio = max_count / current_count
+            if ratio > max_ratio:
+                target_count = int(current_count * max_ratio)
+                capped = True
+            else:
+                target_count = max_count
+                capped = False
+            
             # Calculate how many to add
-            to_add = max_count - current_count
+            to_add = target_count - current_count
+            
+            if to_add <= 0:
+                continue
             
             # Sample with replacement
             sampled = sentiment_rows.sample(n=to_add, replace=True, random_state=seed)
             
             all_augmented.append(sampled)
             
-            print(f"   {sentiment}: {current_count} -> {max_count} (+{to_add})")
+            if capped:
+                print(f"   {sentiment}: {current_count} -> {target_count} (+{to_add}) [CAPPED at {max_ratio}x]")
+            else:
+                print(f"   {sentiment}: {current_count} -> {target_count} (+{to_add})")
     
     # Combine all
     augmented_df = pd.concat(all_augmented, ignore_index=True)
@@ -189,13 +290,14 @@ def oversample_simple_per_aspect(df, aspect_cols, seed=324):
     
     return augmented_df
 
+
 def load_config(config_path: str) -> dict:
     """Load configuration from YAML file"""
     with open(config_path, 'r', encoding='utf-8') as f:
         return yaml.safe_load(f)
 
 
-def main(config_path: Optional[str] = None):
+def main(config_path: Optional[str] = None, max_ratio: float = 7.0, moderate: bool = False, target_ratio: float = 0.5):
     # Configuration
     if config_path:
         config = load_config(config_path)
@@ -212,8 +314,21 @@ def main(config_path: Optional[str] = None):
         else:
             seed = 324
         
+        # Get oversampling params from config if available
+        if 'oversampling' in config:
+            if 'max_ratio' in config['oversampling']:
+                max_ratio = config['oversampling']['max_ratio']
+            if 'moderate' in config['oversampling']:
+                moderate = config['oversampling']['moderate']
+            if 'target_ratio' in config['oversampling']:
+                target_ratio = config['oversampling']['target_ratio']
+        
         print(f"\n[Using config: {config_path}]")
         print(f"[Oversampling seed: {seed}]")
+        if moderate:
+            print(f"[Moderate oversampling: target_ratio={target_ratio:.1%}]")
+        else:
+            print(f"[Max oversampling ratio: {max_ratio}x]")
         set_all_seeds(seed)
         
         # Still save to all 4 directories
@@ -261,11 +376,19 @@ def main(config_path: Optional[str] = None):
     
     # Oversample
     print("\n" + "=" * 80)
-    print("Applying Oversampling")
+    if moderate:
+        print(f"Applying Moderate Oversampling (Target Ratio: {target_ratio:.1%})")
+    else:
+        print(f"Applying Oversampling (Max Ratio: {max_ratio}x)")
     print("=" * 80)
     
-    # Method 1: Simple per-aspect oversampling (RECOMMENDED)
-    augmented_df = oversample_simple_per_aspect(df, aspect_cols, seed=seed)
+    # Choose oversampling method
+    if moderate:
+        # Method 2: Moderate oversampling (RECOMMENDED for avoiding overfitting)
+        augmented_df = oversample_moderate_per_aspect(df, aspect_cols, seed=seed, target_ratio=target_ratio)
+    else:
+        # Method 1: Simple per-aspect oversampling with cap
+        augmented_df = oversample_simple_per_aspect(df, aspect_cols, seed=seed, max_ratio=max_ratio)
     
     # Analyze augmented distribution
     print("\n" + "=" * 80)
@@ -315,11 +438,13 @@ def main(config_path: Optional[str] = None):
         metadata_file = os.path.join(output_dir, 'multilabel_oversampling_metadata.json')
         metadata = {
             'oversampling_seed': seed,
+            'strategy': 'moderate' if moderate else 'capped',
+            'max_oversampling_ratio': max_ratio if not moderate else None,
+            'target_ratio': target_ratio if moderate else None,
             'original_samples': len(df),
             'augmented_samples': len(augmented_df),
             'increase': len(augmented_df) - len(df),
             'increase_percentage': (len(augmented_df) - len(df)) / len(df) * 100 if len(df) > 0 else 0,
-            'strategy': 'per-aspect-balanced',
             'aspects': aspect_cols,
             'created_at': datetime.now().isoformat()
         }
@@ -375,6 +500,23 @@ if __name__ == '__main__':
         default=None,
         help='Path to config YAML file (optional)'
     )
+    parser.add_argument(
+        '--max-ratio',
+        type=float,
+        default=7.0,
+        help='Maximum oversampling ratio for capped mode (default: 7.0x)'
+    )
+    parser.add_argument(
+        '--moderate',
+        action='store_true',
+        help='Use moderate oversampling (gentler, prevents overfitting)'
+    )
+    parser.add_argument(
+        '--target-ratio',
+        type=float,
+        default=0.5,
+        help='Target min/max ratio for moderate mode (default: 0.5 = 50%%)'
+    )
     args = parser.parse_args()
     
-    main(config_path=args.config)
+    main(config_path=args.config, max_ratio=args.max_ratio, moderate=args.moderate, target_ratio=args.target_ratio)
