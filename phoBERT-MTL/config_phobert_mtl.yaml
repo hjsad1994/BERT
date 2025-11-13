@@ -1,0 +1,131 @@
+# phoBERT Multi-Task Learning Configuration
+# ========================================================================
+# Multi-task approach: Train AD and SC simultaneously with shared backbone
+# 
+# Model: phoBERT (Pretrained BERT) with 2 task-specific heads
+#   - Shared: phoBERT Transformer (135M params)
+#   - Head 1: AD (binary focal loss, 11 outputs)
+#   - Head 2: SC (focal loss, 11 × 3 outputs)
+# 
+# Loss: Combined loss = α * Focal_AD + β * Focal_SC
+# 
+# Metrics: All metrics are macro-averaged (unweighted average across classes),
+#          ensuring that classes with different numbers of samples are fairly evaluated.
+#          - AD overall: mean of per-aspect binary F1 scores (11 aspects)
+#          - SC overall: mean of per-aspect macro F1 scores (across 3 sentiments per aspect)
+# ========================================================================
+
+paths:
+  data_dir: "phoBERT-MTL/data"
+  train_file: "phoBERT-MTL/data/train_multilabel.csv"
+  validation_file: "phoBERT-MTL/data/validation_multilabel.csv"
+  test_file: "phoBERT-MTL/data/test_multilabel.csv"
+  output_dir: "phoBERT-MTL/models/mtl"
+  final_results_dir: "phoBERT-MTL/results"
+
+model:
+  # Pretrained phoBERT
+  name: "vinai/phobert-base"
+  
+  # Task heads
+  hidden_size: 512
+  dropout: 0.3
+  
+  # Task settings
+  num_aspects: 11
+  num_sentiments: 3
+  max_length: 256
+
+aspect_names:
+  - Battery
+  - Camera
+  - Performance
+  - Display
+  - Design
+  - Packaging
+  - Price
+  - Shop_Service
+  - Shipping
+  - General
+  - Others
+
+sentiment_labels:
+  positive: 0
+  negative: 1
+  neutral: 2
+
+training:
+  # Batch sizes (matching STL config)
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 32
+  gradient_accumulation_steps: 2
+  
+  # Optimizer
+  learning_rate: 2.0e-5     # Lower for pretrained model
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  
+  # Scheduler
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.06
+  
+  # Training duration
+  num_train_epochs: 12
+  
+  # Mixed precision
+  fp16: true
+  
+  # DataLoader
+  dataloader_num_workers: 2
+  dataloader_pin_memory: true
+  
+  # Evaluation
+  evaluation_strategy: "epoch"
+  save_strategy: "epoch"
+  save_total_limit: 3
+  
+  # Early stopping
+  # Early stopping: stop if validation F1 does not improve for 3 epochs
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.0005
+  
+  # Logging
+  logging_steps: 50
+  
+  # Device
+  device: "cuda"
+
+# Multi-task learning settings
+multi_task:
+  # Loss weights (combined loss = alpha * Focal_AD + beta * Focal_SC)
+  # Equal weights: both tasks have equal importance
+  loss_weight_ad: 1.0       # Weight for AD focal loss
+  loss_weight_sc: 1.0       # Weight for SC focal loss
+  
+  # AD task settings
+  aspect_detection:
+    use_focal_loss: true
+    focal_gamma: 2
+    focal_alpha: "auto"     # Auto-calculate from data (inverse frequency)
+    metric: "f1_macro"      # Macro-averaged F1 (unweighted average across all 11 aspects)
+  
+  # SC task settings
+  sentiment_classification:
+    use_focal_loss: true
+    focal_gamma: 2
+    focal_alpha: "auto"     # Auto-calculate from data (global distribution)
+    metric: "f1_macro"      # Macro-averaged F1 (unweighted average across 10 aspects, excluding Others)
+  
+  # Best model selection
+  # Options: "ad_f1", "sc_f1", "combined_f1" (average of AD/SC F1)
+  best_model_metric: "combined_f1"
+
+# Reproducibility
+reproducibility:
+  seed: 100
+  deterministic: true
+
+general:
+  log_level: "info"
+  save_predictions: true
+

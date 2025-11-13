@@ -1,1 +1,5 @@
 2025-11-14 03:47:02,476 - Starting ViSoBERT-MTL training
+2025-11-14 03:49:18,271 - ViSoBERT-MTL Epoch 1/12 - Loss: 0.4156
+2025-11-14 03:49:44,613 - ViSoBERT-MTL Val - AD F1: 29.98%, SC F1: 87.47%
+2025-11-14 03:49:44,614 - Epoch 1 - Selection metric: 0.5872 (Δ inf, threshold 0.0005)
+2025-11-14 03:49:46,206 - New best model at epoch 1 with combined_f1 = 0.5872 (Δ inf)

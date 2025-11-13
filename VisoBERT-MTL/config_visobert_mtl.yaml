@@ -98,21 +98,21 @@ training:
 # Multi-task learning settings
 multi_task:
   # Loss weights (combined loss = alpha * Focal_AD + beta * Focal_SC)
-  # Using 0.3:0.7 ratio from old train_multitask.py (total=1.0, SC-focused)
-  loss_weight_ad: 0.4       # Weight for AD focal loss (30%)
-  loss_weight_sc: 0.6     # Weight for SC focal loss (70%)
+  # Equal weights: both tasks have equal importance
+  loss_weight_ad: 1.0       # Weight for AD focal loss
+  loss_weight_sc: 1.0       # Weight for SC focal loss
   
   # AD task settings
   aspect_detection:
     use_focal_loss: true
-    focal_gamma: 1.7
+    focal_gamma: 2
     focal_alpha: "auto"     # Auto-calculate from data (inverse frequency)
     metric: "f1_macro"      # Macro-averaged F1 (unweighted average across all 11 aspects)
   
   # SC task settings
   sentiment_classification:
     use_focal_loss: true
-    focal_gamma: 1.7
+    focal_gamma: 2
     focal_alpha: "auto"     # Auto-calculate from data (global distribution)
     metric: "f1_macro"      # Macro-averaged F1 (unweighted average across 10 aspects, excluding Others)
   
