@@ -1,0 +1,49 @@
+2025-11-13 14:09:56,007 - Starting ViSoBERT-MTL training
+2025-11-13 14:11:55,714 - ViSoBERT-MTL Epoch 1/12 - Loss: 0.3647
+2025-11-13 14:12:19,840 - ViSoBERT-MTL Val - AD F1: 32.31%, SC F1: 68.22%
+2025-11-13 14:12:19,841 - Epoch 1 - Selection metric: 0.5027 (Δ inf, threshold 0.0005)
+2025-11-13 14:12:21,517 - New best model at epoch 1 with combined_f1 = 0.5027 (Δ inf)
+2025-11-13 14:14:13,477 - ViSoBERT-MTL Epoch 2/12 - Loss: 0.2011
+2025-11-13 14:14:38,999 - ViSoBERT-MTL Val - AD F1: 49.21%, SC F1: 92.12%
+2025-11-13 14:14:39,000 - Epoch 2 - Selection metric: 0.7066 (Δ 0.2040, threshold 0.0005)
+2025-11-13 14:14:41,560 - New best model at epoch 2 with combined_f1 = 0.7066 (Δ 0.2040)
+2025-11-13 14:16:34,419 - ViSoBERT-MTL Epoch 3/12 - Loss: 0.1425
+2025-11-13 14:16:59,006 - ViSoBERT-MTL Val - AD F1: 64.93%, SC F1: 92.31%
+2025-11-13 14:16:59,006 - Epoch 3 - Selection metric: 0.7862 (Δ 0.0795, threshold 0.0005)
+2025-11-13 14:17:01,010 - New best model at epoch 3 with combined_f1 = 0.7862 (Δ 0.0795)
+2025-11-13 14:18:55,503 - ViSoBERT-MTL Epoch 4/12 - Loss: 0.1138
+2025-11-13 14:19:19,950 - ViSoBERT-MTL Val - AD F1: 72.53%, SC F1: 92.26%
+2025-11-13 14:19:19,950 - Epoch 4 - Selection metric: 0.8240 (Δ 0.0378, threshold 0.0005)
+2025-11-13 14:19:21,808 - New best model at epoch 4 with combined_f1 = 0.8240 (Δ 0.0378)
+2025-11-13 14:21:16,529 - ViSoBERT-MTL Epoch 5/12 - Loss: 0.0965
+2025-11-13 14:21:41,214 - ViSoBERT-MTL Val - AD F1: 77.27%, SC F1: 92.24%
+2025-11-13 14:21:41,214 - Epoch 5 - Selection metric: 0.8476 (Δ 0.0236, threshold 0.0005)
+2025-11-13 14:21:43,681 - New best model at epoch 5 with combined_f1 = 0.8476 (Δ 0.0236)
+2025-11-13 14:23:36,474 - ViSoBERT-MTL Epoch 6/12 - Loss: 0.0900
+2025-11-13 14:24:01,311 - ViSoBERT-MTL Val - AD F1: 80.26%, SC F1: 92.19%
+2025-11-13 14:24:01,311 - Epoch 6 - Selection metric: 0.8623 (Δ 0.0147, threshold 0.0005)
+2025-11-13 14:24:03,070 - New best model at epoch 6 with combined_f1 = 0.8623 (Δ 0.0147)
+2025-11-13 14:25:55,877 - ViSoBERT-MTL Epoch 7/12 - Loss: 0.0832
+2025-11-13 14:26:20,351 - ViSoBERT-MTL Val - AD F1: 81.14%, SC F1: 92.31%
+2025-11-13 14:26:20,351 - Epoch 7 - Selection metric: 0.8673 (Δ 0.0050, threshold 0.0005)
+2025-11-13 14:26:22,145 - New best model at epoch 7 with combined_f1 = 0.8673 (Δ 0.0050)
+2025-11-13 14:28:15,004 - ViSoBERT-MTL Epoch 8/12 - Loss: 0.0809
+2025-11-13 14:28:40,205 - ViSoBERT-MTL Val - AD F1: 82.07%, SC F1: 92.54%
+2025-11-13 14:28:40,205 - Epoch 8 - Selection metric: 0.8730 (Δ 0.0058, threshold 0.0005)
+2025-11-13 14:28:41,911 - New best model at epoch 8 with combined_f1 = 0.8730 (Δ 0.0058)
+2025-11-13 14:30:34,729 - ViSoBERT-MTL Epoch 9/12 - Loss: 0.0776
+2025-11-13 14:30:59,187 - ViSoBERT-MTL Val - AD F1: 82.97%, SC F1: 92.19%
+2025-11-13 14:30:59,187 - Epoch 9 - Selection metric: 0.8758 (Δ 0.0028, threshold 0.0005)
+2025-11-13 14:31:00,991 - New best model at epoch 9 with combined_f1 = 0.8758 (Δ 0.0028)
+2025-11-13 14:32:53,666 - ViSoBERT-MTL Epoch 10/12 - Loss: 0.0755
+2025-11-13 14:33:18,148 - ViSoBERT-MTL Val - AD F1: 82.56%, SC F1: 92.36%
+2025-11-13 14:33:18,148 - Epoch 10 - Selection metric: 0.8746 (Δ -0.0012, threshold 0.0005)
+2025-11-13 14:33:18,149 - No significant improvement (Δ -0.0012). Patience 1/3
+2025-11-13 14:35:11,050 - ViSoBERT-MTL Epoch 11/12 - Loss: 0.0745
+2025-11-13 14:35:35,760 - ViSoBERT-MTL Val - AD F1: 82.79%, SC F1: 92.23%
+2025-11-13 14:35:35,761 - Epoch 11 - Selection metric: 0.8751 (Δ -0.0007, threshold 0.0005)
+2025-11-13 14:35:35,761 - No significant improvement (Δ -0.0007). Patience 2/3
+2025-11-13 14:37:28,400 - ViSoBERT-MTL Epoch 12/12 - Loss: 0.0742
+2025-11-13 14:37:52,939 - ViSoBERT-MTL Val - AD F1: 83.03%, SC F1: 92.32%
+2025-11-13 14:37:52,939 - Epoch 12 - Selection metric: 0.8768 (Δ 0.0009, threshold 0.0005)
+2025-11-13 14:37:54,675 - New best model at epoch 12 with combined_f1 = 0.8768 (Δ 0.0009)

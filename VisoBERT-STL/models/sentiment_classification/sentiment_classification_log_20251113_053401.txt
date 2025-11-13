@@ -1,0 +1,33 @@
+2025-11-13 05:34:01,429 - INFO - Starting Sentiment Classification training
+2025-11-13 05:34:02,935 - INFO - SC Epoch 1/10
+2025-11-13 05:35:55,632 - INFO - SC Train Loss: 0.2528
+2025-11-13 05:36:19,379 - INFO - SC Val - Loss: 0.1148, Acc: 91.50%, F1: 89.89%
+2025-11-13 05:36:21,375 - INFO - New best SC F1: 89.89% (improvement: +89.8949%)
+2025-11-13 05:36:21,376 - INFO - SC Epoch 2/10
+2025-11-13 05:37:55,901 - INFO - SC Train Loss: 0.1004
+2025-11-13 05:38:02,574 - INFO - SC Val - Loss: 0.1134, Acc: 94.32%, F1: 92.87%
+2025-11-13 05:38:04,436 - INFO - New best SC F1: 92.87% (improvement: +2.9702%)
+2025-11-13 05:38:04,437 - INFO - SC Epoch 3/10
+2025-11-13 05:39:38,972 - INFO - SC Train Loss: 0.0709
+2025-11-13 05:39:45,644 - INFO - SC Val - Loss: 0.1147, Acc: 94.75%, F1: 91.49%
+2025-11-13 05:39:45,644 - INFO - No improvement - Patience: 1/2
+2025-11-13 05:39:45,644 - INFO - SC Epoch 4/10
+2025-11-13 05:41:20,137 - INFO - SC Train Loss: 0.0462
+2025-11-13 05:41:26,811 - INFO - SC Val - Loss: 0.0999, Acc: 95.98%, F1: 93.14%
+2025-11-13 05:41:28,526 - INFO - New best SC F1: 93.14% (improvement: +0.2795%)
+2025-11-13 05:41:28,527 - INFO - SC Epoch 5/10
+2025-11-13 05:43:03,111 - INFO - SC Train Loss: 0.0264
+2025-11-13 05:43:09,801 - INFO - SC Val - Loss: 0.1494, Acc: 96.50%, F1: 94.08%
+2025-11-13 05:43:11,529 - INFO - New best SC F1: 94.08% (improvement: +0.9360%)
+2025-11-13 05:43:11,529 - INFO - SC Epoch 6/10
+2025-11-13 05:44:46,032 - INFO - SC Train Loss: 0.0172
+2025-11-13 05:44:52,702 - INFO - SC Val - Loss: 0.1418, Acc: 96.59%, F1: 94.02%
+2025-11-13 05:44:52,702 - INFO - No improvement - Patience: 1/2
+2025-11-13 05:44:52,702 - INFO - SC Epoch 7/10
+2025-11-13 05:46:27,375 - INFO - SC Train Loss: 0.0097
+2025-11-13 05:46:34,048 - INFO - SC Val - Loss: 0.1452, Acc: 96.42%, F1: 93.85%
+2025-11-13 05:46:34,048 - INFO - No improvement - Patience: 2/2
+2025-11-13 05:46:34,048 - INFO - Early stopping triggered at epoch 7 - Best F1: 94.08%
+2025-11-13 05:46:58,013 - INFO - SC Test - Acc: 96.71%, F1: 95.80%
+2025-11-13 05:47:01,437 - INFO - [SC] Training completed successfully
+2025-11-13 05:47:03,032 - ERROR - Error analysis failed: cannot import name 'ErrorAnalyzer' from 'error_analysis' (unknown location)

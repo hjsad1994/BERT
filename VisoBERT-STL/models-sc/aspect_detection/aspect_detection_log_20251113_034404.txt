@@ -1,0 +1,2 @@
+2025-11-13 03:44:04,278 - INFO - Starting Aspect Detection training
+2025-11-13 03:44:08,288 - INFO - AD Epoch 1/10

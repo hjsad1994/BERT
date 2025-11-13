@@ -1,0 +1,34 @@
+2025-11-13 01:06:05,082 - INFO - Starting Aspect Detection training
+2025-11-13 01:06:10,274 - INFO - AD Epoch 1/8
+2025-11-13 01:08:03,707 - INFO - AD Train Loss: 0.2664
+2025-11-13 01:08:27,904 - INFO - AD Val - Loss: 0.1187, 
+2025-11-13 01:08:29,395 - INFO - New best AD F1: 85.05% (improvement: +85.0470%)
+2025-11-13 01:08:29,395 - INFO - AD Epoch 2/8
+2025-11-13 01:10:04,723 - INFO - AD Train Loss: 0.1130
+2025-11-13 01:10:11,536 - INFO - AD Val - Loss: 0.1034, 
+2025-11-13 01:10:13,845 - INFO - New best AD F1: 87.43% (improvement: +2.3834%)
+2025-11-13 01:10:13,845 - INFO - AD Epoch 3/8
+2025-11-13 01:11:53,279 - INFO - AD Train Loss: 0.0819
+2025-11-13 01:12:00,077 - INFO - AD Val - Loss: 0.1027, 
+2025-11-13 01:12:02,172 - INFO - New best AD F1: 88.02% (improvement: +0.5897%)
+2025-11-13 01:12:02,172 - INFO - AD Epoch 4/8
+2025-11-13 01:13:37,251 - INFO - AD Train Loss: 0.0588
+2025-11-13 01:13:44,048 - INFO - AD Val - Loss: 0.1213, 
+2025-11-13 01:13:44,049 - INFO - No improvement - Patience: 1/2
+2025-11-13 01:13:44,049 - INFO - AD Epoch 5/8
+2025-11-13 01:15:19,308 - INFO - AD Train Loss: 0.0410
+2025-11-13 01:15:26,089 - INFO - AD Val - Loss: 0.1337, 
+2025-11-13 01:15:28,579 - INFO - New best AD F1: 88.19% (improvement: +0.1744%)
+2025-11-13 01:15:28,579 - INFO - AD Epoch 6/8
+2025-11-13 01:17:05,344 - INFO - AD Train Loss: 0.0290
+2025-11-13 01:17:12,205 - INFO - AD Val - Loss: 0.1519, 
+2025-11-13 01:17:14,098 - INFO - New best AD F1: 88.55% (improvement: +0.3562%)
+2025-11-13 01:17:14,098 - INFO - AD Epoch 7/8
+2025-11-13 01:18:51,514 - INFO - AD Train Loss: 0.0215
+2025-11-13 01:18:58,420 - INFO - AD Val - Loss: 0.1635, 
+2025-11-13 01:18:58,420 - INFO - No improvement - Patience: 1/2
+2025-11-13 01:18:58,420 - INFO - AD Epoch 8/8
+2025-11-13 01:20:34,568 - INFO - AD Train Loss: 0.0191
+2025-11-13 01:20:41,421 - INFO - AD Val - Loss: 0.1623, 
+2025-11-13 01:20:43,097 - INFO - New best AD F1: 88.66% (improvement: +0.1055%)
+2025-11-13 01:21:08,506 - INFO - AD Test - Acc: 96.67%, F1: 89.79%

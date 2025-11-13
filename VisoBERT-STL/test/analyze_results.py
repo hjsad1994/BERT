@@ -47,11 +47,16 @@ _script_dir = Path(__file__).parent.absolute()
 _project_root = _script_dir.parent.parent
 # Try multiple possible locations
 _possible_results_dirs = [
+    _project_root / "VisoBERT-STL" / "analysis_results",
     _project_root / "multi_label" / "analysis_results",
     _project_root / "BILSTM-STL" / "analysis_results",
-    _project_root / "VisoBERT-STL" / "analysis_results",
 ]
-RESULTS_DIR = str(_possible_results_dirs[0])
+for _candidate in _possible_results_dirs:
+    if _candidate.exists():
+        RESULTS_DIR = str(_candidate)
+        break
+else:
+    RESULTS_DIR = str(_possible_results_dirs[0])
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
@@ -96,9 +101,9 @@ def load_predictions(predictions_file=None, test_file=None):
     
     if test_file is None:
         _possible_test_paths = [
+            _project_root / "VisoBERT-STL" / "data" / "test_multilabel.csv",
             _project_root / "multi_label" / "data" / "test_multilabel.csv",
             _project_root / "BILSTM-STL" / "data" / "test_multilabel.csv",
-            _project_root / "VisoBERT-STL" / "data" / "test_multilabel.csv",
         ]
         print(f"[Path Detection] Checking test file locations...")
         for path in _possible_test_paths:
@@ -587,6 +592,26 @@ def save_detailed_report(results, df):
     
     report_path = os.path.join(RESULTS_DIR, 'detailed_analysis_report.txt')
     
+    # Aggregate metrics for overall view
+    accuracies = [r['accuracy'] for r in results]
+    precisions = [r['precision'] for r in results]
+    recalls = [r['recall'] for r in results]
+    f1_scores = [r['f1'] for r in results]
+    
+    macro_accuracy = float(np.mean(accuracies)) if accuracies else 0.0
+    macro_precision = float(np.mean(precisions)) if precisions else 0.0
+    macro_recall = float(np.mean(recalls)) if recalls else 0.0
+    macro_f1 = float(np.mean(f1_scores)) if f1_scores else 0.0
+    
+    micro_accuracy = accuracy_score(df['true_sentiment'], df['predicted_sentiment']) if len(df) > 0 else 0.0
+    micro_precision, micro_recall, micro_f1, _ = precision_recall_fscore_support(
+        df['true_sentiment'], df['predicted_sentiment'], average='micro', zero_division=0
+    )
+    
+    total_labeled_aspects = len(df)
+    total_sentences = df['text'].nunique()
+    num_aspects = df['aspect'].nunique()
+    
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write("="*70 + "\n")
         f.write("BÁO CÁO PHÂN TÍCH CHI TIẾT THEO TỪNG ASPECT\n")
@@ -594,11 +619,15 @@ def save_detailed_report(results, df):
         
         # Overall stats
         f.write("TỔNG QUAN:\n")
-        f.write(f"  Tổng số mẫu test: {len(df)}\n")
-        f.write(f"  Số aspects: {df['aspect'].nunique()}\n")
-        
-        overall_acc = accuracy_score(df['true_sentiment'], df['predicted_sentiment'])
-        f.write(f"  Overall Accuracy: {overall_acc:.4f}\n\n")
+        f.write(f"  Tổng số câu test: {total_sentences}\n")
+        f.write(f"  Tổng số cặp aspect có nhãn: {total_labeled_aspects}\n")
+        f.write(f"  Số aspects: {num_aspects}\n")
+        f.write(f"  Overall Accuracy (macro theo aspect): {macro_accuracy:.4f}\n")
+        f.write(f"  Overall Precision (macro theo aspect): {macro_precision:.4f}\n")
+        f.write(f"  Overall Recall (macro theo aspect): {macro_recall:.4f}\n")
+        f.write(f"  Overall F1 (macro theo aspect): {macro_f1:.4f}\n")
+        f.write(f"  Overall Accuracy (micro trên tất cả nhãn): {micro_accuracy:.4f}\n")
+        f.write(f"  Overall F1 (micro trên tất cả nhãn): {micro_f1:.4f}\n\n")
         
         # Per-aspect details
         f.write("="*70 + "\n")
@@ -630,11 +659,8 @@ def save_detailed_report(results, df):
         f.write("THỐNG KÊ TỔNG HỢP:\n")
         f.write(f"{'='*70}\n\n")
         
-        accuracies = [r['accuracy'] for r in results]
-        f1_scores = [r['f1'] for r in results]
-        
-        f.write(f"Accuracy trung bình:  {np.mean(accuracies):.4f} (±{np.std(accuracies):.4f})\n")
-        f.write(f"F1 Score trung bình:  {np.mean(f1_scores):.4f} (±{np.std(f1_scores):.4f})\n")
+        f.write(f"Accuracy trung bình:  {macro_accuracy:.4f} (±{np.std(accuracies):.4f})\n")
+        f.write(f"F1 Score trung bình:  {macro_f1:.4f} (±{np.std(f1_scores):.4f})\n")
         f.write(f"Accuracy cao nhất:    {max(accuracies):.4f} ({results[accuracies.index(max(accuracies))]['aspect']})\n")
         f.write(f"Accuracy thấp nhất:   {min(accuracies):.4f} ({results[accuracies.index(min(accuracies))]['aspect']})\n")
         f.write(f"F1 Score cao nhất:    {max(f1_scores):.4f} ({results[f1_scores.index(max(f1_scores))]['aspect']})\n")
@@ -646,7 +672,7 @@ def save_detailed_report(results, df):
 def create_summary_table_image(results):
     """Tạo bảng tổng hợp dạng ảnh"""
     print(f"\n{'='*70}")
-    print("📋 Tạo bảng tổng hợp...")
+    print(" Tạo bảng tổng hợp...")
     print(f"{'='*70}")
     
     # Chuẩn bị data

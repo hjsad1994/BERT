@@ -1,7 +1,0 @@
-2025-11-09 12:17:08,973 - INFO - Starting Aspect Detection training
-2025-11-09 12:17:12,689 - INFO - AD Epoch 1/1
-2025-11-09 12:19:10,616 - INFO - AD Train Loss: 0.1811
-2025-11-09 12:19:36,046 - INFO - AD Val - Acc: 90.53%, F1: 72.69%
-2025-11-09 12:19:37,816 - INFO - New best AD F1: 72.69%
-2025-11-09 12:20:04,698 - INFO - AD Test - Acc: 90.24%, F1: 70.34%
-2025-11-09 12:20:05,178 - INFO - [AD] Training completed successfully

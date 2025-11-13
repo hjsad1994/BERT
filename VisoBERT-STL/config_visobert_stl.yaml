@@ -12,12 +12,17 @@
 # ========================================================================
 
 paths:
-  data_dir: "VisoBERT-STL/data"
-  train_file: "VisoBERT-STL/data/train_multilabel.csv"  # For AD stage
-  train_file_sc: "VisoBERT-STL/data/train_multilabel_balanced.csv"  # Oversampling causes overfitting (Val 94.94% vs Test 91.32%)
-  # train_file_sc: "VisoBERT-STL/data/train_multilabel.csv"  # NO OVERSAMPLING - better generalization (Test 92.81%)
-  validation_file: "VisoBERT-STL/data/validation_multilabel.csv"
-  test_file: "VisoBERT-STL/data/test_multilabel.csv"
+  # Stage 1: Aspect Detection data files
+  ad_train_file: "VisoBERT-STL/data/train_multilabel.csv"
+  # ad_train_file: "VisoBERT-STL/data/train_multilabel_ad_balanced_aggressive.csv"
+  ad_validation_file: "VisoBERT-STL/data/validation_multilabel.csv"
+  ad_test_file: "VisoBERT-STL/data/test_multilabel.csv"
+  
+  # Stage 2: Sentiment Classification data files
+  # sc_train_file: "VisoBERT-STL/data/train_multilabel_balanced.csv"  # Oversampling causes overfitting (Val 94.94% vs Test 91.32%)
+  sc_train_file: "VisoBERT-STL/data/train_multilabel.csv"  # NO OVERSAMPLING - better generalization (Test 92.81%)
+  sc_validation_file: "VisoBERT-STL/data/validation_multilabel.csv"
+  sc_test_file: "VisoBERT-STL/data/test_multilabel.csv"
   
   # Stage 1: Aspect Detection output
   ad_output_dir: "VisoBERT-STL/models/aspect_detection"
@@ -33,28 +38,11 @@ model:
   # Note: This base model is not sentiment-specific; fine-tuning handles aspect+sentiment outputs
   # AD stage: 11 aspects (including Others)
   # SC stage: 10 aspects (excluding Others), 10 × 3 = 30 outputs
-  num_labels: 30  # 10 aspects × 3 sentiments = 30 outputs (for SC stage)
-  num_aspects_ad: 11  # Aspect Detection stage includes Others
-  num_aspects_sc: 10  # Sentiment Classification stage excludes Others
-  num_sentiments: 3
   max_length: 256
   
   # Model architecture
   hidden_size: 512      # Dense layer
   dropout: 0.3          # Standard dropout
-
-valid_aspects:
-  - Battery
-  - Camera
-  - Performance
-  - Display
-  - Design
-  - Packaging
-  - Price
-  - Shop_Service
-  - Shipping
-  - General
-  - Others  # Included in AD stage, excluded from SC stage
 
 sentiment_labels:
   positive: 0
@@ -62,15 +50,11 @@ sentiment_labels:
   neutral: 2
 
 training:
-  # Batch size for multi-label (larger samples)
-  # per_device_train_batch_size: 32
-  # per_device_eval_batch_size: 64
-  # gradient_accumulation_steps: 2  # Effective batch = 64
+  # Batch size
   per_device_train_batch_size: 16
   per_device_eval_batch_size: 32
-  gradient_accumulation_steps: 4  
+  
   # Optimizer settings
-  optim: "adamw_bnb_8bit"
   learning_rate: 2.0e-5
   weight_decay: 0.01    # Standard weight decay
   adam_beta1: 0.9
@@ -78,79 +62,14 @@ training:
   adam_epsilon: 1.0e-8
   max_grad_norm: 1.0
   
-  # Learning rate scheduler
-  lr_scheduler_type: "cosine"
-  warmup_ratio: 0.06
-  
-  # Training duration
-  num_train_epochs: 1  # Training epochs
-  
-  # Mixed precision (RTX 3070 Ampere)
-  fp16: true
-  fp16_opt_level: "O2"
-  fp16_full_eval: false
-  tf32: true
-  
   # DataLoader settings
   dataloader_num_workers: 2  # Reduced for larger batches
   dataloader_pin_memory: true
   dataloader_prefetch_factor: 4
   dataloader_persistent_workers: true
-  
-  # Memory optimization
-  gradient_checkpointing: false
-  auto_find_batch_size: false
-  group_by_length: false
-  
-  # Evaluation & checkpointing
-  evaluation_strategy: "epoch"
-  save_strategy: "epoch"
-  save_total_limit: 4
-  load_best_model_at_end: true
-  metric_for_best_model: "eval_f1"
-  greater_is_better: true
-  
-  # Early stopping
-  early_stopping_patience: 3  # Standard patience
-  early_stopping_threshold: 0.001
-  
-  # Logging
-  logging_strategy: "steps"
-  logging_steps: 50
-  logging_first_step: true
-  report_to: []
-  
-  # Misc
-  disable_tqdm: false
-  prediction_loss_only: false
-  remove_unused_columns: true
-  label_names: ["labels"]
-  include_inputs_for_metrics: false
 
-general:
-  device: "auto"
-  log_level: "info"
-
-# ========================================================================
-# REPRODUCIBILITY: Master Seed Configuration
-# ========================================================================
-# All random operations use seeds derived from master_seed for consistency
-# Change master_seed to run different experiments (e.g., 42, 123, 456, 789, 2024)
-# ========================================================================
 reproducibility:
-  # Data preprocessing seeds
-  data_split_seed: 42              # Seed for train/val/test split
-  oversampling_seed: 42            # Seed for aspect-wise oversampling
-  shuffle_seed: 42               # Seed for data shuffling
-  
-  # Model training seeds
   training_seed: 100                # Seed for PyTorch/Transformers training
-  # Note: dataloader_seed removed - only training_seed is used for reproducibility
-  
-  # Notes:
-  # - All seeds set to 42 by default for reproducibility
-  # - For multiple runs, change master_seed: [42, 123, 456, 789, 2024]
-  # - Recommended: Keep all seeds = master_seed unless specific reason
 
 # Sequential training settings
 two_stage:
@@ -161,16 +80,22 @@ two_stage:
   # Stage 1: Aspect Detection
   aspect_detection:
     use_focal_loss: true
-    focal_gamma: 2
+    focal_gamma: 2.0
     focal_alpha: "auto"     # Auto-calculate from data (inverse frequency)
-    epochs: 1               # AD training epochs
+    epochs: 12               # AD training epochs
+    warmup_ratio: 0.08      # Warmup ratio for AD stage (8% - higher for non-oversampled data)
+    early_stopping_patience: 2  # Patience for AD stage
+    early_stopping_threshold: 0.0005  # Minimum improvement threshold (0.05% F1)
   
   # Stage 2: Sentiment Classification
   sentiment_classification:
     use_focal_loss: true
-    focal_gamma: 1.5        # Increased from 2.0 → 3.0 to focus on hard samples
+    focal_gamma: 2.0        # Increased from 2.0 → 3.0 to focus on hard samples # best 1.3 for old data
     focal_alpha: "auto"     # Auto-calculate from data
-    epochs: 6              # Standard epochs for non-oversampled data
+    epochs: 12              # Standard epochs for non-oversampled data
+    warmup_ratio: 0.06      # Warmup ratio for SC stage
+    early_stopping_patience: 2  # Patience for SC stage
+    early_stopping_threshold: 0.0005  # Minimum improvement threshold (0.05% F1)
   
   # Error analysis
   run_error_analysis: true  # Automatically run error analysis after training

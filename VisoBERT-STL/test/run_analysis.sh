@@ -37,23 +37,61 @@ if [ ! -f "VisoBERT-STL/test/analyze_results.py" ] && [ ! -f "multi_label/test/a
     exit 1
 fi
 
-# Check if predictions file exists (try both possible locations)
-PREDICTIONS_FILE="multi_label/models/multilabel_focal/test_predictions_detailed.csv"
-if [ ! -f "$PREDICTIONS_FILE" ]; then
-    echo -e "${YELLOW}WARNING:  Predictions file not found at: $PREDICTIONS_FILE${NC}"
+# Check if predictions file exists (try multiple possible locations)
+PREDICTIONS_FOUND=0
+PREDICTIONS_PATHS=(
+    "VisoBERT-STL/models/sentiment_classification/test_predictions_detailed.csv"
+    "VisoBERT-STL/models-o/sentiment_classification/test_predictions_detailed.csv"
+    "multi_label/models/multilabel_focal/test_predictions_detailed.csv"
+)
+
+for PRED_FILE in "${PREDICTIONS_PATHS[@]}"; do
+    if [ -f "$PRED_FILE" ]; then
+        echo -e "${GREEN}✓ Found predictions file: $PRED_FILE${NC}"
+        PREDICTIONS_FOUND=1
+        break
+    fi
+done
+
+if [ $PREDICTIONS_FOUND -eq 0 ]; then
+    echo -e "${YELLOW}WARNING:  Predictions file not found in expected locations:${NC}"
+    for PRED_FILE in "${PREDICTIONS_PATHS[@]}"; do
+        echo "    • $PRED_FILE"
+    done
     echo "  Scripts will auto-detect paths, but please ensure predictions file exists."
     echo ""
 fi
 
-# Check if test data exists
-TEST_FILE="multi_label/data/test_multilabel.csv"
-if [ ! -f "$TEST_FILE" ]; then
-    echo -e "${YELLOW}WARNING:  Test data not found at: $TEST_FILE${NC}"
+# Check if test data exists (try multiple possible locations)
+TEST_FOUND=0
+TEST_PATHS=(
+    "VisoBERT-STL/data/test_multilabel.csv"
+    "VisoBERT-STL/data-o/test_multilabel.csv"
+    "multi_label/data/test_multilabel.csv"
+)
+
+for TEST_FILE in "${TEST_PATHS[@]}"; do
+    if [ -f "$TEST_FILE" ]; then
+        echo -e "${GREEN}✓ Found test data: $TEST_FILE${NC}"
+        TEST_FOUND=1
+        break
+    fi
+done
+
+if [ $TEST_FOUND -eq 0 ]; then
+    echo -e "${YELLOW}WARNING:  Test data not found in expected locations:${NC}"
+    for TEST_FILE in "${TEST_PATHS[@]}"; do
+        echo "    • $TEST_FILE"
+    done
     echo "  Scripts will auto-detect paths, but please ensure test data exists."
     echo ""
 fi
 
-echo -e "${GREEN} All required files found${NC}"
+if [ $PREDICTIONS_FOUND -eq 1 ] && [ $TEST_FOUND -eq 1 ]; then
+    echo -e "${GREEN}✓ All required files found${NC}"
+else
+    echo -e "${YELLOW}⚠ Some files missing, but scripts will attempt auto-detection${NC}"
+fi
 echo ""
 
 ################################################################################

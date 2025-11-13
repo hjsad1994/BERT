@@ -3,54 +3,63 @@ SEQUENTIAL SINGLE-TASK LEARNING FOR VIETNAMESE ABSA
 Two-Stage Training Results
 ================================================================================
 
-Training Date: 2025-11-07 21:41:54
+Training Date: 2025-11-13 02:19:04
 Model: 5CD-AI/visobert-14gb-corpus
 
 ================================================================================
 STAGE 1: ASPECT DETECTION (Binary Classification)
 ================================================================================
 
-Test Accuracy:  95.77%
-Test F1 Score:  87.43%
-Test Precision: 82.93%
-Test Recall:    92.82%
+Note: AD stage includes all 11 aspects (including 'Others')
+
+All metrics are macro-averaged (unweighted average across aspects).
+This ensures that aspects with different numbers of samples are fairly evaluated.
+
+Test Accuracy:  96.61%
+Test F1 Score:  89.68%
+Test Precision: 87.91%
+Test Recall:    91.79%
 
 Per-Aspect Results (AD):
 --------------------------------------------------------------------------------
-Battery         Accuracy:  98.31%  F1 Score:  95.47%  Precision:  93.36%  Recall:  97.68%
-Camera          Accuracy:  99.08%  F1 Score:  96.10%  Precision:  93.57%  Recall:  98.77%
-Performance     Accuracy:  93.66%  F1 Score:  82.82%  Precision:  73.31%  Recall:  95.18%
-Display         Accuracy:  97.74%  F1 Score:  89.68%  Precision:  84.24%  Recall:  95.86%
-Design          Accuracy:  93.31%  F1 Score:  82.70%  Precision:  74.18%  Recall:  93.42%
-Packaging       Accuracy:  95.84%  F1 Score:  87.03%  Precision:  84.62%  Recall:  89.59%
-Price           Accuracy:  97.39%  F1 Score:  93.54%  Precision:  88.74%  Recall:  98.89%
-Shop_Service    Accuracy:  96.69%  F1 Score:  90.23%  Precision:  87.50%  Recall:  93.13%
-Shipping        Accuracy:  97.82%  F1 Score:  95.32%  Precision:  92.67%  Recall:  98.14%
-General         Accuracy:  84.64%  F1 Score:  72.12%  Precision:  63.37%  Recall:  83.68%
-Others          Accuracy:  99.01%  F1 Score:  76.67%  Precision:  76.67%  Recall:  76.67%
+Battery         Accuracy:  98.26%  F1 Score:  95.15%  Precision:  93.07%  Recall:  97.33%
+Camera          Accuracy:  99.33%  F1 Score:  97.08%  Precision:  94.32%  Recall: 100.00%
+Performance     Accuracy:  95.78%  F1 Score:  87.81%  Precision:  81.65%  Recall:  94.98%
+Display         Accuracy:  98.53%  F1 Score:  90.68%  Precision:  89.92%  Recall:  91.45%
+Design          Accuracy:  94.91%  F1 Score:  86.90%  Precision:  84.00%  Recall:  90.00%
+Packaging       Accuracy:  97.72%  F1 Score:  93.31%  Precision:  91.51%  Recall:  95.18%
+Price           Accuracy:  97.18%  F1 Score:  93.56%  Precision:  90.50%  Recall:  96.83%
+Shop_Service    Accuracy:  97.12%  F1 Score:  90.47%  Precision:  87.55%  Recall:  93.58%
+Shipping        Accuracy:  97.79%  F1 Score:  95.11%  Precision:  93.31%  Recall:  96.98%
+General         Accuracy:  86.86%  F1 Score:  77.16%  Precision:  73.72%  Recall:  80.93%
+Others          Accuracy:  99.26%  F1 Score:  79.25%  Precision:  87.50%  Recall:  72.41%
 
 ================================================================================
 STAGE 2: SENTIMENT CLASSIFICATION (3-Class per Aspect)
 ================================================================================
 
-Test Accuracy:  95.92%
-Test F1 Score:  94.16%
-Test Precision: 96.03%
-Test Recall:    92.65%
+Note: SC stage excludes 'Others' aspect (10 aspects only, no sentiment labels for Others)
+
+All metrics are macro-averaged (unweighted average across aspects and sentiment classes).
+This ensures that aspects and classes with different numbers of samples are fairly evaluated.
+
+Test Accuracy (per-aspect mean):   96.59%
+Test F1 Score (per-aspect mean):    95.78%
+Test Precision (per-aspect mean):  96.12%
+Test Recall (per-aspect mean):     95.61%
 
 Per-Aspect Results (SC):
 --------------------------------------------------------------------------------
-Battery         Accuracy:  94.59%  F1 Score:  92.37%  Precision:  94.68%  Recall:  90.45%
-Camera          Accuracy:  93.83%  F1 Score:  93.75%  Precision:  95.51%  Recall:  92.26%
-Performance     Accuracy:  95.18%  F1 Score:  94.12%  Precision:  94.85%  Recall:  93.48%
-Display         Accuracy:  95.86%  F1 Score:  95.66%  Precision:  96.87%  Recall:  94.66%
-Design          Accuracy:  95.47%  F1 Score:  94.03%  Precision:  96.69%  Recall:  91.74%
-Packaging       Accuracy:  98.64%  F1 Score:  98.82%  Precision:  98.65%  Recall:  98.99%
-Price           Accuracy:  95.94%  F1 Score:  87.72%  Precision:  92.07%  Recall:  84.07%
-Shop_Service    Accuracy:  95.71%  F1 Score:  94.03%  Precision:  95.60%  Recall:  92.83%
-Shipping        Accuracy:  96.58%  F1 Score:  91.73%  Precision:  94.31%  Recall:  89.61%
-General         Accuracy:  96.14%  F1 Score:  93.57%  Precision:  97.15%  Recall:  91.06%
-Others          Accuracy: 100.00%  F1 Score: 100.00%  Precision: 100.00%  Recall: 100.00%
+Battery         Accuracy:  96.18%  F1 Score:  94.08%  Precision:  94.55%  Recall:  93.63%
+Camera          Accuracy:  95.18%  F1 Score:  95.33%  Precision:  96.72%  Recall:  94.20%
+Performance     Accuracy:  96.65%  F1 Score:  96.34%  Precision:  95.15%  Recall:  97.74%
+Display         Accuracy:  93.16%  F1 Score:  93.72%  Precision:  94.94%  Recall:  92.87%
+Design          Accuracy:  97.86%  F1 Score:  97.95%  Precision:  98.29%  Recall:  97.62%
+Packaging       Accuracy:  98.39%  F1 Score:  97.89%  Precision:  96.93%  Recall:  98.92%
+Price           Accuracy:  96.19%  F1 Score:  94.31%  Precision:  94.76%  Recall:  93.87%
+Shop_Service    Accuracy:  96.33%  F1 Score:  94.49%  Precision:  93.33%  Recall:  95.83%
+Shipping        Accuracy:  99.09%  F1 Score:  99.27%  Precision:  99.35%  Recall:  99.18%
+General         Accuracy:  96.82%  F1 Score:  94.44%  Precision:  97.19%  Recall:  92.26%
 
 ================================================================================
 OUTPUT FILES
@@ -71,9 +80,9 @@ Sentiment Classification:
   - Confusion matrices (per-aspect): VisoBERT-STL/models/sentiment_classification/confusion_matrices_per_aspect.png
 
 Error Analysis:
-  - Report: multi_label/error_analysis_results/error_analysis_report.txt
-  - Confusion matrix: multi_label/error_analysis_results/confusion_matrix.png
-  - All errors: multi_label/error_analysis_results/all_errors_detailed.csv
+  - Report: VisoBERT-STL\error_analysis_results\error_analysis_report.txt
+  - Confusion matrix: VisoBERT-STL\error_analysis_results\confusion_matrix.png
+  - All errors: VisoBERT-STL\error_analysis_results\all_errors_detailed.csv
 
 ================================================================================
 TRAINING COMPLETE

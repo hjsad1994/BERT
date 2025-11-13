@@ -1,0 +1,50 @@
+{
+  "oversampling_seed": 100,
+  "strategy": "aggressive",
+  "target_ratio": null,
+  "max_ratio": 10.0,
+  "original_samples": 11930,
+  "augmented_samples": 92080,
+  "increase": 80150,
+  "increase_percentage": 671.8357082984074,
+  "aspects": [
+    "Battery",
+    "Camera",
+    "Performance",
+    "Display",
+    "Design",
+    "Packaging",
+    "Price",
+    "Shop_Service",
+    "Shipping",
+    "General",
+    "Others"
+  ],
+  "original_imbalance": {
+    "Battery": 4.603569751056834,
+    "Camera": 7.1993127147766325,
+    "Performance": 5.213541666666667,
+    "Display": 10.212406015037594,
+    "Design": 4.7744433688286545,
+    "Packaging": 5.223265519040167,
+    "Price": 3.747313967369678,
+    "Shop_Service": 5.1781460383221125,
+    "Shipping": 3.826051779935275,
+    "General": 2.8017845761631612,
+    "Others": 45.968503937007874
+  },
+  "augmented_imbalance": {
+    "Battery": 2.7368613286798427,
+    "Camera": 3.6224899598393576,
+    "Performance": 2.8978961181899,
+    "Display": 4.599951347077784,
+    "Design": 3.3737234598394528,
+    "Packaging": 3.359848484848485,
+    "Price": 3.124524076147816,
+    "Shop_Service": 3.432250300842359,
+    "Shipping": 2.828849432408832,
+    "General": 4.931843071571217,
+    "Others": 35.09564876519012
+  },
+  "created_at": "2025-11-13T03:47:09.671185"
+}

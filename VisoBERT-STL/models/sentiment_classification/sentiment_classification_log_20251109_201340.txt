@@ -1,6 +1,0 @@
-2025-11-09 20:13:40,320 - INFO - Starting Sentiment Classification training
-2025-11-09 20:13:41,938 - INFO - SC Epoch 1/6
-2025-11-09 20:17:34,263 - INFO - SC Train Loss: 0.1271
-2025-11-09 20:18:00,515 - INFO - SC Val - Acc: 93.74%, F1: 91.67%
-2025-11-09 20:18:02,235 - INFO - New best SC F1: 91.67%
-2025-11-09 20:18:02,235 - INFO - SC Epoch 2/6

@@ -3,7 +3,7 @@ ERROR CLASSIFICATION FOR HUMAN REVIEW
 ================================================================================
 
 Note: This analysis ONLY includes LABELED aspects (not NaN/unlabeled)
-Total errors to review: 100
+Total errors to review: 86
 
 CLASSIFICATION CODES:
   [A] Annotation Mistake - Label is wrong, model correct
@@ -15,13 +15,13 @@ CLASSIFICATION CODES:
 ================================================================================
 
 --- ERROR 1 ---
-Sample ID: 1294.0
+Sample ID: 1365.0
 Aspect: Battery
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Nhóm màu: màu xanh ngoại hình máy khá đẹp.Pin thì hơi cùi nha. Giao hàng nhanh
+mua máy phải đổi lần 2 mới tạm ổn, máy chạy chậm lắm mặc dù cấu hình cao (như ảo ấy), lỗ sạc là sử dụng đầu sạc cũ trước cả đầu c á, sạc pin vào rất lâu. thôi sử dụng tạm để học tập. cửa hàng thì phục vụ cực kì nhiệt tình, giao hàng cũng nhanh nhẹn, gói hàng cũng kỹ, có phiếu bảo hành.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -30,13 +30,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 2 ---
-Sample ID: 1211.0
+Sample ID: 141.0
 Aspect: Battery
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-chụp đẹp, thiết kế đẹp máy chính hãng, còn nguyên seal đã được kích hoạt bảo hành 1 tháng chụp ảnh đẹp, nét. Thiết kế đẹp máy khá nóng trong nhiều tác vụ. Thời lượng pin khoảng 6-7h hỗn hợp wifi+4g nhưng nếu chụp ảnh nhiều ngoài trời nắng thì pin hẹo nhanh
+Màu sắc: đen 
+Phân loại: likenew 99% sau hơn 20 ngày sử dụng đây là một số lưu ý. Dành cho mọi người nếu quyết định mua máy này mọi tính năng về mạng xã hội tốt nghe gọi tốt ngày đầu tiên mới mua ấy nó sẽ bị hơi lag nhưng mà sử dụng hơn một tuần nó sẽ tối ưu sẽ mượt. Còn về phần chơi game nếu như c...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -45,14 +46,15 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 3 ---
-Sample ID: 666.0
+Sample ID: 868.0
 Aspect: Battery
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Màu sắc: bạc ram/bộ nhớ: ram 8g/128g 
-chơi game ngon có điều sạc không vô nói chung khá ổn trong tầm giá
+Tính năng nổi bật: 4g 
+Chất lượng sản phẩm: loa trong nghe rõ 
+Đúng với mô tả: y chang có game facebook đầy đủ, chụp ảnh như hồi xưa,pin lâu hết
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -61,13 +63,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 4 ---
-Sample ID: 427.0
+Sample ID: 380.0
 Aspect: Battery
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Mặc dù máy mới ra mắt nhưng với 6Gb Ram, 128Gb Rom và viên pin 5.000mA thì chưa đủ nhu cầu của mình, được cái giá cũng mềm, camera đẹp
+Review sau vài cập nhật máy vẫn còn lỗi app hay lag. Pin vẫn ổn nhưng hiệu năng nhiều khi treo. Đóng gói tốt nhưng vận chuyển lâu. Chăm sóc khách hàng mất thời gian không chịu trách nhiệm rõ ràng
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -76,13 +78,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 5 ---
-Sample ID: 216.0
+Sample ID: 966.0
 Aspect: Battery
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
 
 Text:
-Mua cửa hàng 3 lần rồi. Từ lzd qua sản phẩm, máy mới keng! Mình cân nhắc mãi mới chọn pixel 5 thay vì 7, do size của bé 5 này quá yêu, rất vừa tay với mình luôn😚. Xài ss, ip bao năm bao đời từ khi chuyển qua pixel xài mấy năm nay là chỉ thích pixel và xiaomi thôi😀. Đáng tiền mà ngon lắm. Sau vài ngà...
+Uầy cửa hàng gửi cho con máy gần đẹp keng luôn. Nhắn cửa hàng không thích bản docomo cửa hàng gửi cho bản au còn cài sẵn rom qt không app rác luôn. Pin còn 3k1/4k hơi kém tí nhưng chấp nhận được với giá sale ntn
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -91,13 +93,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 6 ---
-Sample ID: 66.0
+Sample ID: 483.0
 Aspect: Battery
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
 
 Text:
-Nói chung mua cho người lớn sài cũng ổn. Sạc thấy lâu chứ không như thông số nha.
+Máy đẹp, pin khoẻ, bên hay không thì phải sử dụng một thời gian mới biết được
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -106,13 +108,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 7 ---
-Sample ID: 1240.0
+Sample ID: 81.0
 Aspect: Battery
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
 
 Text:
-shipping lâu hơn hứa. giao hàng muộn 2 ngày. vận chuyển chậm. đã trả tiền ship nhanh mà vẫn giao chậm, làm lỡ việc của mình. pin dùng tốt nhưng hiệu năng thỉnh thoảng lag
+Chất lượng sản phẩm: hiệu năng ở mức tạm được cho các tác vụ hàng ngày. Pin dùng cũng cũng được trong một ngày làm việc nhẹ.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -121,13 +123,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 8 ---
-Sample ID: 1420.0
+Sample ID: 1466.0
 Aspect: Battery
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+True: Neutral | Predicted: Negative
+Error Type: Neutral -> Negative (appears 8x)
 
 Text:
-Điện thoại đẹp, mới tinh,mọi thứ đều ổn. Pin phải xài thời gian mới biết được có tốt hay không. Đã mua lần 2 của cửa hàng 👍
+1.mình thấy nhiều người rw hệ điều hành này không được tối ưu hoá cho mấy 2.không biết do máy hay gì nhưng chơi tốc chiến bật được 120fps nhưng mà toàn bị drop xuống 60-75( mặc dù máy rất mát) và 8/256 cũng thi thoảng bị văng game tốc chiến 3. 5g của máy cảm giác cũng không được mượt mà nên mình chỉ...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -136,13 +138,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 9 ---
-Sample ID: 497.0
+Sample ID: 1385.0
 Aspect: Battery
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
+True: Neutral | Predicted: Negative
+Error Type: Neutral -> Negative (appears 8x)
 
 Text:
-Mình mua vào đợt sale 6/6 do vậy mà về hàng khá lâu, đến hôm nay là còn hạn 10 ngày để đánh giá sản phẩm, mình định sử dụng thêm 9 ngày nữa nhưng chắc 20 ngày sử dụng vừa rồi là đủ để đánh giá. 1. Về thiết kế, ngoại hình thì đây là điểm ăn tiền nhất của chiếc máy. Thiết kế bắt mắt, mình mua màu trắn...
+Pin sử dụng 4 tiếng trung bình. Đóng gói hộp cũ mùi lạ. Ship phí nội thành nhưng chậm như ngoại tỉnh.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -151,13 +153,15 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 10 ---
-Sample ID: 801.0
-Aspect: Camera
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Sample ID: 1152.0
+Aspect: Battery
+True: Neutral | Predicted: Negative
+Error Type: Neutral -> Negative (appears 8x)
 
 Text:
-Camera bị vết đen. Máy thì tốt màn hình cảm ứng mượt mà, rất nhạy., nên bị trừ chỉ cho cửa hàng được 4 sao thôi
+Phiên bản: hàn 1 sim 256gb tính năng:đầy đủ vân tay, face chất lượng:99%, chức năng rất tốt, màn hình có vài vết xước nhỏ, mình đang sử dụng xem pin thế nào sẽ đánh giá sau 
+chất liệu: hoàn thiện tốt. 
+Điểm trừ: đặt màu xám bản hàn 1 sim 256gb mà cửa hàng giao bản mỹ 2 sim 128gb màu đen. Không tặn...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -166,13 +170,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 11 ---
-Sample ID: 652.0
-Aspect: Camera
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Sample ID: 285.0
+Aspect: Battery
+True: Neutral | Predicted: Positive
+Error Type: Neutral -> Positive (appears 7x)
 
 Text:
-mỗi tội camera hơi xấu nhưng chs game rất mượt
+pin 5000mah, giá cả tương xứng với cấu hình.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -181,13 +185,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 12 ---
-Sample ID: 536.0
-Aspect: Camera
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Sample ID: 1384.0
+Aspect: Battery
+True: Negative | Predicted: Neutral
+Error Type: Negative -> Neutral (appears 4x)
 
 Text:
-Mình sử dụng được 2 ngày, thấy máy khá ổn chỉ có việc Cam hơi tệ còn lại đều ok
+để sử dụng tuần lễ 10 ngày mới biệt có bền hay không? về pin thì không cầm cho lắm.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -196,13 +200,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 13 ---
-Sample ID: 191.0
+Sample ID: 788.0
 Aspect: Camera
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Tốt. nên mua. Rất mượt. Các chức năng rất tốt, trừ chụp ảnh
+Em này ngoại hình khá mới luôn, chỉ bị cổng sạc hơi xấu, chữ harman kardon hơi mờ còn lại mới keng. Sạc kèm theo khá tốt, sạc nhanh mà ít nóng hơn hơn cả con 22.5w chính hãng của mình. Loa ẻm thì tốt thôi rồi, âm bass các thứ đập siêu đã, màn hình cũng ổn, mình không chơi game nên chip 2,3 năm còn t...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -211,13 +215,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 14 ---
-Sample ID: 1068.0
+Sample ID: 141.0
 Aspect: Camera
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-2Tr4 áp voucher sale thấy khá rẻ cho 1 con máy. Camera phơi sáng quay 4k khá đẹp. Chip mạnh nhưng ngồi trước quạt mới chơi được game không thì bỏng tay. Sóng viettel yếu. Wifi so với những con máy chính hãng khác thì khá chập chơn, nhảy như sóng alpha. Nhưng cũng sử dụng được. Pin nhanh hẹo lắm. Nói...
+Màu sắc: đen 
+Phân loại: likenew 99% sau hơn 20 ngày sử dụng đây là một số lưu ý. Dành cho mọi người nếu quyết định mua máy này mọi tính năng về mạng xã hội tốt nghe gọi tốt ngày đầu tiên mới mua ấy nó sẽ bị hơi lag nhưng mà sử dụng hơn một tuần nó sẽ tối ưu sẽ mượt. Còn về phần chơi game nếu như c...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -226,13 +231,15 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 15 ---
-Sample ID: 860.0
+Sample ID: 1320.0
 Aspect: Camera
 True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Đang dùng Q5 Pro lên con con này Pin Silicon Carbon 6000 thua Pin 5000 của Q5 Pro 🤣(Pin hơi lỏ, đúng như mấy ông review nói) Màng hình cũng tạm ổn hơi tối + Không Được Nét như Q5 Pro Camera cũng chỉ tạm được Mọi thứ còn lại thì không có gì để chê được. Vì nó là Hàng Chính Hãng. Trước mắt thấy ngon p...
+Chất lượng sản phẩm: nfc không được nhạy, camera tương đối ổn 108mp mà nó lạ lắm 
+Đúng với mô tả: redmi note 14, hàng trưng bày 
+Tính năng nổi bật: trong tầm giá dễ tiếp cận đến người sử dụng nhân viên fpt nhiệt tình, chu đáo, nhận hàng là hàng trưng bày, không được bóc siu, hàng đã khui hộp. khôn...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -241,13 +248,15 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 16 ---
-Sample ID: 809.0
+Sample ID: 1300.0
 Aspect: Camera
 True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Sau 1 thời gian sử dụng mình đánh giá pin không trâu lắm đâu, tắt mạng, ứng dụng mà từ đêm tới sáng đã giảm khoảng 4-5% pin. Chụp ảnh nói chung cũng ổn, lướt Facebook cứ lag lag kiểu gì. Mình mua trên live được giá rẻ, tặng thêm band, nói chung là 7 điểm
+Đúng với mô tả: đúng 
+Chất lượng sản phẩm: ổn 
+Tính năng nổi bật: ổn, cam wide gần bằng 11t lấy hình note 14 pro 4g tạm vậy, con note 14 này săn sale ổn, giá 3tr5 cho combo 6/128, mua cho bố do bố không thích gu cam tròn lồi to đùng như thịnh hành bây giờ, phải chi có con ngang cỡ note 10 pro 4g 1...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -256,13 +265,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 17 ---
-Sample ID: 956.0
+Sample ID: 1126.0
 Aspect: Camera
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Ok màu sắc đẹp. Sử dụng lâu dài mới bít ra sao. Cam chụp cũng bình thường. Thấy máy màu hồng cam chụp đẹp hơn. Lần sau sẽ mua màu hồng cam
+Đã nhận hàng bọc cẩn thận, nguyên seal, màu điện thoại không đẹp lắm. cam chụp tạm được, sử dụng 1 thời gian xem có ok không rồi phản hồi lại sau
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -271,10 +280,70 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 18 ---
-Sample ID: 100.0
+Sample ID: 513.0
 Aspect: Camera
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
+
+Text:
+Camera chụp ảnh tốt nhưng chơi game thì lại giật lag nhiều.
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 19 ---
+Sample ID: 371.0
+Aspect: Camera
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
+
+Text:
+Đã nhận được hàng khung và camera sau xước 4-5 vết chỉ được 90% thôi nhưng cũng ổn với 1 máy có giá 2,1 triệu
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 20 ---
+Sample ID: 128.0
+Aspect: Camera
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
+
+Text:
+pin hơi hẻo sử dụng được hơn 3h một tí màn hình bị ám một vạch nền xanh trắng mới thấy rõ. Camera chụp đẹp nên mua nha mọi người
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 21 ---
+Sample ID: 1368.0
+Aspect: Camera
+True: Neutral | Predicted: Negative
+Error Type: Neutral -> Negative (appears 8x)
+
+Text:
+Máy ít sước nhưng các cạnh có dấu hiệu bí tháo ra còn về bên trong thì máy chiến game ok pubg mobile max setting. Pubg 2 max setting geshin max setting nhưng bất lợi là nóng máy khi vừa vô game 1 p cần quạt tản nhiệt tốt hơn với hao pin nhanh lq mobile max seting.còn về camera không để ý vì mua về g...
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 22 ---
+Sample ID: 689.0
+Aspect: Camera
+True: Neutral | Predicted: Negative
+Error Type: Neutral -> Negative (appears 8x)
 
 Text:
 Nhóm màu: màu tím than nói chung là tốt chỉ camera sau đã bị mờ máy cũ đã qua sử dụng phải chấp nhận thôi, sẽ tiếp tục ủng hộ lần sau nếu có nhu cầu cảm ơn cửa hàng tặng 5 sao
@@ -285,74 +354,14 @@ NOTES: ________________________________________________
 
 --------------------------------------------------------------------------------
 
---- ERROR 19 ---
-Sample ID: 312.0
-Aspect: Camera
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
-
-Text:
-Camera selfie chụp tạm ổn, nhưng camera sau chụp đêm cho ảnh chất lượng bình thường.
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 20 ---
-Sample ID: 155.0
-Aspect: Camera
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
-
-Text:
-Chất lượng sản phẩm: camera selfie chụp tạm ổn. Màn hình hiển thị màu sắc bình thường.
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 21 ---
-Sample ID: 1264.0
-Aspect: Design
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Chất lượng sản phẩm: máy lag kinh khủng, có lúc còn không lên nguồn được, máy không sử dụng được sim, phần góc máy vỡ nhẹ và mình có liên hệ với cửa hàng qua cả zalo lẫn shopee nhưng không hề được phản hồi. Trước khi nhận hàng cửa hàng trả lời cũng nhiệt tình mà ạ. Mình đọc bình luận thấy cửa hàng u...
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 22 ---
-Sample ID: 1067.0
-Aspect: Design
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-máy xài cũng tốt mà pin sạc 3 tiếng không đầy được. thân máy bị hở
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
 --- ERROR 23 ---
-Sample ID: 1462.0
+Sample ID: 974.0
 Aspect: Design
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Đúng với mô tả: đúng sử dụng tạm ổn. thỉnh thoảng vẫn bị đơ. máy khá nhẹ. nói chung so với giá tiền thì cũng không còn ý kiến gì
+Ổn lắm nhé. Lúc mua hơi lo ngại. Nhận máy xong và test 2 ngày thấy quá ok. Pin ổn. Máy có 1 vết ở góc.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -361,15 +370,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 24 ---
-Sample ID: 1389.0
+Sample ID: 773.0
 Aspect: Design
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Đúng với mô tả: đúng với mô tả 
-Chất lượng sản phẩm: khá tốt 
-khi mình nhận máy thì thấy máy còn độ nguyên vẹn là 98%, mặc dù có hơi xước một chút ở cạnh nhưng mà không sao. sau một khoảng thời gian sử dụng thì mình vẫn thấy rất ổn áp nhaa cửa hàng 10đ:3
+Máy chất lượng ạ. Chuẩn hàng 99. Chỉ xước nhẹ vài đường ở mặt lưng và quanh phần lỗ sạc. cửa hàng gửi hàng nhanh, tư vấn nhiệt tình.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -378,13 +385,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 25 ---
-Sample ID: 1311.0
+Sample ID: 523.0
 Aspect: Design
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Hàng đẹp mỗi tội cam xấu vân tay hỏng
+Đã nhận hàng đầy đủ. Đóng gói cẩn thận. Máy hơi xước viền nhưng nhìn chung khá tốt và hài lòng. Chưa biết độ bền ntn. Hình ảnh mang tính chất nhận xu!
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -393,13 +400,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 26 ---
-Sample ID: 1090.0
+Sample ID: 277.0
 Aspect: Design
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Phải nói là tuyệt vời anh em ạ, tuy hơi bị luư ảnh nhẹ một chút nhưng mà màn hình mặt lưng không bị xước sát. Phần viền có hơn xước nhưng mà không sao. Máy còn áp còn chuyện chơi game thì khỏi bàn luôn Mỗi tội giao hàng hơi lâu hehe
+máy dễ sử dụng, pin trâu. chạy nhạc nguyên ngày chưa hết tới 50% pin. không thích cái nhãn dán ở lưng, khó bóc và xấu.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -408,13 +415,15 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 27 ---
-Sample ID: 871.0
+Sample ID: 1152.0
 Aspect: Design
 True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-đặt màu tím nhưng cửa hàng giao nhầm màu đen cho mình. nên mình chỉ để 4 sao.
+Phiên bản: hàn 1 sim 256gb tính năng:đầy đủ vân tay, face chất lượng:99%, chức năng rất tốt, màn hình có vài vết xước nhỏ, mình đang sử dụng xem pin thế nào sẽ đánh giá sau 
+chất liệu: hoàn thiện tốt. 
+Điểm trừ: đặt màu xám bản hàn 1 sim 256gb mà cửa hàng giao bản mỹ 2 sim 128gb màu đen. Không tặn...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -423,15 +432,15 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 28 ---
-Sample ID: 820.0
+Sample ID: 983.0
 Aspect: Design
 True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Chất lượng sản phẩm: sử dụng được 
-Đúng với mô tả: không đúng lắm 
-Tính năng nổi bật: bề ngoài tạm ổn hàng nhìn tạm ổn, sử dụng được, tuy nhiên báo là oppo f11 nhưng tra số imei thì là oppo a9. dù sao cũng sử dụng tạm thời thấy ổn
+Dung lượng lưu trữ: 128gb 
+Nhóm màu: đen trân châu 
+Phân loại sản phẩm: 8gb điện thoại bền rớt mấy lần không sao, sài khá mượt, nhưng máy hơi nóng khi lướt những tác vụ nhẹ nhưng mà mỏng nhẹ thì vầy là quá oke
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -440,13 +449,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 29 ---
-Sample ID: 697.0
+Sample ID: 695.0
 Aspect: Design
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Hình ảnh mang tính chất minh hoạ máy đẹp mới trải nhiệm nên chưa đánh giá chính xác được
+Máy 98% ít xước, đuôi sạc bị mẻ 1 xíu nhưng không ảnh hưởng gì, máy bật 120hz hơi ấm,pin hơi yếu, tốt so với tầm giá
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -455,13 +464,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 30 ---
-Sample ID: 273.0
+Sample ID: 634.0
 Aspect: Design
-True: Neutral | Predicted: Negative
-Error Type: Neutral -> Negative (appears 6x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Máy bị sước nhẹ 2 vết trên màn hình khó phá hiện. Hàng cũ thì chấp nhận. Ảnh video quay bằng điện thoại gg 5 quá đỉnh với giá 4tr kiếm xu. Vì lười chụp
+máy y như mới, keng không một vết xước. nhìn kỹ thì viền màn có dấu keo, để lâu trong túi quần thỉnh thoảng có vầng vàng
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -470,13 +479,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 31 ---
-Sample ID: 1018.0
+Sample ID: 1486.0
 Aspect: Display
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Nhóm màu: màu xanh-mh ám hồng máy ám hơi nhiều...giao hàng nhanh.. có thể chấp nhận với mức giá.. làm máy phụ cũng được..đóng gói cẩn thận.. còn chức năng phải sài rồi đánh giá thêm..trong tương lai có thể ủm hộ cửa hàng thêm vài kái
+Chất lượng sản phẩm: khá tốt 
+Đúng với mô tả: có mình thấy máy sử dụng ở mức tốt trong tầm giá, nhưng mà chỉ nên sử dụng 1 trình duyệt ví dụ chỉ call mess và không được làm gì khác vì máy sẽ chậm. máy đôi khi bị chớp màn, trong khoảng 1-2s. dung lượng pin tốt. nếu nhu cầu là 1 con máy rẻ, sử dụng k...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -485,13 +495,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 32 ---
-Sample ID: 49.0
+Sample ID: 1197.0
 Aspect: Display
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-hàng 95% nên hơi xước cạnh vs ám màn nhẹ nhưng nhìn chung rất đáng tiền chs game ngon nha mọi người
+Máy khá là đẹp với giá nhà là quá tốt. cảm ơn cửa hàng nhiều. Cái này là cái thứ 2. Đầu tiên mua px6 hơi trầy màn hình nhưng dán cường lực thì cũng được.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -500,13 +510,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 33 ---
-Sample ID: 42.0
+Sample ID: 784.0
 Aspect: Display
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Màn hình lưu ảnh nhẹ camera ngon đó. Tự tin khẳng định pro thì 5tr quay đầu khó có con nào có camera cân bằng như vầy. Form cầm thì giống iphone 13 thường nhưng mà dài hơn so với 13. Mình cầm thì khá chắc tay còn xperia 5 thì bé quá. Lưu ảnh nhẹ nhưng mà màn còn rất ngon ai có nhu cầu máy phụ thôi h...
+Nhóm màu: màu xanh lá cây 
+Dung lượng lưu trữ: 128gb dung lượng lưu trữ đủ sử dụng., chất lượng camera ấn tượng!, độ phân giải màn hình tuyệt vời.,
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -515,13 +526,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 34 ---
-Sample ID: 801.0
+Sample ID: 440.0
 Aspect: Display
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Camera bị vết đen. Máy thì tốt màn hình cảm ứng mượt mà, rất nhạy., nên bị trừ chỉ cho cửa hàng được 4 sao thôi
+Phân loại sản phẩm: s7 - màn hình đẹp máy ám ảnh mà để màn hình đẹp, chịu luôn:)
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -530,15 +541,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 35 ---
-Sample ID: 712.0
-Aspect: General
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Sample ID: 1349.0
+Aspect: Display
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-🔋 
-Thời lượng pin:khá ổn xem và tải 7h vẫn còn 30%, 📸 
-Chất lượng camera: sắc nét đặc biệt camera trước. Mỗi tội loa ngoài không nghe được rè rè kinh luôn hôm kc lại mất công đi sửa, bâo tét kỹ kỹ chút thì chả tét 4,5 sao vậy.
+Máy bị giả cấu hình pin 3000 mà nó nói 40000 chip cũng không mạnh máy nhanh nóng đây là máy dựng nóng quá nó sập nguồn với nó cái app ẩn hay sao mà để không dự liệu cũng chạy rất nhiều. Màn hình tốt
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -547,13 +556,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 36 ---
-Sample ID: 1306.0
-Aspect: General
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+Sample ID: 1438.0
+Aspect: Display
+True: Neutral | Predicted: Negative
+Error Type: Neutral -> Negative (appears 8x)
 
 Text:
-Đúng hàng chính hãng xài bao phê. Cảm giác mới nên còn đơ đơ
+Đúng với mô tả: cửa hàng giao không đúng hàng đã nhận được hàng, cửa hàng thay đổi cấu hình của máy, con này là oppo a9 độ phân giải màn hình là 720 ×1600 còn oppo f11 độ phân giải là 1800 × 2340 cho cửa hàng 3 sao
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -562,13 +571,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 37 ---
-Sample ID: 1223.0
+Sample ID: 1349.0
 Aspect: General
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-tiền nào của ấy thôi mua về sử dụng để check app lm việc thôi nên sử dụng tạm vậy máy hơi load chậm với ấn phím hay bị sai
+Máy bị giả cấu hình pin 3000 mà nó nói 40000 chip cũng không mạnh máy nhanh nóng đây là máy dựng nóng quá nó sập nguồn với nó cái app ẩn hay sao mà để không dự liệu cũng chạy rất nhiều. Màn hình tốt
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -577,13 +586,15 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 38 ---
-Sample ID: 1067.0
+Sample ID: 458.0
 Aspect: General
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-máy xài cũng tốt mà pin sạc 3 tiếng không đầy được. thân máy bị hở
+Tính năng nổi bật: lock sim:)) 
+Chất lượng sản phẩm: ổn tầm 90% 
+Đúng với mô tả: đúng thề chứ đặt sốp con này t2 rồi trước là blackshark helo thấy ổn phết nay đặt tiếp cửa hàng làm thất vọng quá cửa hàng cho em con máy màn xước ác thật phần màn hình dưới loa xước thấy thương mà nghỉ lại thì máy cũ...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -592,13 +603,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 39 ---
-Sample ID: 147.0
+Sample ID: 966.0
 Aspect: General
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
 
 Text:
-điện thoại mới sử dụng được nhưng không đúng màu mà mình chọn mong cửa hàng sửa lỗi sai này còn mình vẫn cho cửa hàng 5 sao
+Uầy cửa hàng gửi cho con máy gần đẹp keng luôn. Nhắn cửa hàng không thích bản docomo cửa hàng gửi cho bản au còn cài sẵn rom qt không app rác luôn. Pin còn 3k1/4k hơi kém tí nhưng chấp nhận được với giá sale ntn
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -607,13 +618,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 40 ---
-Sample ID: 1163.0
+Sample ID: 897.0
 Aspect: General
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
 
 Text:
-Nhóm màu: màu xanh bồ đội hàng sài được. Bền chưa biết
+mua hổm rầy mua, phải sử dụng 1 tuần rồi mới dám đánh giá, máy rất đẹp, đúng như mô tả, chắc chắn sẽ ghé lại cửa hàng vào dịp tới khi mua cái nữa. cho cửa hàng 5 sao
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -622,13 +633,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 41 ---
-Sample ID: 768.0
+Sample ID: 724.0
 Aspect: General
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
 
 Text:
-Đã nhận điện thoại 📱 nhé anh em, tiếc là không săn sale được giá 6.800.000d. Đây là lần đầu tiên dùng điện thoại Honor, hi vọng sẽ bền.
+Sau một khoảng thời gian sử dụng thấy ổn. Không bị lỗi hệ thống. Nhưng bị một lỗi là màn hình đốm trắng ( hơi mờ ). Pin hơn 2400. Giá 570k cũng được.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -637,13 +648,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 42 ---
-Sample ID: 750.0
+Sample ID: 99.0
 Aspect: General
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
 
 Text:
-Tôi đã đặt mua của cửa hàng 3 chiếc một lúc, nhận hàng đúng chất lượng như quảng cáo...
+Đúng với mô tả: đúng máy còn rất mới độ bền thì chưa biết ra sao.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -652,13 +663,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 43 ---
-Sample ID: 650.0
+Sample ID: 527.0
 Aspect: General
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+True: Neutral | Predicted: Negative
+Error Type: Neutral -> Negative (appears 8x)
 
 Text:
-Chất lượng sản phẩm: toot redmi note 14 chính hãng ra mắt vào ngày 10/01/2025 tại việt nam sở hữu ai mới nhất kèm chip mediatek helio g99-ultra mạnh mẽ đi cùng camera 108mp.
+Chất lượng sản phẩm: bình thường 
+Đúng với mô tả: không mới mua về chưa bao lâu pin phù, dở
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -667,13 +679,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 44 ---
-Sample ID: 510.0
+Sample ID: 1482.0
 Aspect: General
 True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+Error Type: Neutral -> Positive (appears 7x)
 
 Text:
-Thấy chơi liên quân hơi chậm xíu á. Còn lại cũng ok, xài 1 time mới biết nè.
+Hàng chính hãng của nhà sản xuất thì khỏi phải chê rồi, phải dùng hết chức năng mới biết hàng có bị lỗi gì không
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -682,13 +694,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 45 ---
-Sample ID: 63.0
+Sample ID: 1448.0
 Aspect: General
 True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+Error Type: Neutral -> Positive (appears 7x)
 
 Text:
-Điện thoại oke có thể up android 14, sẽ cập nhật thêm tình trạng nếu có, cốc cáp sạc khác loại
+Phân loại sản phẩm: 8/128 đen hhhgg
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -697,13 +709,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 46 ---
-Sample ID: 1305.0
+Sample ID: 1248.0
 Aspect: General
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
+True: Neutral | Predicted: Positive
+Error Type: Neutral -> Positive (appears 7x)
 
 Text:
-Quảng cáo trong hệ thống đúng quá nhiều quảng cáo. Không ngờ một chiếc điện thoại chính hãng mà lại có quảng cáo cài cắm sẵn trong cả hệ thống. Từ trình quản lý file cho đến app dọn rác, cứ mở lên là thấy quảng cáo. Trải nghiệm như sử dụng máy giá rẻ.
+Sản phẩm đúng với mô tả, bê ngoài 99%, máy chức năng đây đủ. Bộ phụ kiện tặng có đầy đủ.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -712,13 +724,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 47 ---
-Sample ID: 1222.0
+Sample ID: 1175.0
 Aspect: General
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
+True: Neutral | Predicted: Positive
+Error Type: Neutral -> Positive (appears 7x)
 
 Text:
-sản phẩm tốt, bền hay không thì để mình sử dụng một khoảnh thời gian thì mới buêts được
+Màu sắc: bạc 
+Phân loại: fullbox mới nhận hàng, Máy cài sẵn mimui13
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -727,13 +740,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 48 ---
-Sample ID: 996.0
+Sample ID: 800.0
 Aspect: General
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
+True: Neutral | Predicted: Positive
+Error Type: Neutral -> Positive (appears 7x)
 
 Text:
-Sản phẩm đúng như mô tả. Sử dụng cũng ưng, để một thời gian xem có bền không.
+Tới hiện tại chạy vẫn ổn chưa có vấn đề
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -742,13 +755,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 49 ---
-Sample ID: 372.0
+Sample ID: 732.0
 Aspect: General
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
+True: Negative | Predicted: Neutral
+Error Type: Negative -> Neutral (appears 4x)
 
 Text:
-Cửa hàng đóng gói giao hàng hơi chậm xíu vì hàng không sẵn, được cái đóng gói kĩ càng, điện thoại sử dụng tốt, hiện tại chưa thấy có lỗi gì
+không biết hàng onl với hàng ngoài store có giống nhau không mà mua onl sử dụng hôm trước hôm sau nè các bác:))) để điện thoại trong túi quần lôi ra cái như này ạ. Không hề làm rơi vì vừa mua sử dụng chưa được 1 ngày giữ như gì luôn. Như hàng mã vậy trờiiii
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -757,13 +770,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 50 ---
-Sample ID: 59.0
-Aspect: General
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
+Sample ID: 881.0
+Aspect: Packaging
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Nhóm màu: màu đen đúng sản phẩm đã đặt
+Màu sắc: hồng ram/bộ nhớ: ram 8g/128g giao nhầm màu nhưng màu này cũng đẹp máy còn mới, trơn tru loa thoại nhỏ cửa hàng hỗ trợ nhiệt tình
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -772,13 +785,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 51 ---
-Sample ID: 1280.0
-Aspect: General
-True: Neutral | Predicted: Negative
-Error Type: Neutral -> Negative (appears 6x)
+Sample ID: 779.0
+Aspect: Packaging
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Vk tưởng ip không. cứ ủa ủa ip mà sao kỳ vậy 🤣🤣
+giao hàng nhanh. đóng gói ẩu không có chống sốp. chất lượng hàng phù hợp giá tiền.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -787,13 +800,15 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 52 ---
-Sample ID: 506.0
-Aspect: General
-True: Neutral | Predicted: Negative
-Error Type: Neutral -> Negative (appears 6x)
+Sample ID: 1338.0
+Aspect: Packaging
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Chuyển từ iphone sáng Androi nên bỡ ngỡ chưa sử dụng được nhiều tính năng của máy Samsung, Iphone nhàm chán quá sang đây mất nhiều thời gian để tập sử dụng
+Chất lượng sản phẩm: apple iphone 16 pro max chất lượng tuyệt vời 
+Tính năng nổi bật: tính năng nổi bật thì khỏi phải bàn 
+Đúng với mô tả: đúng với mô tả sản phẩm giao đến sản phẩm hộp ngoài bị móp méo không có nguyên vẹn đẹp, và khui mở ra thì bọc kĩ nhưng hộp iphone nó cũng móp méo. nên cũng sợ ...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -802,13 +817,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 53 ---
-Sample ID: 31.0
-Aspect: General
-True: Neutral | Predicted: Negative
-Error Type: Neutral -> Negative (appears 6x)
+Sample ID: 1126.0
+Aspect: Packaging
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-sản phẩm sale của shop hình như không có màu trắng nên ai mua thì lưu ý nhé. cường lực khá bán vân tay đó
+Đã nhận hàng bọc cẩn thận, nguyên seal, màu điện thoại không đẹp lắm. cam chụp tạm được, sử dụng 1 thời gian xem có ok không rồi phản hồi lại sau
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -817,13 +832,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 54 ---
-Sample ID: 1363.0
+Sample ID: 910.0
 Aspect: Packaging
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Chất liệu: đã nhận được hàng rồi chất lượng tốt đóng gói cẩn thận vận chuyển tốt nhân viên giao hàng tận tình tặng 5 sao
+Hàng oke, đóng gói ổn nhưng thà như ở bình thuận thì xuất từ kho bình thuận sẽ mau hơn, chứ tận long an thì hơi bất tiện. Mong hệ thống ghi nhận ý kiến hơn
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -832,13 +847,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 55 ---
-Sample ID: 827.0
+Sample ID: 746.0
 Aspect: Packaging
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-máy ổn, cửa hàng gói hàng hơi lâu
+Chất lượng sản phẩm phần mềm nhiều quảng cáo trải nghiệm tệ. Đúng với mô tả không thông báo có quảng cáo sẵn. Tính năng nổi bật hiệu năng chịu ảnh hưởng quảng cáo lag. Review máy tích hợp app rác pop up quảng cáo làm chậm thiết bị. Pin tụt nhanh hơn bình thường. Đóng gói tốt nhưng phụ kiện thiếu. Ch...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -847,14 +862,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 56 ---
-Sample ID: 777.0
+Sample ID: 590.0
 Aspect: Packaging
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Màu sắc: đen 
-Phân loại sản phẩm: có sạc đã nhận được hàng nhưng cửa hàng giao sai màu đã đặt nhưng cũng tạm chấp nhận cho cửa hàng 5 sao còn chất lượng sẽ đánh giá sau thời gian sử dụng nếu tốt sẽ ủng hộ cửa hàng lâu dài.
+Mỗi tội phải chờ lâu.Từ Nghệ An ra Hà Nội mà cả tuần mới nhận được.Khâu đóng gói và gửi đi cũng lâu.Khâu vận chuyển và giao hàng cũng rất lâu.Khi nhận hàng không được đồng kiểm cũng khá căng và cân não.Chấp nhận xuống tiền nhưng nhờ anh giao hàng quay video để có gì còn khiếu nại được.May quá cửa hà...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -863,13 +877,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 57 ---
-Sample ID: 233.0
+Sample ID: 380.0
 Aspect: Packaging
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Săn Sale giá hời 6,4tr cấu hình cận cao cấp siêu ngon. Nhà bán hàng đóng gói và vận chuyển hơi lâu
+Review sau vài cập nhật máy vẫn còn lỗi app hay lag. Pin vẫn ổn nhưng hiệu năng nhiều khi treo. Đóng gói tốt nhưng vận chuyển lâu. Chăm sóc khách hàng mất thời gian không chịu trách nhiệm rõ ràng
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -878,13 +892,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 58 ---
-Sample ID: 152.0
+Sample ID: 83.0
 Aspect: Packaging
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Sau 10 ngày sử dụng điện thoại quá ok sử dụng mượt mà,đội ngũ nhân viên cửa hàng nhiệt tình,quá tốt la.GÓP Ý là cửa hàng sau gói hàng điện thoại nên có hộp thay vì chỉ cuốn mỗi màng bảo vệ chống sốc nhé.Còn lại là 10đ
+hàng nguyên seal. nhưng yêu cầu xuất hoá đơn lại thì nhất quyết không xuất. 5 sao sản phẩm. 1 sao hỗ trợ.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -893,13 +907,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 59 ---
-Sample ID: 203.0
+Sample ID: 276.0
 Aspect: Packaging
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
 
 Text:
-Đúng với mô tả: đúng sản phẩm nguyên seal. Unbox và active máy chạy mượt. Chạy tác vụ bình thường thì rất tốt. Không có nhu cầu các loại app hay game nặng nên không để ý. Tuy nhiên có thể do là dòng giá rẻ nên độ hoàn thiện chưa tốt. Cạnh đáy máy có mấy vết sơn bị nổ. Cạnh viền dưới trái có vết như ...
+Hàng được giao tới, phụ kiện bên trong đủ.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -908,13 +922,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 60 ---
-Sample ID: 1211.0
+Sample ID: 1486.0
 Aspect: Performance
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-chụp đẹp, thiết kế đẹp máy chính hãng, còn nguyên seal đã được kích hoạt bảo hành 1 tháng chụp ảnh đẹp, nét. Thiết kế đẹp máy khá nóng trong nhiều tác vụ. Thời lượng pin khoảng 6-7h hỗn hợp wifi+4g nhưng nếu chụp ảnh nhiều ngoài trời nắng thì pin hẹo nhanh
+Chất lượng sản phẩm: khá tốt 
+Đúng với mô tả: có mình thấy máy sử dụng ở mức tốt trong tầm giá, nhưng mà chỉ nên sử dụng 1 trình duyệt ví dụ chỉ call mess và không được làm gì khác vì máy sẽ chậm. máy đôi khi bị chớp màn, trong khoảng 1-2s. dung lượng pin tốt. nếu nhu cầu là 1 con máy rẻ, sử dụng k...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -923,15 +938,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 61 ---
-Sample ID: 1088.0
+Sample ID: 1365.0
 Aspect: Performance
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Chất lượng sản phẩm: dùg mới biết. 
-Đúng với mô tả: đúng 
-Tính năng nổi bật: game quá ổn người khác thấy được tai nghe... mình không có
+mua máy phải đổi lần 2 mới tạm ổn, máy chạy chậm lắm mặc dù cấu hình cao (như ảo ấy), lỗ sạc là sử dụng đầu sạc cũ trước cả đầu c á, sạc pin vào rất lâu. thôi sử dụng tạm để học tập. cửa hàng thì phục vụ cực kì nhiệt tình, giao hàng cũng nhanh nhẹn, gói hàng cũng kỹ, có phiếu bảo hành.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -940,14 +953,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 62 ---
-Sample ID: 937.0
+Sample ID: 1034.0
 Aspect: Performance
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Chất lượng sản phẩm: tốt
-Lưới mạng xã hội tốt. còn game độ phân giải thấp thì tốt độ phân giải cao như liên quân thì không được nhé.
+Lần đầu tiên mua điện thoại trên sọp pe, mình check giá ngoài tgdđ thì thấy tầm 2tr9, lên live săn chỉ có 2.024.000🐟, khi nhận cũng hồi hộp lắm về mở ra xem thì thấy đúng hàng new đàng hoàng đầy đủ phụ kiện, cửa hàng có gói chống sốc niêm phong rất uy tín, do mua làm điện thoại phụ nên tầm 2 củ là đ...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -956,180 +968,10 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 63 ---
-Sample ID: 850.0
+Sample ID: 193.0
 Aspect: Performance
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Đúng với mô tả: tốt 
-Chất lượng sản phẩm: đa nhiệm hơi kém bật ram ảo lên đỡ được tí 
-Tính năng nổi bật: pin trâu sạc 90w, ip68
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 64 ---
-Sample ID: 822.0
-Aspect: Performance
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Mới dùng, cầm nắm thích, máy đẹp hơn mình nghĩ nhưng mà thỉnh thoảng có lag nhẹ nhé, hy vọng sẽ ổn định hơn
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 65 ---
-Sample ID: 794.0
-Aspect: Performance
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Bị trễ thông báo zl 2-20p Có lag khi lướt sọpe quá lâu Chơi roblox ổn, không nóng máy Emoji cute Cam màu lạ giống máy digital, khá ưng, cam locket 0 bị mờ, Video 0 chống rung, hơi mờ, không CÓ CAM GÓC RỘNG:( Loa ok, nhưng chặn lại thì không nghe rõ không có app album riêng, fải tải bên thứ 3 Mua vì ...
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 66 ---
-Sample ID: 42.0
-Aspect: Performance
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Màn hình lưu ảnh nhẹ camera ngon đó. Tự tin khẳng định pro thì 5tr quay đầu khó có con nào có camera cân bằng như vầy. Form cầm thì giống iphone 13 thường nhưng mà dài hơn so với 13. Mình cầm thì khá chắc tay còn xperia 5 thì bé quá. Lưu ảnh nhẹ nhưng mà màn còn rất ngon ai có nhu cầu máy phụ thôi h...
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 67 ---
-Sample ID: 713.0
-Aspect: Performance
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
-
-Text:
-dù 45mA nhưng tụt pin rất nhanh. Hiệu suất mạnh mướt
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 68 ---
-Sample ID: 581.0
-Aspect: Performance
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
-
-Text:
-pin chỉ còn 90% sau 3 tháng. tuổi thọ pin quá thấp. pin kém. pin chai nhanh quá mức, phải sạc liên tục. hiệu năng vẫn ổn
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 69 ---
-Sample ID: 360.0
-Aspect: Performance
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
-
-Text:
-
-Thời lượng pin:hơi kém do chai pin 📸⚡ 
-Hiệu suất: ổn định máy hơi nóng hiệu suất sử dụng bình thường mọi áp đều sử dụng được hết không bị văng, máy không có vân tay. Chất lượng camera tốt tốt
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 70 ---
-Sample ID: 203.0
-Aspect: Performance
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
-
-Text:
-Đúng với mô tả: đúng sản phẩm nguyên seal. Unbox và active máy chạy mượt. Chạy tác vụ bình thường thì rất tốt. Không có nhu cầu các loại app hay game nặng nên không để ý. Tuy nhiên có thể do là dòng giá rẻ nên độ hoàn thiện chưa tốt. Cạnh đáy máy có mấy vết sơn bị nổ. Cạnh viền dưới trái có vết như ...
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 71 ---
-Sample ID: 944.0
-Aspect: Performance
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
-
-Text:
-Chất lượng sản phẩm: toots 
-Tính năng nổi bật: chơi game ổn chơi game gì cũng được không chơi được roblox
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 72 ---
-Sample ID: 1314.0
-Aspect: Performance
-True: Neutral | Predicted: Negative
-Error Type: Neutral -> Negative (appears 6x)
-
-Text:
-check ra là helio p35 không phải là snapdragon 460
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 73 ---
-Sample ID: 223.0
-Aspect: Performance
-True: Neutral | Predicted: Negative
-Error Type: Neutral -> Negative (appears 6x)
-
-Text:
-Hiệu năng chỉ ở mức trung bình, không đáng tiền. Ảnh chụp bị out nét liên tục. Chăm sóc khách hàng hứa hẹn gọi lại nhưng không bao giờ gọi.
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 74 ---
-Sample ID: 578.0
-Aspect: Performance
-True: Negative | Predicted: Neutral
-Error Type: Negative -> Neutral (appears 3x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
 Lướt mạng xã hội tốt. Còn game độ phân giải thấp thì tốt độ phân giải cao như liên quân thì không được nhé
@@ -1140,14 +982,187 @@ NOTES: ________________________________________________
 
 --------------------------------------------------------------------------------
 
---- ERROR 75 ---
-Sample ID: 1397.0
-Aspect: Price
+--- ERROR 64 ---
+Sample ID: 141.0
+Aspect: Performance
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Hàng nguyên seal. Mới khui dùng thấy ok. Ngon. không mua được giá sale. Tiếc:((
+Màu sắc: đen 
+Phân loại: likenew 99% sau hơn 20 ngày sử dụng đây là một số lưu ý. Dành cho mọi người nếu quyết định mua máy này mọi tính năng về mạng xã hội tốt nghe gọi tốt ngày đầu tiên mới mua ấy nó sẽ bị hơi lag nhưng mà sử dụng hơn một tuần nó sẽ tối ưu sẽ mượt. Còn về phần chơi game nếu như c...
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 65 ---
+Sample ID: 1459.0
+Aspect: Performance
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
+
+Text:
+Chất lượng sản phẩm: không được vui sản phẩm: sản phẩm không như mô tả mình không hi vọng ở máy 1 triệu mặc dù máy giất mượt và tạm tạm nhưng cửa hàng lại lừa mình sản phẩm 256 gb sau khi mình kiểm tra thấy mấy đã. kick 256 gb còn ram tht chỉ có 128 gb mình hi vọng cửa hàng đưa ra lời giải thích
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 66 ---
+Sample ID: 15.0
+Aspect: Performance
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
+
+Text:
+pin chai rất nhanh. chỉ còn 85% sau 5 tháng. tuổi thọ pin ngắn. pin tụt quá nhanh, dùng chưa được 5 tháng đã thấy kém hẳn rồi. chăm sóc khách hàng bảo là do cách dùng. hiệu năng tạm được
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 67 ---
+Sample ID: 81.0
+Aspect: Performance
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
+
+Text:
+Chất lượng sản phẩm: hiệu năng ở mức tạm được cho các tác vụ hàng ngày. Pin dùng cũng cũng được trong một ngày làm việc nhẹ.
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 68 ---
+Sample ID: 195.0
+Aspect: Price
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
+
+Text:
+Giá tại cửa hàng mình mua làm mình hơi ngộp, mình cảm giác như bị “chịu giá” hơn là được giá tốt.
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 69 ---
+Sample ID: 165.0
+Aspect: Price
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
+
+Text:
+Điện thoại dùng ngon, săn sale nhưng giá chưa ổn lắm, tuy nhiên giao nhanh hơn dự kiến. Ảnh và video mang tính nhận xu
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 70 ---
+Sample ID: 1297.0
+Aspect: Price
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
+
+Text:
+Chất lượng sản phẩm: kém 
+Đúng với mô tả: không 
+Tính năng nổi bật: không lên với giá tiền này thì mình không đòi hỏi nhiều 😗😆😆 mua rẻ thì cũng hên sui xác định bật được 15 phút xong khỏi lên luôn sạc pin không lên nguồn luôn cửa hàng nên làm ăn lại mình cũng không yêu cầu hoàn trả nhưng làm ăn kh...
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 71 ---
+Sample ID: 289.0
+Aspect: Price
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
+
+Text:
+Chất lượng sản phẩm: tệ 
+Đúng với mô tả: quá tệ 
+Tính năng nổi bật: không điện thoại sạc pin được thì ai nói gì, rẻ nên không đòi hỏi, đằng này tặng sạc hư thà đừng tặng, điện thoại thì sạc không dô pin, bán kiểu không có tâm, cũng dẹp sớm à.
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 72 ---
+Sample ID: 124.0
+Aspect: Price
+True: Positive | Predicted: Neutral
+Error Type: Positive -> Neutral (appears 10x)
+
+Text:
+giao hàng nhanh, có mỗi máy không, không có phụ kiện gì kèm theo, sử dụng được trong tầm giá. tiền nào của ấy 😅
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 73 ---
+Sample ID: 1014.0
+Aspect: Price
+True: Neutral | Predicted: Positive
+Error Type: Neutral -> Positive (appears 7x)
+
+Text:
+Màu sắc: đen 8g/128g máy có vẻ đang thay lưng hơi ộp ẹp, lưng hàng lô nên hơi lởm, nhưng giá cũng tạm
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 74 ---
+Sample ID: 1480.0
+Aspect: Shipping
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
+
+Text:
+Đúng với mô tả: đúng mô tả. 
+Tính năng nổi bật: rẻ tốt. mua rất nhiều điện thoại.mua 2 cái 2 tiệm mà tiệm này giao hành không có hộp mất thẩm mỹ quá.còn máy thì chưa rõ do mua sài thấy tốt nên mua thủ chỗ này ship về thấy không thích cho lắm
+
+ERROR_CLASS: _____ (A/B/C/D/E)
+RELABEL_TO: _____
+NOTES: ________________________________________________
+
+--------------------------------------------------------------------------------
+
+--- ERROR 75 ---
+Sample ID: 952.0
+Aspect: Shipping
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
+
+Text:
+Tính năng nổi bật: đóng gói cẩn thận 
+Đúng với mô tả: đúng 
+Tài xế giao hàng chụp hình cccd của tôi trong khi quy trình chỉ cần xuất trình cccd thôi.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1156,15 +1171,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 76 ---
-Sample ID: 470.0
-Aspect: Price
+Sample ID: 771.0
+Aspect: Shipping
 True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Tính năng nổi bật: tốt 
-Đúng với mô tả: bộ nhớ màu sắc đúng, vỏ cũ 89% 
-Chất lượng sản phẩm: 95% máy tạm ổn, săn được mã -200k
+Chuẩn bị nhanh, shopee giao hàng chậm. Đóng gói sản phẩm tốt, đủ số lượng. Sản phẩm đúng thông tin mô tả. Hài lòng.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1173,15 +1186,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 77 ---
-Sample ID: 1439.0
-Aspect: Price
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+Sample ID: 589.0
+Aspect: Shipping
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Tính năng nổi bật: bị tráo sạc,chip với ram rom ảo 
-Chất lượng sản phẩm: chỉ có vỏ là mới. còn bên trog nát lắm 
-Đúng với mô tả: không hề. cửa hàng thay đổi linh kiện rồi chia sẻ cho anh em nào mua sau thì nên mua cửa hàng mall nhé. cửa hàng bán máy dựng thay đổi thông tin ram rom ảo đánh lừa. quả...
+Đóng gói cẩn thận. Giao hàng chưa nhanh lắm. Sản phẩm đúng mô tả. Chưa biết có tốt như quảng cáo không. Được giảm giá nên giá tốt
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1190,13 +1201,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 78 ---
-Sample ID: 1036.0
-Aspect: Price
+Sample ID: 1215.0
+Aspect: Shipping
 True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Săn sale được giá 6tr8 tặng full combo tai nghe, đồng hồ. Thỉnh thoảng vào check canh sale giá trên 7cu3 đừng mua nhé anh em. T mua về 6tr8 bán lại được 7tr5 lời 700k + combo tai nghe, đồng hồ. Kkk
+Phân loại sản phẩm: máy likenew 99% lần đầu mua hàng giá trị cao cũng hơi rén nhưng nhận hàng tốt, nguyên seal, máy mới toanh, đẹp. Hết màu xanh nên cửa hàng gửi bù cho full box màu đen, nhận hàng siêu ưng, giao vào tphcm tầm 4 ngày đúng dự kiến.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1205,14 +1216,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 79 ---
-Sample ID: 890.0
-Aspect: Price
+Sample ID: 1050.0
+Aspect: Shipping
 True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Chất lượng sản phẩm: tệ
-Dịch vụ trả lời thắc mắc của khách hàng quá tệ, hỏi 1 đằng trả lời 1 nẻo. Máy vừa mua sử dụng chưa được 1 ngày mà đứng đơ màn hình, phải chờ 1 lát khởi động lại máy. Hỏi cửa hàng thì cửa hàng kêu mang máy lên trạm đổi, ối zồi ôi luôn. Tác vụ thì không nhạy lắm đâu, cửa sổ th...
+Nhóm màu: đen 
+Dung lượng lưu trữ: 128gb mua điện thoại qua ứng dụng lazada lần đầu nhưng rất hài lòng về chất lượng. Thời gian giao hàng hơi lâu nhưng cũng xứng đáng để chờ. Nên mua nhé mọi người👍
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1221,13 +1232,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 80 ---
-Sample ID: 1026.0
-Aspect: Price
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
+Sample ID: 656.0
+Aspect: Shop_Service
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-Tính năng nổi bật: máy đóng góp kĩ sản phẩm đúng mô tả nha mọi người. cửa hàng rất nhiệt tình, uy tính ạ. mình mua được 17xx.
+Nhóm màu: đen hàng nhận đúng yêu cầu, oke. hàng 99% nên chỉ có máy và sạc. nói chung là ổn trong tầm giá. bảo hành 6 tháng mà không bảo hành nguồn, với màn hình là hơi lo.. đang test máy xem thế nào.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1236,13 +1247,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 81 ---
-Sample ID: 563.0
-Aspect: Price
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
+Sample ID: 13.0
+Aspect: Shop_Service
+True: Negative | Predicted: Positive
+Error Type: Negative -> Positive (appears 29x)
 
 Text:
-điện thoại mới sử dụng mà lag lắm, lâu lâu đang làm tự dưng đứng máy xong chờ hơn chục phút nó tự tắt đi bật lại, lưu trữ ảnh cũng không được bao nhiêu. Nói tóm lại tạm với tầm giá thôi. (hình ảnh chỉ mang tính chất nhận xu)
+Lần đầu mua điện thoại trên đây săn được voucher 3 triệu, giảm còn 23tr550k. cửa hàng gói hàng chắc chắn, tem niêm phong rõ ràng, có cái cửa hàng trả lời tin nhắn khách hơi chậm nhớ khắc phục lại nhé. '-'
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1251,14 +1262,14 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 82 ---
-Sample ID: 1198.0
-Aspect: Price
-True: Negative | Predicted: Neutral
-Error Type: Negative -> Neutral (appears 3x)
+Sample ID: 728.0
+Aspect: Shop_Service
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Nhóm màu: vàng 
-Dung lượng lưu trữ: 6gb+128gb mới mua, chờ thời gian mới biết, thấy quảng cáo trên video tưởng là được tặng củ sạc, tuy nhiên, khi mua với giá 4639k thì không được tặng gì, với giá này, mọi người có thể cân nhắc a16 5g, giá 4939k nhưng được tặng của sạc và tại nghe nhé!
+Phiên bản: bản 2 sim 
+Dung lượng lưu trữ: 256gb mình đặt máy 256gb. Cửa hàng gửi máy chỉ có 128gb. Yêu cầu cửa hàng đổi máy gấp. Sau khi làm việc với cửa hàng mình tốt rồi nhé
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1267,16 +1278,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 83 ---
-Sample ID: 639.0
-Aspect: Shipping
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Sample ID: 126.0
+Aspect: Shop_Service
+True: Positive | Predicted: Negative
+Error Type: Positive -> Negative (appears 28x)
 
 Text:
-Đúng với mô tả: đúng 
-Tính năng nổi bật: máy mạnh 
-Chất lượng sản phẩm: tốt
-Không biết nói gì vì nò là s25 ultra mà. Ngoại trừ quả giao hàng muộn ra còn lại siêu đỉnh.
+Sản phẩm: sản phẩm không như mô tả làm ăn vớ vẩn. Hàng giao không đúng mô tả. Có video mở hàng đầy đủ. Có liên hệ cửa hàng ngay sau khi mở gói hàng. Cửa hàng đồng ý cho trả hàng. Có quay video đóng gói hàng. Chờ lâu không thấy shiper lấy hàng. Đến khi có đơn hàng mới, yêu cầu shiper mang hàng về thì...
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1285,15 +1293,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 84 ---
-Sample ID: 622.0
-Aspect: Shipping
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Sample ID: 745.0
+Aspect: Shop_Service
+True: Neutral | Predicted: Negative
+Error Type: Neutral -> Negative (appears 8x)
 
 Text:
-Đúng với mô tả: đúng 
-Chất lượng sản phẩm: tốt
-Có một chút về vấn đề ship nhưng máy tốt mọi người nên mua
+điện thoại mới, chế độ bảo hành 12th. qua thời gian sử dụng điện thoại bắt sóng yếu nghe lúc được lúc không. bắt sóng yếu siều. thất vọng tràn trề.
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1302,13 +1308,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 85 ---
-Sample ID: 193.0
-Aspect: Shipping
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
+Sample ID: 1305.0
+Aspect: Shop_Service
+True: Negative | Predicted: Neutral
+Error Type: Negative -> Neutral (appears 4x)
 
 Text:
-Chất lượng sản phẩm khá tốt. Hàng sau khi nhận hài lòng. Về giá cả so sánh thì thấy rẻ hơn các cửa hàng khác. Thời gian tư khi đặt hàng đến khi nhận hàng tuy đặt hỏa tốc nhưng mất 3 ngày, sản phẩm được cửa hàng chuẩn bị đóng gói khá cẩn thận. Sẽ tiếp tục ủng hộ mua hàng của cửa hàng.
+Sản phẩm đóng gói cẩn thận đúng hàng chính hãng nhưng không có đơn vị nhập khẩu không biết bảo hành sao
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____
@@ -1317,232 +1323,13 @@ NOTES: ________________________________________________
 --------------------------------------------------------------------------------
 
 --- ERROR 86 ---
-Sample ID: 24.0
-Aspect: Shipping
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Màu sắc: xanh ngọc 
-Dung lượng lưu trữ: 128gb cửa hàng bọc chống sốc 2 lần cẩn thận lắm. đi kèm điện thoại là 1 bộ sạc nhanh 25w + 1 bộ được tặng nữa là 2. à có phiếu bảo hành nữa.
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 87 ---
-Sample ID: 1017.0
-Aspect: Shipping
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
-
-Text:
-Hình ảnh và video mang tính chất minh hoạ điện thoại đẹp, đầy đủ các thứ phụ kiện đi kèm Giao cũng hơi nhanh….
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 88 ---
-Sample ID: 443.0
-Aspect: Shipping
-True: Positive | Predicted: Negative
-Error Type: Positive -> Negative (appears 25x)
-
-Text:
-Tình trạng: 83% 
-Nhóm màu: vàng goi hàng bao bì đẹp,giao hàng thân thiết, máy giống mô tả nhưng thiếu cục sạc,cửa hàng gửi thêm giúp mình nha
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 89 ---
-Sample ID: 692.0
-Aspect: Shipping
+Sample ID: 175.0
+Aspect: Shop_Service
 True: Negative | Predicted: Neutral
-Error Type: Negative -> Neutral (appears 3x)
+Error Type: Negative -> Neutral (appears 4x)
 
 Text:
-ship "chậm"
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 90 ---
-Sample ID: 1470.0
-Aspect: Shop_Service
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Trải nghiệm vài ngày thì thấy máy ngon mượt mạnh. Tầm giá này chắc No.1 rồi. cửa hàng bán hàng chất lượng, nhưng mình góp ý cửa hàng nên trả lời những thắc mắc của khách sớm hơn. Mình nhắn mà cửa hàng lâu trả lời quá.
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 91 ---
-Sample ID: 1264.0
-Aspect: Shop_Service
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Chất lượng sản phẩm: máy lag kinh khủng, có lúc còn không lên nguồn được, máy không sử dụng được sim, phần góc máy vỡ nhẹ và mình có liên hệ với cửa hàng qua cả zalo lẫn shopee nhưng không hề được phản hồi. Trước khi nhận hàng cửa hàng trả lời cũng nhiệt tình mà ạ. Mình đọc bình luận thấy cửa hàng u...
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 92 ---
-Sample ID: 1092.0
-Aspect: Shop_Service
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Đúng với mô tả: tốt 
-
-Tính năng nổi bật: tốt
-3 ngày mới nhận được hàng nha nôn quá trời, ngày 11/9 mới nhận hàng mà kích hoạt hạn bảo hành trước 1ngày ah nhận hàng ưng đóng gói cẩn thận sử dụng máy rất thích
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 93 ---
-Sample ID: 764.0
-Aspect: Shop_Service
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Máy ổn giao hàng nhanh, nên dán cho khách hàng luôn chứ tặng miếng dán kèm điện thoại khách hàng không biết dán gây xấu đến máy
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 94 ---
-Sample ID: 724.0
-Aspect: Shop_Service
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Đúng với mô tả: hàng đúng mô tả 
-Chất lượng sản phẩm: sản phẩm còn nguyên seal, nhưng trôi bảo hành 2 tháng. máy khá ổn trong tầm giá.
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 95 ---
-Sample ID: 146.0
-Aspect: Shop_Service
-True: Negative | Predicted: Positive
-Error Type: Negative -> Positive (appears 40x)
-
-Text:
-Sản phẩm ok nếu đánh giá thiết thực là giao hàng hơi lâu với khi nhận được hàng thiếu phiếu bao hành của cửa hàng 😢😢😢
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 96 ---
-Sample ID: 1351.0
-Aspect: Shop_Service
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
-
-Text:
-Sản phẩm ok, đóng gói chắc chắn tới tay ng dùng, cửa hàng kêu sản phẩm đã kích hoạt bảo hành không biết lúc có vấn đề sẽ xử lý như thế nào thôi
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 97 ---
-Sample ID: 1062.0
-Aspect: Shop_Service
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
-
-Text:
-Đúng với mô tả: hmmmm 
-
-Lúc order thì hết màu tím, nên đành phải chọn màu đen. Ngủ dậy sáng hôm sau thì đã có hàng mới màu tím, nhắn tin hỏi cửa hàng có đổi không thì được báo là sẽ note cho bên kho để họ đổi lại đơn. Mà khi nhận vẫn là màu đen, cũng không có confirm trước đó là đổi thành công hay...
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 98 ---
-Sample ID: 443.0
-Aspect: Shop_Service
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
-
-Text:
-Tình trạng: 83% 
-Nhóm màu: vàng goi hàng bao bì đẹp,giao hàng thân thiết, máy giống mô tả nhưng thiếu cục sạc,cửa hàng gửi thêm giúp mình nha
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 99 ---
-Sample ID: 75.0
-Aspect: Shop_Service
-True: Neutral | Predicted: Positive
-Error Type: Neutral -> Positive (appears 15x)
-
-Text:
-bước đầu sử dụng tốt. không biết có bền không nhưng ban đầu sử dụng là tốt. mua cho người lớn tuổi sử dụng.. thấy ghi bảo hành 12 tháng
-
-ERROR_CLASS: _____ (A/B/C/D/E)
-RELABEL_TO: _____
-NOTES: ________________________________________________
-
---------------------------------------------------------------------------------
-
---- ERROR 100 ---
-Sample ID: 159.0
-Aspect: Shop_Service
-True: Positive | Predicted: Neutral
-Error Type: Positive -> Neutral (appears 11x)
-
-Text:
-sản phẩm kích hoạt bảo hành đầu tháng 6, tặng cửa hàng 5 stars
+chăm sóc khách hàng đưa ra hướng dẫn chung chung
 
 ERROR_CLASS: _____ (A/B/C/D/E)
 RELABEL_TO: _____

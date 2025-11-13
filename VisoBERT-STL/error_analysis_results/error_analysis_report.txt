@@ -1,0 +1,40 @@
+======================================================================
+ERROR ANALYSIS REPORT
+ALL LABELED ASPECTS (Positive/Negative/Neutral)
+(Excludes only unlabeled aspects)
+======================================================================
+
+ OVERALL STATISTICS
+----------------------------------------------------------------------
+Total labeled aspects:           2,586
+  - Positive: 1,448
+  - Negative: 926
+  - Neutral:  212
+Unique sentences with labels:     1,460
+Correct predictions:             2,500
+Errors:                          86
+Micro accuracy (all labeled aspects): 96.67%
+Micro error rate:                    3.33%
+Macro accuracy (mean per aspect):   96.39%
+
+WARNING:  NOTE: Includes all labeled aspects (positive/negative/neutral)
+   (Only unlabeled aspects are excluded)
+
+ ERRORS BY ASPECT
+----------------------------------------------------------------------
+Battery         Accuracy: 95.42%  Errors: 12/262
+Camera          Accuracy: 93.98%  Errors: 10/166
+Design          Accuracy: 97.14%  Errors: 8/280
+Display         Accuracy: 94.87%  Errors: 6/117
+General         Accuracy: 96.82%  Errors: 13/409
+Packaging       Accuracy: 95.98%  Errors: 10/249
+Performance     Accuracy: 96.65%  Errors: 8/239
+Price           Accuracy: 98.10%  Errors: 6/315
+Shipping        Accuracy: 98.19%  Errors: 6/331
+Shop_Service    Accuracy: 96.79%  Errors: 7/218
+
+ ERRORS BY SENTIMENT
+----------------------------------------------------------------------
+positive     Accuracy: 97.38%  Errors: 38/1448
+negative     Accuracy: 96.44%  Errors: 33/926
+neutral      Accuracy: 92.92%  Errors: 15/212

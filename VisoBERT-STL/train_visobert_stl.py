@@ -26,6 +26,7 @@ import subprocess
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, Any, Optional, Tuple
 
 # Stage 1: Aspect Detection
@@ -81,6 +82,7 @@ def train_epoch_ad(
     device: torch.device,
     focal_loss_fn: BinaryFocalLoss,
     scaler: Optional[torch.cuda.amp.GradScaler],
+    max_grad_norm: float = 1.0,
 ) -> float:
     """Train one epoch for Aspect Detection"""
     model.train()
@@ -102,12 +104,13 @@ def train_epoch_ad(
         
         if use_amp:
             scaler.scale(loss).backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=max_grad_norm)
             scaler.step(optimizer)
             scaler.update()
         else:
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=max_grad_norm)
             optimizer.step()
         
         scheduler.step()
@@ -126,7 +129,11 @@ def evaluate_ad(
     focal_loss_fn: Optional[BinaryFocalLoss] = None,
     threshold: float = 0.5
 ) -> Dict[str, Any]:
-    """Evaluate Aspect Detection model"""
+    """Evaluate Aspect Detection model
+    
+    All metrics are macro-averaged (unweighted average across aspects).
+    This ensures that aspects with different numbers of samples are fairly evaluated.
+    """
     model.eval()
     
     all_preds = []
@@ -161,6 +168,7 @@ def evaluate_ad(
     avg_loss = total_loss / len(dataloader) if focal_loss_fn is not None else None
     
     # Per-aspect metrics (AD stage includes all 11 aspects, including "Others")
+    # Each aspect is evaluated independently (binary classification)
     aspect_metrics = {}
     for i, aspect in enumerate(aspect_names):
         acc = accuracy_score(all_labels[:, i], all_preds[:, i])
@@ -175,7 +183,8 @@ def evaluate_ad(
             'f1': f1
         }
     
-    # Overall metrics (F1 Macro: average of per-aspect metrics, including "Others")
+    # Overall metrics: Macro-averaged (unweighted mean across all aspects)
+    # This ensures fair evaluation regardless of aspect sample sizes
     overall_acc = np.mean([m['accuracy'] for m in aspect_metrics.values()])
     overall_p = np.mean([m['precision'] for m in aspect_metrics.values()])
     overall_r = np.mean([m['recall'] for m in aspect_metrics.values()])
@@ -226,19 +235,19 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
     # Datasets
     print("\nLoading datasets...")
     train_dataset = AspectDetectionDataset(
-        config['paths']['train_file'],
+        config['paths']['ad_train_file'],
         tokenizer,
         max_length=config['model']['max_length']
     )
     
     val_dataset = AspectDetectionDataset(
-        config['paths']['validation_file'],
+        config['paths']['ad_validation_file'],
         tokenizer,
         max_length=config['model']['max_length']
     )
     
     test_dataset = AspectDetectionDataset(
-        config['paths']['test_file'],
+        config['paths']['ad_test_file'],
         tokenizer,
         max_length=config['model']['max_length']
     )
@@ -251,9 +260,39 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
     batch_size = config['training'].get('per_device_train_batch_size', 16)
     eval_batch_size = config['training'].get('per_device_eval_batch_size', 32)
     
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
-    val_loader = DataLoader(val_dataset, batch_size=eval_batch_size, shuffle=False, num_workers=2)
-    test_loader = DataLoader(test_dataset, batch_size=eval_batch_size, shuffle=False, num_workers=2)
+    # DataLoader settings
+    num_workers = config['training'].get('dataloader_num_workers', 2)
+    pin_memory = config['training'].get('dataloader_pin_memory', True)
+    prefetch_factor = config['training'].get('dataloader_prefetch_factor', 4)
+    persistent_workers = config['training'].get('dataloader_persistent_workers', True)
+    
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        prefetch_factor=prefetch_factor if num_workers > 0 else None,
+        persistent_workers=persistent_workers if num_workers > 0 else False
+    )
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=eval_batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        prefetch_factor=prefetch_factor if num_workers > 0 else None,
+        persistent_workers=persistent_workers if num_workers > 0 else False
+    )
+    test_loader = DataLoader(
+        test_dataset,
+        batch_size=eval_batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        prefetch_factor=prefetch_factor if num_workers > 0 else None,
+        persistent_workers=persistent_workers if num_workers > 0 else False
+    )
     
     # Model
     print("\nCreating AD model...")
@@ -276,7 +315,7 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
     
     if ad_config.get('focal_alpha') == 'auto':
         alpha = calculate_binary_alpha_auto(
-            config['paths']['train_file'],
+            config['paths']['ad_train_file'],
             train_dataset.aspects,
             method='inverse_freq'
         )
@@ -293,10 +332,22 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
     # Optimizer & Scheduler
     num_epochs = ad_config.get('epochs', 3)
     learning_rate = config['training'].get('learning_rate', 2e-5)
-    optimizer = AdamW(model.parameters(), lr=learning_rate, weight_decay=0.01)
+    weight_decay = config['training'].get('weight_decay', 0.01)
+    adam_beta1 = config['training'].get('adam_beta1', 0.9)
+    adam_beta2 = config['training'].get('adam_beta2', 0.999)
+    adam_epsilon = config['training'].get('adam_epsilon', 1e-8)
+    
+    optimizer = AdamW(
+        model.parameters(),
+        lr=learning_rate,
+        weight_decay=weight_decay,
+        betas=(adam_beta1, adam_beta2),
+        eps=adam_epsilon
+    )
     
     total_steps = len(train_loader) * num_epochs
-    warmup_ratio = config['training'].get('warmup_ratio', 0.06)
+    warmup_ratio = ad_config.get('warmup_ratio',
+                                 config['training'].get('warmup_ratio', 0.06))
     warmup_steps = int(warmup_ratio * total_steps)
     
     scheduler = get_cosine_schedule_with_warmup(
@@ -310,15 +361,29 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
     print(f"   Batch size: {batch_size}")
     print(f"   Learning rate: {learning_rate}")
     print(f"   Total steps: {total_steps}")
+    print(f"   Warmup ratio: {warmup_ratio}")
+    print(f"   Warmup steps: {warmup_steps}")
     
     # Training loop
     print("\n" + "="*80)
     print("Starting AD Training")
     print("="*80)
     
+    # Early stopping setup
+    early_stopping_patience = ad_config.get('early_stopping_patience', 
+                                            config['training'].get('early_stopping_patience', 4))
+    early_stopping_threshold = ad_config.get('early_stopping_threshold',
+                                             config['training'].get('early_stopping_threshold', 0.0005))
+    patience_counter = 0
     best_f1 = 0.0
     history = []
     scaler = torch.cuda.amp.GradScaler(enabled=torch.cuda.is_available())
+    
+    print(f"\nEarly Stopping Configuration:")
+    print(f"   Patience: {early_stopping_patience} epochs")
+    print(f"   Threshold: {early_stopping_threshold:.6f} (minimum F1 improvement)")
+    
+    max_grad_norm = config['training'].get('max_grad_norm', 1.0)
     
     for epoch in range(1, num_epochs + 1):
         print(f"\n{'='*80}")
@@ -327,7 +392,7 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
         logging.info(f"AD Epoch {epoch}/{num_epochs}")
         
         # Train
-        train_loss = train_epoch_ad(model, train_loader, optimizer, scheduler, device, focal_loss, scaler)
+        train_loss = train_epoch_ad(model, train_loader, optimizer, scheduler, device, focal_loss, scaler, max_grad_norm)
         print(f"\nTrain Loss: {train_loss:.4f}")
         logging.info(f"AD Train Loss: {train_loss:.4f}")
         
@@ -359,9 +424,14 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
             history_entry['val_loss'] = val_loss
         history.append(history_entry)
         
-        # Save best model
-        if val_metrics['overall_f1'] > best_f1:
-            best_f1 = val_metrics['overall_f1']
+        # Check for improvement and early stopping
+        current_f1 = val_metrics['overall_f1']
+        improvement = current_f1 - best_f1
+        
+        if improvement > early_stopping_threshold:
+            # Significant improvement: reset patience and save best model
+            best_f1 = current_f1
+            patience_counter = 0
             best_path = os.path.join(output_dir, 'best_model.pt')
             torch.save({
                 'epoch': epoch,
@@ -369,8 +439,25 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
                 'optimizer_state_dict': optimizer.state_dict(),
                 'metrics': val_metrics
             }, best_path)
-            print(f"\nNew best F1: {best_f1*100:.2f}%")
-            logging.info(f"New best AD F1: {best_f1*100:.2f}%")
+            print(f"\nNew best F1: {best_f1*100:.2f}% (improvement: +{improvement*100:.4f}%)")
+            print(f"Early stopping patience reset: {patience_counter}/{early_stopping_patience}")
+            logging.info(f"New best AD F1: {best_f1*100:.2f}% (improvement: +{improvement*100:.4f}%)")
+        else:
+            # No significant improvement: increment patience
+            patience_counter += 1
+            print(f"\nNo significant improvement (improvement: {improvement*100:.4f}%, threshold: {early_stopping_threshold*100:.4f}%)")
+            print(f"Early stopping patience: {patience_counter}/{early_stopping_patience}")
+            logging.info(f"No improvement - Patience: {patience_counter}/{early_stopping_patience}")
+            
+            # Early stopping triggered
+            if patience_counter >= early_stopping_patience:
+                print(f"\n{'='*80}")
+                print(f"[AD] Early Stopping Triggered!")
+                print(f"   No improvement for {early_stopping_patience} consecutive epochs")
+                print(f"   Best F1: {best_f1*100:.2f}% (at epoch {epoch - early_stopping_patience})")
+                print(f"{'='*80}")
+                logging.info(f"Early stopping triggered at epoch {epoch} - Best F1: {best_f1*100:.2f}%")
+                break
     
     # Save history
     df_history = pd.DataFrame(history)
@@ -381,7 +468,7 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
     print("[AD] Testing Best Model")
     print("="*80)
     
-    best_checkpoint = torch.load(os.path.join(output_dir, 'best_model.pt'), map_location=device)
+    best_checkpoint = torch.load(os.path.join(output_dir, 'best_model.pt'), map_location=device, weights_only=False)
     model.load_state_dict(best_checkpoint['model_state_dict'])
     
     test_metrics = evaluate_ad(model, test_loader, device, train_dataset.aspects, focal_loss)
@@ -395,11 +482,17 @@ def train_aspect_detection(config: dict, args: argparse.Namespace) -> str:
                 f"F1: {test_metrics['overall_f1']*100:.2f}%")
     
     # Save results
+    # All metrics use macro average (unweighted mean of per-aspect metrics)
+    # This ensures fair evaluation regardless of aspect sample sizes
     results = {
         'test_accuracy': test_metrics['overall_accuracy'],
+        'test_accuracy_macro': test_metrics['overall_accuracy'],
         'test_f1': test_metrics['overall_f1'],
+        'test_f1_macro': test_metrics['overall_f1'],
         'test_precision': test_metrics['overall_precision'],
+        'test_precision_macro': test_metrics['overall_precision'],
         'test_recall': test_metrics['overall_recall'],
+        'test_recall_macro': test_metrics['overall_recall'],
         'per_aspect': test_metrics['per_aspect'],
         'training_completed': datetime.now().isoformat()
     }
@@ -457,6 +550,7 @@ def train_epoch_sc(
     device: torch.device,
     focal_loss_fn: Optional[MultilabelFocalLoss],
     scaler: Optional[torch.cuda.amp.GradScaler],
+    max_grad_norm: float = 1.0,
 ) -> float:
     """Train one epoch for Sentiment Classification"""
     model.train()
@@ -497,12 +591,13 @@ def train_epoch_sc(
         
         if use_amp:
             scaler.scale(loss).backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=max_grad_norm)
             scaler.step(optimizer)
             scaler.update()
         else:
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=max_grad_norm)
             optimizer.step()
         
         scheduler.step()
@@ -521,7 +616,11 @@ def evaluate_sc(
     focal_loss_fn: Optional[MultilabelFocalLoss] = None,
     raw_data_file: Optional[str] = None
 ) -> Dict[str, Any]:
-    """Evaluate Sentiment Classification model"""
+    """Evaluate Sentiment Classification model
+    
+    All metrics are macro-averaged (unweighted average across aspects and sentiment classes).
+    This ensures that aspects and sentiment classes with different numbers of samples are fairly evaluated.
+    """
     model.eval()
     
     all_preds = []
@@ -582,6 +681,8 @@ def evaluate_sc(
             labeled_mask = None
     
     # Per-aspect metrics (excluding "Others")
+    # Each aspect is evaluated independently (3-class: positive/negative/neutral)
+    # Per-aspect metrics use macro average across sentiment classes (unweighted)
     aspect_metrics = {}
     for i, aspect in enumerate(aspect_names):
         # Skip "Others" aspect - excluded from training and evaluation
@@ -592,13 +693,18 @@ def evaluate_sc(
             mask = labeled_mask[:, i]
             if mask.sum() == 0:
                 continue
-            aspect_preds = all_preds[:, i][mask].numpy()
-            aspect_labels = all_labels[:, i][mask].numpy()
+            aspect_preds_tensor = all_preds[:, i][mask]
+            aspect_labels_tensor = all_labels[:, i][mask]
         else:
-            aspect_preds = all_preds[:, i].numpy()
-            aspect_labels = all_labels[:, i].numpy()
+            aspect_preds_tensor = all_preds[:, i]
+            aspect_labels_tensor = all_labels[:, i]
+        
+        aspect_preds = aspect_preds_tensor.numpy()
+        aspect_labels = aspect_labels_tensor.numpy()
         
         acc = accuracy_score(aspect_labels, aspect_preds)
+        # Macro average across sentiment classes (positive/negative/neutral)
+        # Ensures fair evaluation regardless of sentiment class sample sizes
         precision, recall, f1, _ = precision_recall_fscore_support(
             aspect_labels, aspect_preds, average='macro', zero_division=0
         )
@@ -610,7 +716,8 @@ def evaluate_sc(
             'f1': f1
         }
     
-    # Calculate overall metrics (excluding "Others" aspect)
+    # Overall metrics: Macro-averaged across aspects (unweighted mean)
+    # This ensures fair evaluation regardless of aspect sample sizes
     if aspect_metrics:
         overall_accuracy = np.mean([m['accuracy'] for m in aspect_metrics.values()])
         overall_precision = np.mean([m['precision'] for m in aspect_metrics.values()])
@@ -621,7 +728,8 @@ def evaluate_sc(
         overall_precision = 0.0
         overall_recall = 0.0
         overall_f1 = 0.0
-    
+
+    # Return only macro average metrics (unweighted average across aspects)
     return {
         'overall_accuracy': overall_accuracy,
         'overall_f1': overall_f1,
@@ -662,10 +770,8 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
     # Datasets
     print("\nLoading datasets...")
     # Use oversampled data for SC stage to improve minority sentiment performance
-    train_file_sc = config['paths'].get('train_file_sc', config['paths']['train_file'])
+    train_file_sc = config['paths']['sc_train_file']
     print(f"   Training file: {train_file_sc}")
-    if train_file_sc != config['paths']['train_file']:
-        print(f"   [INFO] Using oversampled data for SC stage to balance sentiments")
     
     train_dataset = MultiLabelABSADataset(
         train_file_sc,
@@ -674,13 +780,13 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
     )
     
     val_dataset = MultiLabelABSADataset(
-        config['paths']['validation_file'],
+        config['paths']['sc_validation_file'],
         tokenizer,
         max_length=config['model']['max_length']
     )
     
     test_dataset = MultiLabelABSADataset(
-        config['paths']['test_file'],
+        config['paths']['sc_test_file'],
         tokenizer,
         max_length=config['model']['max_length']
     )
@@ -693,9 +799,39 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
     batch_size = config['training'].get('per_device_train_batch_size', 16)
     eval_batch_size = config['training'].get('per_device_eval_batch_size', 32)
     
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
-    val_loader = DataLoader(val_dataset, batch_size=eval_batch_size, shuffle=False, num_workers=2)
-    test_loader = DataLoader(test_dataset, batch_size=eval_batch_size, shuffle=False, num_workers=2)
+    # DataLoader settings
+    num_workers = config['training'].get('dataloader_num_workers', 2)
+    pin_memory = config['training'].get('dataloader_pin_memory', True)
+    prefetch_factor = config['training'].get('dataloader_prefetch_factor', 4)
+    persistent_workers = config['training'].get('dataloader_persistent_workers', True)
+    
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        prefetch_factor=prefetch_factor if num_workers > 0 else None,
+        persistent_workers=persistent_workers if num_workers > 0 else False
+    )
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=eval_batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        prefetch_factor=prefetch_factor if num_workers > 0 else None,
+        persistent_workers=persistent_workers if num_workers > 0 else False
+    )
+    test_loader = DataLoader(
+        test_dataset,
+        batch_size=eval_batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        prefetch_factor=prefetch_factor if num_workers > 0 else None,
+        persistent_workers=persistent_workers if num_workers > 0 else False
+    )
     
     # Model
     print("\nCreating SC model...")
@@ -740,10 +876,22 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
     # Optimizer & Scheduler
     num_epochs = sc_config.get('epochs', 3)
     learning_rate = config['training'].get('learning_rate', 2e-5)
-    optimizer = AdamW(model.parameters(), lr=learning_rate, weight_decay=0.01)
+    weight_decay = config['training'].get('weight_decay', 0.01)
+    adam_beta1 = config['training'].get('adam_beta1', 0.9)
+    adam_beta2 = config['training'].get('adam_beta2', 0.999)
+    adam_epsilon = config['training'].get('adam_epsilon', 1e-8)
+    
+    optimizer = AdamW(
+        model.parameters(),
+        lr=learning_rate,
+        weight_decay=weight_decay,
+        betas=(adam_beta1, adam_beta2),
+        eps=adam_epsilon
+    )
     
     total_steps = len(train_loader) * num_epochs
-    warmup_ratio = config['training'].get('warmup_ratio', 0.06)
+    warmup_ratio = sc_config.get('warmup_ratio',
+                                 config['training'].get('warmup_ratio', 0.06))
     warmup_steps = int(warmup_ratio * total_steps)
     
     scheduler = get_cosine_schedule_with_warmup(
@@ -757,15 +905,29 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
     print(f"   Batch size: {batch_size}")
     print(f"   Learning rate: {learning_rate}")
     print(f"   Total steps: {total_steps}")
+    print(f"   Warmup ratio: {warmup_ratio}")
+    print(f"   Warmup steps: {warmup_steps}")
     
     # Training loop
     print("\n" + "="*80)
     print("Starting SC Training")
     print("="*80)
     
+    # Early stopping setup
+    early_stopping_patience = sc_config.get('early_stopping_patience',
+                                            config['training'].get('early_stopping_patience', 4))
+    early_stopping_threshold = sc_config.get('early_stopping_threshold',
+                                             config['training'].get('early_stopping_threshold', 0.0005))
+    patience_counter = 0
     best_f1 = 0.0
     history = []
     scaler = torch.cuda.amp.GradScaler(enabled=torch.cuda.is_available())
+    
+    print(f"\nEarly Stopping Configuration:")
+    print(f"   Patience: {early_stopping_patience} epochs")
+    print(f"   Threshold: {early_stopping_threshold:.6f} (minimum F1 improvement)")
+    
+    max_grad_norm = config['training'].get('max_grad_norm', 1.0)
     
     for epoch in range(1, num_epochs + 1):
         print(f"\n{'='*80}")
@@ -774,7 +936,7 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
         logging.info(f"SC Epoch {epoch}/{num_epochs}")
         
         # Train
-        train_loss = train_epoch_sc(model, train_loader, optimizer, scheduler, device, focal_loss, scaler)
+        train_loss = train_epoch_sc(model, train_loader, optimizer, scheduler, device, focal_loss, scaler, max_grad_norm)
         print(f"\nTrain Loss: {train_loss:.4f}")
         logging.info(f"SC Train Loss: {train_loss:.4f}")
         
@@ -782,7 +944,7 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
         print("\nValidating...")
         val_metrics = evaluate_sc(model, val_loader, device, train_dataset.aspects,
                                  focal_loss,
-                                 raw_data_file=config['paths']['validation_file'])
+                                 raw_data_file=config['paths']['sc_validation_file'])
         print(f"   Train Loss: {train_loss:.4f}")
         print(f"   Val Loss: {val_metrics['val_loss']:.4f}")
         print(f"   Accuracy: {val_metrics['overall_accuracy']*100:.2f}%")
@@ -805,9 +967,14 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
             'val_recall': val_metrics['overall_recall']
         })
         
-        # Save best model
-        if val_metrics['overall_f1'] > best_f1:
-            best_f1 = val_metrics['overall_f1']
+        # Check for improvement and early stopping
+        current_f1 = val_metrics['overall_f1']
+        improvement = current_f1 - best_f1
+        
+        if improvement > early_stopping_threshold:
+            # Significant improvement: reset patience and save best model
+            best_f1 = current_f1
+            patience_counter = 0
             best_path = os.path.join(output_dir, 'best_model.pt')
             torch.save({
                 'epoch': epoch,
@@ -815,8 +982,25 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
                 'optimizer_state_dict': optimizer.state_dict(),
                 'metrics': val_metrics
             }, best_path)
-            print(f"\nNew best F1: {best_f1*100:.2f}%")
-            logging.info(f"New best SC F1: {best_f1*100:.2f}%")
+            print(f"\nNew best F1: {best_f1*100:.2f}% (improvement: +{improvement*100:.4f}%)")
+            print(f"Early stopping patience reset: {patience_counter}/{early_stopping_patience}")
+            logging.info(f"New best SC F1: {best_f1*100:.2f}% (improvement: +{improvement*100:.4f}%)")
+        else:
+            # No significant improvement: increment patience
+            patience_counter += 1
+            print(f"\nNo significant improvement (improvement: {improvement*100:.4f}%, threshold: {early_stopping_threshold*100:.4f}%)")
+            print(f"Early stopping patience: {patience_counter}/{early_stopping_patience}")
+            logging.info(f"No improvement - Patience: {patience_counter}/{early_stopping_patience}")
+            
+            # Early stopping triggered
+            if patience_counter >= early_stopping_patience:
+                print(f"\n{'='*80}")
+                print(f"[SC] Early Stopping Triggered!")
+                print(f"   No improvement for {early_stopping_patience} consecutive epochs")
+                print(f"   Best F1: {best_f1*100:.2f}% (at epoch {epoch - early_stopping_patience})")
+                print(f"{'='*80}")
+                logging.info(f"Early stopping triggered at epoch {epoch} - Best F1: {best_f1*100:.2f}%")
+                break
     
     # Save history
     df_history = pd.DataFrame(history)
@@ -827,7 +1011,7 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
     print("[SC] Testing Best Model")
     print("="*80)
     
-    best_checkpoint = torch.load(os.path.join(output_dir, 'best_model.pt'), map_location=device)
+    best_checkpoint = torch.load(os.path.join(output_dir, 'best_model.pt'), map_location=device, weights_only=False)
     model.load_state_dict(best_checkpoint['model_state_dict'])
     
     test_metrics = evaluate_sc(
@@ -836,7 +1020,7 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
         device,
         train_dataset.aspects,
         focal_loss,
-        raw_data_file=config['paths']['test_file']
+        raw_data_file=config['paths']['sc_test_file']
     )
     print(f"\nTest Results:")
     print(f"   Accuracy: {test_metrics['overall_accuracy']*100:.2f}%")
@@ -848,11 +1032,17 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
                 f"F1: {test_metrics['overall_f1']*100:.2f}%")
     
     # Save results
+    # All metrics use macro average (unweighted mean of per-aspect metrics)
+    # This ensures fair evaluation regardless of aspect and sentiment class sample sizes
     results = {
         'test_accuracy': test_metrics['overall_accuracy'],
+        'test_accuracy_macro': test_metrics['overall_accuracy'],
         'test_f1': test_metrics['overall_f1'],
+        'test_f1_macro': test_metrics['overall_f1'],
         'test_precision': test_metrics['overall_precision'],
+        'test_precision_macro': test_metrics['overall_precision'],
         'test_recall': test_metrics['overall_recall'],
+        'test_recall_macro': test_metrics['overall_recall'],
         'per_aspect': test_metrics['per_aspect'],
         'training_completed': datetime.now().isoformat()
     }
@@ -863,29 +1053,8 @@ def train_sentiment_classification(config: dict, args: argparse.Namespace) -> st
     # Save detailed predictions
     save_sc_predictions(test_metrics, train_dataset.aspects, test_dataset, output_dir)
     
-    # Save confusion matrices
+    # Save confusion matrices (test set only)
     save_sc_confusion_matrix(test_metrics, train_dataset.aspects, output_dir)
-
-    # Also generate confusion matrices on validation and training sets for analysis
-    val_metrics = evaluate_sc(
-        model,
-        val_loader,
-        device,
-        train_dataset.aspects,
-        focal_loss,
-        raw_data_file=config['paths']['validation_file']
-    )
-    save_sc_confusion_matrix(val_metrics, train_dataset.aspects, output_dir, prefix='validation')
-
-    train_metrics = evaluate_sc(
-        model,
-        train_loader,
-        device,
-        train_dataset.aspects,
-        focal_loss,
-        raw_data_file=config['paths']['train_file']
-    )
-    save_sc_confusion_matrix(train_metrics, train_dataset.aspects, output_dir, prefix='train')
     
     print(f"\n[SC] Training complete! Results saved to: {output_dir}")
     logging.info("[SC] Training completed successfully")
@@ -1060,7 +1229,7 @@ def run_error_analysis(sc_output_dir: str, config: dict):
         
         # Run analysis
         analyzer = ErrorAnalyzer(
-            test_file=config['paths']['test_file'],
+            test_file=config['paths']['sc_test_file'],
             predictions_file=os.path.join(sc_output_dir, 'test_predictions_detailed.csv')
         )
         analyzer.run_full_analysis()
@@ -1081,8 +1250,12 @@ def generate_final_report(ad_output_dir: str, sc_output_dir: str, final_results_
     os.makedirs(final_results_dir, exist_ok=True)
     
     # Load results
-    with open(os.path.join(ad_output_dir, 'test_results.json'), 'r', encoding='utf-8') as f:
-        ad_results = json.load(f)
+    ad_results = None
+    if ad_output_dir is not None:
+        ad_results_path = os.path.join(ad_output_dir, 'test_results.json')
+        if os.path.exists(ad_results_path):
+            with open(ad_results_path, 'r', encoding='utf-8') as f:
+                ad_results = json.load(f)
     
     with open(os.path.join(sc_output_dir, 'test_results.json'), 'r', encoding='utf-8') as f:
         sc_results = json.load(f)
@@ -1096,30 +1269,51 @@ def generate_final_report(ad_output_dir: str, sc_output_dir: str, final_results_
         "",
         f"Training Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         f"Model: {config['model']['name']}",
-        "",
-        "="*80,
-        "STAGE 1: ASPECT DETECTION (Binary Classification)",
-        "="*80,
-        "",
-        "Note: AD stage includes all 11 aspects (including 'Others')",
-        "",
-        f"Test Accuracy:  {ad_results['test_accuracy']*100:.2f}%",
-        f"Test F1 Score:  {ad_results['test_f1']*100:.2f}%",
-        f"Test Precision: {ad_results['test_precision']*100:.2f}%",
-        f"Test Recall:    {ad_results['test_recall']*100:.2f}%",
-        "",
-        "Per-Aspect Results (AD):",
-        "-"*80
     ]
+
+    # Optional AD section (only if results available)
+    if ad_results is not None:
+        report_lines.extend([
+            "",
+            "="*80,
+            "STAGE 1: ASPECT DETECTION (Binary Classification)",
+            "="*80,
+            "",
+            "Note: AD stage includes all 11 aspects (including 'Others')",
+            "",
+            "All metrics are macro-averaged (unweighted average across aspects).",
+            "This ensures that aspects with different numbers of samples are fairly evaluated.",
+            "",
+            f"Test Accuracy:  {ad_results['test_accuracy']*100:.2f}%",
+            f"Test F1 Score:  {ad_results['test_f1']*100:.2f}%",
+            f"Test Precision: {ad_results['test_precision']*100:.2f}%",
+            f"Test Recall:    {ad_results['test_recall']*100:.2f}%",
+            "",
+            "Per-Aspect Results (AD):",
+            "-"*80
+        ])
+        for aspect, metrics in ad_results['per_aspect'].items():
+            report_lines.append(
+                f"{aspect:<15} Accuracy: {metrics['accuracy']*100:>6.2f}%  "
+                f"F1 Score: {metrics['f1']*100:>6.2f}%  "
+                f"Precision: {metrics['precision']*100:>6.2f}%  "
+                f"Recall: {metrics['recall']*100:>6.2f}%"
+            )
+    else:
+        report_lines.extend([
+            "",
+            "="*80,
+            "STAGE 1: ASPECT DETECTION (Binary Classification)",
+            "="*80,
+            "",
+            "Aspect Detection training was skipped or results not found."
+        ])
     
-    for aspect, metrics in ad_results['per_aspect'].items():
-        report_lines.append(
-            f"{aspect:<15} Accuracy: {metrics['accuracy']*100:>6.2f}%  "
-            f"F1 Score: {metrics['f1']*100:>6.2f}%  "
-            f"Precision: {metrics['precision']*100:>6.2f}%  "
-            f"Recall: {metrics['recall']*100:>6.2f}%"
-        )
-    
+    sc_macro_acc = sc_results.get('test_accuracy_macro', sc_results.get('test_accuracy', 0.0))
+    sc_macro_f1 = sc_results.get('test_f1_macro', sc_results.get('test_f1', 0.0))
+    sc_macro_precision = sc_results.get('test_precision_macro', sc_results.get('test_precision', 0.0))
+    sc_macro_recall = sc_results.get('test_recall_macro', sc_results.get('test_recall', 0.0))
+
     report_lines.extend([
         "",
         "="*80,
@@ -1128,10 +1322,15 @@ def generate_final_report(ad_output_dir: str, sc_output_dir: str, final_results_
         "",
         "Note: SC stage excludes 'Others' aspect (10 aspects only, no sentiment labels for Others)",
         "",
-        f"Test Accuracy:  {sc_results['test_accuracy']*100:.2f}%",
-        f"Test F1 Score:  {sc_results['test_f1']*100:.2f}%",
-        f"Test Precision: {sc_results['test_precision']*100:.2f}%",
-        f"Test Recall:    {sc_results['test_recall']*100:.2f}%",
+        "All metrics are macro-averaged (unweighted average across aspects and sentiment classes).",
+        "This ensures that aspects and classes with different numbers of samples are fairly evaluated.",
+        "",
+        f"Test Accuracy (per-aspect mean):   {sc_macro_acc*100:.2f}%",
+        f"Test F1 Score (per-aspect mean):    {sc_macro_f1*100:.2f}%",
+        f"Test Precision (per-aspect mean):  {sc_macro_precision*100:.2f}%",
+        f"Test Recall (per-aspect mean):     {sc_macro_recall*100:.2f}%"
+    ])
+    report_lines.extend([
         "",
         "Per-Aspect Results (SC):",
         "-"*80
@@ -1145,18 +1344,31 @@ def generate_final_report(ad_output_dir: str, sc_output_dir: str, final_results_
             f"Recall: {metrics['recall']*100:>6.2f}%"
         )
     
+    model_root = Path(sc_output_dir).parent.parent
+    error_analysis_dir = model_root / "error_analysis_results"
+
     report_lines.extend([
         "",
         "="*80,
         "OUTPUT FILES",
         "="*80,
-        "",
-        "Aspect Detection:",
-        f"  - Model: {ad_output_dir}/best_model.pt",
-        f"  - Training history: {ad_output_dir}/training_history.csv",
-        f"  - Test results: {ad_output_dir}/test_results.json",
-        f"  - Confusion matrix: {ad_output_dir}/confusion_matrix_overall.png",
-        "",
+        ""
+    ])
+    report_lines.append("Aspect Detection:")
+    if ad_results is not None and ad_output_dir is not None:
+        report_lines.extend([
+            f"  - Model: {ad_output_dir}/best_model.pt",
+            f"  - Training history: {ad_output_dir}/training_history.csv",
+            f"  - Test results: {ad_output_dir}/test_results.json",
+            f"  - Confusion matrix: {ad_output_dir}/confusion_matrix_overall.png",
+            ""
+        ])
+    else:
+        report_lines.extend([
+            "  - Skipped",
+            ""
+        ])
+    report_lines.extend([
         "Sentiment Classification:",
         f"  - Model: {sc_output_dir}/best_model.pt",
         f"  - Training history: {sc_output_dir}/training_history.csv",
@@ -1166,9 +1378,9 @@ def generate_final_report(ad_output_dir: str, sc_output_dir: str, final_results_
         f"  - Confusion matrices (per-aspect): {sc_output_dir}/confusion_matrices_per_aspect.png",
         "",
         "Error Analysis:",
-        f"  - Report: multi_label/error_analysis_results/error_analysis_report.txt",
-        f"  - Confusion matrix: multi_label/error_analysis_results/confusion_matrix.png",
-        f"  - All errors: multi_label/error_analysis_results/all_errors_detailed.csv",
+        f"  - Report: {error_analysis_dir / 'error_analysis_report.txt'}",
+        f"  - Confusion matrix: {error_analysis_dir / 'confusion_matrix.png'}",
+        f"  - All errors: {error_analysis_dir / 'all_errors_detailed.csv'}",
         "",
         "="*80,
         "TRAINING COMPLETE",
@@ -1199,7 +1411,17 @@ def main(args: argparse.Namespace):
     config = load_config(args.config)
     
     # Stage 1: Aspect Detection
-    ad_output_dir = train_aspect_detection(config, args)
+    ad_output_dir: Optional[str] = None
+    if config['two_stage'].get('train_ad_first', True):
+        ad_output_dir = train_aspect_detection(config, args)
+    else:
+        print("\n" + "="*80)
+        print("SKIP: Aspect Detection training disabled by config (two_stage.train_ad_first=false)")
+        print("="*80)
+        # Reuse previous AD results if available
+        candidate_ad_dir = config['paths']['ad_output_dir']
+        if os.path.exists(os.path.join(candidate_ad_dir, 'test_results.json')):
+            ad_output_dir = candidate_ad_dir
     
     # Stage 2: Sentiment Classification
     sc_output_dir = train_sentiment_classification(config, args)
@@ -1217,7 +1439,7 @@ def main(args: argparse.Namespace):
     print("="*80)
     print(f"\nFinal report: {report_file}")
     print(f"\nAll results saved to:")
-    print(f"  - AD: {ad_output_dir}")
+    print(f"  - AD: {ad_output_dir if ad_output_dir is not None else 'SKIPPED'}")
     print(f"  - SC: {sc_output_dir}")
     print(f"  - Final: {final_results_dir}")
 

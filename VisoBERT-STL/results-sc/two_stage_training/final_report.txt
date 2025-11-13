@@ -1,0 +1,64 @@
+================================================================================
+SEQUENTIAL SINGLE-TASK LEARNING FOR VIETNAMESE ABSA
+Two-Stage Training Results
+================================================================================
+
+Training Date: 2025-11-13 04:14:20
+Model: 5CD-AI/visobert-14gb-corpus
+
+================================================================================
+STAGE 1: ASPECT DETECTION (Binary Classification)
+================================================================================
+
+Aspect Detection training was skipped or results not found.
+
+================================================================================
+STAGE 2: SENTIMENT CLASSIFICATION (3-Class per Aspect)
+================================================================================
+
+Note: SC stage excludes 'Others' aspect (10 aspects only, no sentiment labels for Others)
+
+All metrics are macro-averaged (unweighted average across aspects and sentiment classes).
+This ensures that aspects and classes with different numbers of samples are fairly evaluated.
+
+Test Accuracy (per-aspect mean):   97.05%
+Test F1 Score (per-aspect mean):    96.37%
+Test Precision (per-aspect mean):  96.93%
+Test Recall (per-aspect mean):     95.96%
+
+Per-Aspect Results (SC):
+--------------------------------------------------------------------------------
+Battery         Accuracy:  96.95%  F1 Score:  95.39%  Precision:  96.89%  Recall:  94.07%
+Camera          Accuracy:  95.18%  F1 Score:  95.32%  Precision:  97.04%  Recall:  94.02%
+Performance     Accuracy:  98.33%  F1 Score:  98.15%  Precision:  97.68%  Recall:  98.69%
+Display         Accuracy:  95.73%  F1 Score:  95.60%  Precision:  96.79%  Recall:  94.71%
+Design          Accuracy:  96.79%  F1 Score:  96.87%  Precision:  97.77%  Recall:  96.08%
+Packaging       Accuracy:  97.19%  F1 Score:  96.90%  Precision:  95.84%  Recall:  98.05%
+Price           Accuracy:  97.14%  F1 Score:  95.49%  Precision:  95.72%  Recall:  95.27%
+Shop_Service    Accuracy:  96.79%  F1 Score:  95.48%  Precision:  94.83%  Recall:  96.18%
+Shipping        Accuracy:  99.09%  F1 Score:  99.27%  Precision:  99.35%  Recall:  99.18%
+General         Accuracy:  97.31%  F1 Score:  95.20%  Precision:  97.40%  Recall:  93.41%
+
+================================================================================
+OUTPUT FILES
+================================================================================
+
+Aspect Detection:
+  - Skipped
+
+Sentiment Classification:
+  - Model: VisoBERT-STL/models/sentiment_classification/best_model.pt
+  - Training history: VisoBERT-STL/models/sentiment_classification/training_history.csv
+  - Test results: VisoBERT-STL/models/sentiment_classification/test_results.json
+  - Predictions: VisoBERT-STL/models/sentiment_classification/test_predictions_detailed.csv
+  - Confusion matrix (overall): VisoBERT-STL/models/sentiment_classification/confusion_matrix_overall.png
+  - Confusion matrices (per-aspect): VisoBERT-STL/models/sentiment_classification/confusion_matrices_per_aspect.png
+
+Error Analysis:
+  - Report: VisoBERT-STL\error_analysis_results\error_analysis_report.txt
+  - Confusion matrix: VisoBERT-STL\error_analysis_results\confusion_matrix.png
+  - All errors: VisoBERT-STL\error_analysis_results\all_errors_detailed.csv
+
+================================================================================
+TRAINING COMPLETE
+================================================================================

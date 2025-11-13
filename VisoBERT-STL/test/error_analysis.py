@@ -50,9 +50,9 @@ class ErrorAnalyzer:
         
         # Try multiple possible locations for data files
         _possible_test_paths = [
+            _project_root / "VisoBERT-STL" / "data" / "test_multilabel.csv",
             _project_root / "multi_label" / "data" / "test_multilabel.csv",
             _project_root / "BILSTM-STL" / "data" / "test_multilabel.csv",
-            _project_root / "VisoBERT-STL" / "data" / "test_multilabel.csv",
         ]
         _possible_pred_paths = [
             _project_root / "VisoBERT-STL" / "models" / "sentiment_classification" / "test_predictions_detailed.csv",
@@ -89,11 +89,16 @@ class ErrorAnalyzer:
         self.predictions_file = predictions_file
         # Output dir: try to match the data location
         _output_dirs = [
+            _project_root / "VisoBERT-STL" / "error_analysis_results",
             _project_root / "multi_label" / "error_analysis_results",
             _project_root / "BILSTM-STL" / "error_analysis_results",
-            _project_root / "VisoBERT-STL" / "error_analysis_results",
         ]
-        self.output_dir = str(_output_dirs[0])  # Default
+        for _candidate in _output_dirs:
+            if _candidate.exists():
+                self.output_dir = str(_candidate)
+                break
+        else:
+            self.output_dir = str(_output_dirs[0])  # Default
         os.makedirs(self.output_dir, exist_ok=True)
         
         # Data storage
@@ -672,16 +677,23 @@ class ErrorAnalyzer:
         correct = self.df['correct'].sum()
         accuracy = correct / total if total > 0 else 0
         sentiment_counts = self.df['sentiment'].value_counts().to_dict()
+        aspect_accuracy_series = self.df.groupby('aspect')['correct'].mean() if total > 0 else pd.Series(dtype=float)
+        macro_accuracy = aspect_accuracy_series.mean() if not aspect_accuracy_series.empty else 0.0
+        total_sentences = self.df['data'].nunique()
         
         report_lines.extend([
             " OVERALL STATISTICS",
             "-"*70,
-            f"Total labeled aspects:     {total:,}",
+            f"Total labeled aspects:           {total:,}",
             f"  - Positive: {sentiment_counts.get('positive', 0):,}",
             f"  - Negative: {sentiment_counts.get('negative', 0):,}",
-            f"  - Neutral: {sentiment_counts.get('neutral', 0):,}",
-            f"Correct:           {correct:,} ({accuracy:.2%})",
-            f"Errors:            {total - correct:,} ({1-accuracy:.2%})",
+            f"  - Neutral:  {sentiment_counts.get('neutral', 0):,}",
+            f"Unique sentences with labels:     {total_sentences:,}",
+            f"Correct predictions:             {correct:,}",
+            f"Errors:                          {total - correct:,}",
+            f"Micro accuracy (all labeled aspects): {accuracy:.2%}",
+            f"Micro error rate:                    {(1-accuracy):.2%}",
+            f"Macro accuracy (mean per aspect):   {macro_accuracy:.2%}",
             "",
             "WARNING:  NOTE: Includes all labeled aspects (positive/negative/neutral)",
             "   (Only unlabeled aspects are excluded)",

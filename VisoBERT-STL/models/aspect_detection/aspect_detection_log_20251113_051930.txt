@@ -1,0 +1,36 @@
+2025-11-13 05:19:30,607 - INFO - Starting Aspect Detection training
+2025-11-13 05:19:34,109 - INFO - AD Epoch 1/10
+2025-11-13 05:21:24,272 - INFO - AD Train Loss: 0.1767
+2025-11-13 05:21:48,172 - INFO - AD Val - Loss: 0.0800, 
+2025-11-13 05:21:49,756 - INFO - New best AD F1: 84.02% (improvement: +84.0219%)
+2025-11-13 05:21:49,756 - INFO - AD Epoch 2/10
+2025-11-13 05:23:22,975 - INFO - AD Train Loss: 0.0761
+2025-11-13 05:23:29,644 - INFO - AD Val - Loss: 0.0681, 
+2025-11-13 05:23:31,372 - INFO - New best AD F1: 87.06% (improvement: +3.0386%)
+2025-11-13 05:23:31,373 - INFO - AD Epoch 3/10
+2025-11-13 05:25:04,493 - INFO - AD Train Loss: 0.0553
+2025-11-13 05:25:11,155 - INFO - AD Val - Loss: 0.0676, 
+2025-11-13 05:25:12,897 - INFO - New best AD F1: 87.16% (improvement: +0.0968%)
+2025-11-13 05:25:12,898 - INFO - AD Epoch 4/10
+2025-11-13 05:26:45,994 - INFO - AD Train Loss: 0.0403
+2025-11-13 05:26:52,656 - INFO - AD Val - Loss: 0.0793, 
+2025-11-13 05:26:54,402 - INFO - New best AD F1: 88.36% (improvement: +1.2016%)
+2025-11-13 05:26:54,402 - INFO - AD Epoch 5/10
+2025-11-13 05:28:27,484 - INFO - AD Train Loss: 0.0283
+2025-11-13 05:28:34,138 - INFO - AD Val - Loss: 0.0894, 
+2025-11-13 05:28:34,138 - INFO - No improvement - Patience: 1/2
+2025-11-13 05:28:34,138 - INFO - AD Epoch 6/10
+2025-11-13 05:30:07,442 - INFO - AD Train Loss: 0.0202
+2025-11-13 05:30:14,094 - INFO - AD Val - Loss: 0.1001, 
+2025-11-13 05:30:15,792 - INFO - New best AD F1: 88.52% (improvement: +0.1616%)
+2025-11-13 05:30:15,793 - INFO - AD Epoch 7/10
+2025-11-13 05:31:48,890 - INFO - AD Train Loss: 0.0144
+2025-11-13 05:31:55,550 - INFO - AD Val - Loss: 0.1189, 
+2025-11-13 05:31:55,550 - INFO - No improvement - Patience: 1/2
+2025-11-13 05:31:55,550 - INFO - AD Epoch 8/10
+2025-11-13 05:33:28,865 - INFO - AD Train Loss: 0.0107
+2025-11-13 05:33:35,530 - INFO - AD Val - Loss: 0.1192, 
+2025-11-13 05:33:35,530 - INFO - No improvement - Patience: 2/2
+2025-11-13 05:33:35,531 - INFO - Early stopping triggered at epoch 8 - Best F1: 88.52%
+2025-11-13 05:33:59,486 - INFO - AD Test - Acc: 96.48%, F1: 89.39%
+2025-11-13 05:33:59,890 - INFO - [AD] Training completed successfully

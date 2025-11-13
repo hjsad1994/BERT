@@ -8,6 +8,11 @@
 #   - Head 2: SC (focal loss, 11 × 3 outputs)
 # 
 # Loss: Combined loss = α * Focal_AD + β * Focal_SC
+# 
+# Metrics: All metrics are macro-averaged (unweighted average across classes),
+#          ensuring that classes with different numbers of samples are fairly evaluated.
+#          - AD overall: mean of per-aspect binary F1 scores (11 aspects)
+#          - SC overall: mean of per-aspect macro F1 scores (across 3 sentiments per aspect)
 # ========================================================================
 
 paths:
@@ -50,9 +55,9 @@ sentiment_labels:
   neutral: 2
 
 training:
-  # Batch sizes (reduced for memory safety)
-  per_device_train_batch_size: 8
-  per_device_eval_batch_size: 16
+  # Batch sizes (matching STL config)
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 32
   gradient_accumulation_steps: 2
   
   # Optimizer
@@ -65,7 +70,7 @@ training:
   warmup_ratio: 0.06
   
   # Training duration
-  num_train_epochs: 10
+  num_train_epochs: 12
   
   # Mixed precision
   fp16: true
@@ -80,8 +85,9 @@ training:
   save_total_limit: 3
   
   # Early stopping
-  early_stopping_patience: 5
-  early_stopping_threshold: 0.001
+  # Early stopping: stop if validation F1 does not improve for 3 epochs
+  early_stopping_patience: 3
+  early_stopping_threshold: 0.0005
   
   # Logging
   logging_steps: 50
@@ -93,22 +99,22 @@ training:
 multi_task:
   # Loss weights (combined loss = alpha * Focal_AD + beta * Focal_SC)
   # Using 0.3:0.7 ratio from old train_multitask.py (total=1.0, SC-focused)
-  loss_weight_ad: 0.3       # Weight for AD focal loss (30%)
-  loss_weight_sc: 0.7       # Weight for SC focal loss (70%)
+  loss_weight_ad: 0.4       # Weight for AD focal loss (30%)
+  loss_weight_sc: 0.6     # Weight for SC focal loss (70%)
   
   # AD task settings
   aspect_detection:
     use_focal_loss: true
-    focal_gamma: 2.0
+    focal_gamma: 1.7
     focal_alpha: "auto"     # Auto-calculate from data (inverse frequency)
-    metric: "f1_macro"
+    metric: "f1_macro"      # Macro-averaged F1 (unweighted average across all 11 aspects)
   
   # SC task settings
   sentiment_classification:
     use_focal_loss: true
-    focal_gamma: 2.0
+    focal_gamma: 1.7
     focal_alpha: "auto"     # Auto-calculate from data (global distribution)
-    metric: "f1_macro"      # Changed to F1 Macro (standard in ABSA research)
+    metric: "f1_macro"      # Macro-averaged F1 (unweighted average across 10 aspects, excluding Others)
   
   # Best model selection
   # Options: "ad_f1", "sc_f1", "combined_f1" (average of AD/SC F1)
@@ -116,7 +122,7 @@ multi_task:
 
 # Reproducibility
 reproducibility:
-  seed: 42
+  seed: 100
   deterministic: true
 
 general:

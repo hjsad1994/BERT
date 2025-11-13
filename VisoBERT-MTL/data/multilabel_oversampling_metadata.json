@@ -3,10 +3,10 @@
   "strategy": "capped",
   "max_oversampling_ratio": 7.0,
   "target_ratio": null,
-  "original_samples": 11792,
-  "augmented_samples": 25264,
-  "increase": 13472,
-  "increase_percentage": 114.24694708276797,
+  "original_samples": 11930,
+  "augmented_samples": 25359,
+  "increase": 13429,
+  "increase_percentage": 112.56496227996647,
   "aspects": [
     "Battery",
     "Camera",
@@ -20,5 +20,5 @@
     "General",
     "Others"
   ],
-  "created_at": "2025-11-10T02:57:28.463422"
+  "created_at": "2025-11-12T21:24:46.630281"
 }

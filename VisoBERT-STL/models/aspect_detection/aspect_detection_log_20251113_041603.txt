@@ -1,0 +1,36 @@
+2025-11-13 04:16:03,912 - INFO - Starting Aspect Detection training
+2025-11-13 04:16:09,299 - INFO - AD Epoch 1/10
+2025-11-13 04:17:58,781 - INFO - AD Train Loss: 0.1755
+2025-11-13 04:18:21,791 - INFO - AD Val - Loss: 0.0793, 
+2025-11-13 04:18:23,454 - INFO - New best AD F1: 84.16% (improvement: +84.1619%)
+2025-11-13 04:18:23,454 - INFO - AD Epoch 2/10
+2025-11-13 04:19:56,078 - INFO - AD Train Loss: 0.0760
+2025-11-13 04:20:02,747 - INFO - AD Val - Loss: 0.0685, 
+2025-11-13 04:20:04,537 - INFO - New best AD F1: 87.17% (improvement: +3.0100%)
+2025-11-13 04:20:04,538 - INFO - AD Epoch 3/10
+2025-11-13 04:21:37,494 - INFO - AD Train Loss: 0.0554
+2025-11-13 04:21:44,165 - INFO - AD Val - Loss: 0.0673, 
+2025-11-13 04:21:45,948 - INFO - New best AD F1: 87.54% (improvement: +0.3637%)
+2025-11-13 04:21:45,948 - INFO - AD Epoch 4/10
+2025-11-13 04:23:18,909 - INFO - AD Train Loss: 0.0406
+2025-11-13 04:23:25,573 - INFO - AD Val - Loss: 0.0790, 
+2025-11-13 04:23:27,689 - INFO - New best AD F1: 87.77% (improvement: +0.2344%)
+2025-11-13 04:23:27,689 - INFO - AD Epoch 5/10
+2025-11-13 04:25:00,596 - INFO - AD Train Loss: 0.0285
+2025-11-13 04:25:07,248 - INFO - AD Val - Loss: 0.0904, 
+2025-11-13 04:25:09,816 - INFO - New best AD F1: 88.13% (improvement: +0.3598%)
+2025-11-13 04:25:09,816 - INFO - AD Epoch 6/10
+2025-11-13 04:26:42,629 - INFO - AD Train Loss: 0.0205
+2025-11-13 04:26:49,291 - INFO - AD Val - Loss: 0.1009, 
+2025-11-13 04:26:51,042 - INFO - New best AD F1: 88.86% (improvement: +0.7273%)
+2025-11-13 04:26:51,043 - INFO - AD Epoch 7/10
+2025-11-13 04:28:23,920 - INFO - AD Train Loss: 0.0145
+2025-11-13 04:28:30,578 - INFO - AD Val - Loss: 0.1187, 
+2025-11-13 04:28:30,579 - INFO - No improvement - Patience: 1/2
+2025-11-13 04:28:30,579 - INFO - AD Epoch 8/10
+2025-11-13 04:30:03,399 - INFO - AD Train Loss: 0.0106
+2025-11-13 04:30:10,053 - INFO - AD Val - Loss: 0.1193, 
+2025-11-13 04:30:10,053 - INFO - No improvement - Patience: 2/2
+2025-11-13 04:30:10,053 - INFO - Early stopping triggered at epoch 8 - Best F1: 88.86%
+2025-11-13 04:30:34,633 - INFO - AD Test - Acc: 96.36%, F1: 89.63%
+2025-11-13 04:30:35,021 - INFO - [AD] Training completed successfully

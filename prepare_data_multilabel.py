@@ -226,7 +226,7 @@ def load_config(config_path: str) -> dict:
         return yaml.safe_load(f)
 
 
-def main(config_path: Optional[str] = None, use_random_seed: bool = True):
+def main(config_path: Optional[str] = None, use_random_seed: bool = True, cli_seed: Optional[int] = None):
     # Configuration
     if config_path:
         config = load_config(config_path)
@@ -247,6 +247,10 @@ def main(config_path: Optional[str] = None, use_random_seed: bool = True):
         else:
             seed = random.randint(0, 2**31 - 1)
         
+        # CLI seed override takes precedence over config/defaults
+        if cli_seed is not None:
+            seed = cli_seed
+        
         print(f"\n[Using config: {config_path}]")
         print(f"[Data split seed: {seed}]")
         set_all_seeds(seed)
@@ -259,7 +263,7 @@ def main(config_path: Optional[str] = None, use_random_seed: bool = True):
         val_size = 0.1
         test_size = 0.1
         
-        # Generate random seed
+        # Generate random/fixed seed
         if use_random_seed:
             seed = random.randint(0, 2**31 - 1)
             print(f"\n[No config provided, using defaults]")
@@ -268,6 +272,11 @@ def main(config_path: Optional[str] = None, use_random_seed: bool = True):
             seed = 42
             print(f"\n[No config provided, using defaults]")
             print(f"[Fixed seed: {seed}]")
+        
+        # CLI seed override
+        if cli_seed is not None:
+            seed = cli_seed
+            print(f"[CLI seed: {seed}]")
         
         set_all_seeds(seed)
         
@@ -340,6 +349,12 @@ if __name__ == '__main__':
         action='store_true',
         help='Use fixed seed (42) instead of random seed'
     )
+    parser.add_argument(
+        '--seed',
+        type=int,
+        default=None,
+        help='Custom seed to override config and defaults (e.g., --seed 1654658246)'
+    )
     args = parser.parse_args()
     
-    main(config_path=args.config, use_random_seed=not args.fixed_seed)
+    main(config_path=args.config, use_random_seed=not args.fixed_seed, cli_seed=args.seed)

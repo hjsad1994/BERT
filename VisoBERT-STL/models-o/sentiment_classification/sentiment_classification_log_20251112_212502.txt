@@ -1,0 +1,21 @@
+2025-11-12 21:25:02,515 - INFO - Starting Sentiment Classification training
+2025-11-12 21:25:07,640 - INFO - SC Epoch 1/8
+2025-11-12 21:28:59,223 - INFO - SC Train Loss: 0.2642
+2025-11-12 21:29:23,867 - INFO - SC Val - Loss: 0.0936, Acc: 94.14%, F1: 92.21%
+2025-11-12 21:29:25,640 - INFO - New best SC F1: 92.21% (improvement: +92.2103%)
+2025-11-12 21:29:25,641 - INFO - SC Epoch 2/8
+2025-11-12 21:33:10,052 - INFO - SC Train Loss: 0.0598
+2025-11-12 21:33:35,047 - INFO - SC Val - Loss: 0.0897, Acc: 95.70%, F1: 93.69%
+2025-11-12 21:33:37,590 - INFO - New best SC F1: 93.69% (improvement: +1.4805%)
+2025-11-12 21:33:37,591 - INFO - SC Epoch 3/8
+2025-11-12 21:37:28,338 - INFO - SC Train Loss: 0.0300
+2025-11-12 21:37:53,539 - INFO - SC Val - Loss: 0.1375, Acc: 95.71%, F1: 93.43%
+2025-11-12 21:37:53,540 - INFO - No improvement - Patience: 1/2
+2025-11-12 21:37:53,540 - INFO - SC Epoch 4/8
+2025-11-12 21:41:37,516 - INFO - SC Train Loss: 0.0204
+2025-11-12 21:42:01,819 - INFO - SC Val - Loss: 0.1389, Acc: 96.03%, F1: 93.56%
+2025-11-12 21:42:01,819 - INFO - No improvement - Patience: 2/2
+2025-11-12 21:42:01,819 - INFO - Early stopping triggered at epoch 4 - Best F1: 93.69%
+2025-11-12 21:42:28,484 - INFO - SC Test - Acc: 96.39%, F1: 95.74%
+2025-11-12 21:42:32,113 - INFO - [SC] Training completed successfully
+2025-11-12 21:42:32,122 - ERROR - Error analysis failed: cannot import name 'ErrorAnalyzer' from 'error_analysis' (unknown location)

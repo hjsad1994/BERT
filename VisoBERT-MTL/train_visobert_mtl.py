@@ -153,6 +153,7 @@ def evaluate_mtl(model, dataloader, device, aspect_names):
     sc_masks_all = torch.cat(sc_masks_all, dim=0)
     
     # AD per-aspect metrics
+    # Each aspect is binary classification (mentioned/not mentioned)
     ad_aspect_metrics = {}
     for i, aspect in enumerate(aspect_names):
         acc = accuracy_score(ad_labels_all[:, i], ad_preds_all[:, i])
@@ -161,7 +162,8 @@ def evaluate_mtl(model, dataloader, device, aspect_names):
         )
         ad_aspect_metrics[aspect] = {'accuracy': acc, 'precision': p, 'recall': r, 'f1': f1}
     
-    # AD overall metrics (F1 Macro: average of per-aspect metrics)
+    # AD overall metrics (MACRO-AVERAGED: unweighted average across all 11 aspects)
+    # This ensures fair evaluation regardless of aspect frequency in the dataset
     ad_acc = np.mean([m['accuracy'] for m in ad_aspect_metrics.values()])
     ad_p = np.mean([m['precision'] for m in ad_aspect_metrics.values()])
     ad_r = np.mean([m['recall'] for m in ad_aspect_metrics.values()])
@@ -169,7 +171,12 @@ def evaluate_mtl(model, dataloader, device, aspect_names):
     
     # SC metrics (ONLY on labeled aspects where ad_labels==1)
     # CRITICAL FIX: Evaluate sentiment ONLY where aspect is actually present
+    # NOTE: Exclude "Others" from SC metrics (index 10) - it only has Neutral sentiment
     valid_sentiment_mask = (sc_masks_all > 0) & (torch.tensor(ad_labels_all) == 1)
+    
+    # SC aspects: exclude "Others" (last aspect, index 10)
+    sc_aspect_names = aspect_names[:-1]  # First 10 aspects only
+    sc_aspect_indices = list(range(len(sc_aspect_names)))  # Indices 0-9
     
     if valid_sentiment_mask.sum() == 0:
         print("WARNING: No valid sentiment labels found!")
@@ -177,11 +184,12 @@ def evaluate_mtl(model, dataloader, device, aspect_names):
         sc_f1 = 0.0
         sc_p = 0.0
         sc_r = 0.0
-        sc_aspect_metrics = {aspect: {'accuracy': 0.0, 'precision': 0.0, 'recall': 0.0, 'f1': 0.0} for aspect in aspect_names}
+        sc_aspect_metrics = {aspect: {'accuracy': 0.0, 'precision': 0.0, 'recall': 0.0, 'f1': 0.0} for aspect in sc_aspect_names}
     else:
-        # Per-aspect SC metrics (only on valid aspects)
+        # Per-aspect SC metrics (only on valid aspects, excluding Others)
         sc_aspect_metrics = {}
-        for i, aspect in enumerate(aspect_names):
+        for idx, aspect in enumerate(sc_aspect_names):
+            i = sc_aspect_indices[idx]  # Use original index (0-9)
             aspect_mask = valid_sentiment_mask[:, i]
             if aspect_mask.sum() == 0:
                 sc_aspect_metrics[aspect] = {'accuracy': 0.0, 'precision': 0.0, 'recall': 0.0, 'f1': 0.0, 'n_samples': 0}
@@ -191,12 +199,14 @@ def evaluate_mtl(model, dataloader, device, aspect_names):
             aspect_labels = sc_labels_all[:, i][aspect_mask].numpy()
             
             acc = accuracy_score(aspect_labels, aspect_preds)
+            # Per-aspect SC metrics: macro-averaged across 3 sentiment classes (positive/negative/neutral)
             p, r, f1, _ = precision_recall_fscore_support(
                 aspect_labels, aspect_preds, average='macro', zero_division=0
             )
             sc_aspect_metrics[aspect] = {'accuracy': acc, 'precision': p, 'recall': r, 'f1': f1, 'n_samples': aspect_mask.sum().item()}
         
-        # Overall SC metrics (F1 Macro: average of per-aspect metrics)
+        # Overall SC metrics (MACRO-AVERAGED: unweighted average across 10 aspects, excluding Others)
+        # This ensures fair evaluation regardless of aspect frequency in the dataset
         valid_aspects = [m for m in sc_aspect_metrics.values() if m['n_samples'] > 0]
         if len(valid_aspects) > 0:
             sc_acc = np.mean([m['accuracy'] for m in valid_aspects])
@@ -248,10 +258,13 @@ def save_confusion_matrices(metrics: dict, aspect_names: list, output_dir: str):
     plt.savefig(os.path.join(output_dir, 'confusion_matrix_ad.png'), dpi=300, bbox_inches='tight')
     plt.close()
     
-    # SC overall confusion matrix
+    # SC overall confusion matrix (excluding Others - only first 10 aspects)
     sc_preds = metrics['sc']['predictions'].numpy()
     sc_labels = metrics['sc']['labels'].numpy()
-    cm_sc = confusion_matrix(sc_labels.flatten(), sc_preds.flatten(), labels=[0, 1, 2])
+    # Only use first 10 aspects (indices 0-9), exclude Others at index 10
+    sc_preds_10 = sc_preds[:, :10].flatten()  # Shape: [batch * 10]
+    sc_labels_10 = sc_labels[:, :10].flatten()  # Shape: [batch * 10]
+    cm_sc = confusion_matrix(sc_labels_10, sc_preds_10, labels=[0, 1, 2])
     
     sentiment_labels = ['Positive', 'Negative', 'Neutral']
     
@@ -260,27 +273,29 @@ def save_confusion_matrices(metrics: dict, aspect_names: list, output_dir: str):
                xticklabels=sentiment_labels, yticklabels=sentiment_labels, ax=ax)
     ax.set_xlabel('Predicted Sentiment', fontsize=12)
     ax.set_ylabel('True Sentiment', fontsize=12)
-    ax.set_title('Sentiment Classification - Overall (ViSoBERT-MTL)', fontsize=14, fontweight='bold')
+    ax.set_title('Sentiment Classification - Overall (10 Aspects, Excluding Others) (ViSoBERT-MTL)', fontsize=14, fontweight='bold')
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'confusion_matrix_sc_overall.png'), dpi=300, bbox_inches='tight')
     plt.close()
     
-    # SC per-aspect confusion matrices
-    n_aspects = len(aspect_names)
+    # SC per-aspect confusion matrices (excluding Others)
+    sc_aspect_names = aspect_names[:-1]  # Exclude "Others"
+    n_aspects = len(sc_aspect_names)
     n_cols = 3
     n_rows = (n_aspects + n_cols - 1) // n_cols
     
     fig, axes = plt.subplots(n_rows, n_cols, figsize=(15, 5 * n_rows))
     axes = axes.flatten() if n_aspects > 1 else [axes]
     
-    for i, aspect in enumerate(aspect_names):
+    for idx, aspect in enumerate(sc_aspect_names):
+        i = idx  # Use original index (0-9, excluding Others at index 10)
         cm_aspect = confusion_matrix(sc_labels[:, i], sc_preds[:, i], labels=[0, 1, 2])
         sns.heatmap(cm_aspect, annot=True, fmt='d', cmap='Blues',
                    xticklabels=sentiment_labels, yticklabels=sentiment_labels,
-                   ax=axes[i], cbar=False)
-        axes[i].set_title(f'{aspect}', fontsize=12, fontweight='bold')
-        axes[i].set_xlabel('Predicted')
-        axes[i].set_ylabel('True')
+                   ax=axes[idx], cbar=False)
+        axes[idx].set_title(f'{aspect}', fontsize=12, fontweight='bold')
+        axes[idx].set_xlabel('Predicted')
+        axes[idx].set_ylabel('True')
     
     for i in range(n_aspects, len(axes)):
         axes[i].axis('off')
@@ -345,7 +360,11 @@ def generate_final_report(metrics: dict, output_dir: str, config: dict):
         "-"*80
     ])
     
+    # SC per-aspect results (excluding Others)
     for aspect, m in metrics['sc']['per_aspect'].items():
+        # Skip Others if it somehow appears (shouldn't happen, but safety check)
+        if aspect == 'Others':
+            continue
         report_lines.append(
             f"{aspect:<15} Accuracy: {m['accuracy']*100:>6.2f}%  "
             f"F1 Score: {m['f1']*100:>6.2f}%  "
@@ -528,6 +547,7 @@ def main(args: argparse.Namespace):
     scaler = torch.cuda.amp.GradScaler(enabled=torch.cuda.is_available())
     patience_counter = 0
     early_stopping_patience = config['training']['early_stopping_patience']
+    early_stopping_threshold = config['training'].get('early_stopping_threshold', 0.0)
     
     for epoch in range(1, num_epochs + 1):
         print(f"\n{'='*80}")
@@ -580,7 +600,15 @@ def main(args: argparse.Namespace):
         })
         
         # Save best model
-        if current_selection_metric > best_selection_metric:
+        metric_improvement = current_selection_metric - best_selection_metric
+        print(f"   Improvement over best: {metric_improvement*100:.2f}% "
+              f"(threshold: {early_stopping_threshold*100:.2f}%)")
+        logging.info(
+            "Epoch %d - Selection metric: %.4f (Δ %.4f, threshold %.4f)",
+            epoch, current_selection_metric, metric_improvement, early_stopping_threshold
+        )
+        
+        if metric_improvement > early_stopping_threshold:
             best_selection_metric = current_selection_metric
             torch.save({
                 'epoch': epoch,
@@ -588,9 +616,20 @@ def main(args: argparse.Namespace):
                 'optimizer_state_dict': optimizer.state_dict(),
                 'metrics': val_metrics
             }, os.path.join(output_dir, 'best_model.pt'))
-            print(f"\nNew best {selection_metric_name}: {best_selection_metric*100:.2f}%")
+            print(f"\nNew best {selection_metric_name}: {best_selection_metric*100:.2f}% "
+                  f"(improvement: {metric_improvement*100:.2f}%)")
+            logging.info(
+                "New best model at epoch %d with %s = %.4f (Δ %.4f)",
+                epoch, selection_metric_name, best_selection_metric, metric_improvement
+            )
             patience_counter = 0
         else:
+            print(f"   No significant improvement (Δ={metric_improvement*100:.2f}%) → "
+                  f"patience {patience_counter+1}/{early_stopping_patience}")
+            logging.info(
+                "No significant improvement (Δ %.4f). Patience %d/%d",
+                metric_improvement, patience_counter + 1, early_stopping_patience
+            )
             patience_counter += 1
             if patience_counter >= early_stopping_patience:
                 print(f"\nEarly stopping triggered after {epoch} epochs")

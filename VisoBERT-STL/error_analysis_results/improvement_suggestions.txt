@@ -1,0 +1,31 @@
+======================================================================
+ĐỀ XUẤT CẢI THIỆN MODEL
+======================================================================
+
+
+ CONFUSION PATTERNS PHỔ BIẾN:
+
+    Nhầm NEGATIVE thành POSITIVE (29 cases, 33.7%)
+      • Confusion nghiêm trọng (ngược hoàn toàn)
+      • Kiểm tra sarcasm, irony, context
+
+    Nhầm POSITIVE thành NEGATIVE (28 cases, 32.6%)
+      • Confusion nghiêm trọng (ngược hoàn toàn)
+      • Kiểm tra sarcasm, irony, context
+
+    Nhầm POSITIVE thành NEUTRAL (10 cases, 11.6%)
+
+
+ GENERAL IMPROVEMENTS:
+
+    Data Quality:
+      • Review lại labeling consistency
+      • Thêm inter-annotator agreement check
+
+    Model Improvements:
+      • Fine-tune learning rate
+      • Thử different warmup ratios
+
+    Training Strategy:
+      • Train thêm epochs nếu chưa converge
+      • Sử dụng early stopping với patience
